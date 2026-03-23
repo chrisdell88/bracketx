@@ -1,0 +1,20 @@
+# Data files (large, not needed for the site)
+*.xlsx
+*.csv
+*.zip
+raw_ratings.json
+espn_logos.json
+xscore_v5.json
+xscore_v6.json
+dashboard_data_v5.js
+
+# Python
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude
+.claude/
