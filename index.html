@@ -203,7 +203,7 @@ function App(){
     fullName?e("span",{className:"tiptext"},fullName):null);
 
   // ════════ RANKINGS TAB ════════
-  const rankingsTab=()=>e("div",{style:{overflowX:"auto",WebkitOverflowScrolling:"touch",background:"#0d1117",paddingTop:30}},
+  const rankingsTab=()=>e("div",{style:{overflowX:"auto",WebkitOverflowScrolling:"touch",background:"#0d1117",paddingTop:2}},
     e("table",null,
       e("thead",null,e("tr",{style:{borderBottom:"1px solid #1a2a3a"}},
         thTip("rk","X#","BracketX composite rank (1-68)","#00d4ff",38,"left"),
@@ -211,7 +211,10 @@ function App(){
         e("th",{key:"team",className:"tip",style:{padding:"5px 8px",textAlign:"left",minWidth:200,cursor:"pointer"},onClick:()=>doSort("nm")},
           e("span",{style:{fontSize:9,letterSpacing:.5,fontWeight:sk==="nm"?700:500,color:sk==="nm"?"#fff":"#8899aa",textDecoration:sk==="nm"?"underline":"none"}},"TEAM"+arrow("nm")),
           e("span",{className:"tiptext"},"Team name, conference, record")),
-        thTip("xs","X-SCORE","Weighted composite rank across T1 & T2 systems","#00d4ff",72,"right"),
+        e("th",{key:"xs",className:"tip",style:{padding:"5px 4px",textAlign:"right",width:72,cursor:"pointer"},onClick:()=>doSort("xs")},
+          e("div",{style:{fontSize:7,color:"#8899aa",fontWeight:400,letterSpacing:.5,marginBottom:1}},"scroll right \u2192"),
+          e("span",{style:{fontSize:9,letterSpacing:.5,fontWeight:sk==="xs"?700:500,color:sk==="xs"?"#fff":"#00d4ff",textDecoration:sk==="xs"?"underline":"none"}},"X-SCORE"+arrow("xs")),
+          e("span",{className:"tiptext"},"Weighted composite rank across T1 & T2 systems")),
         thTip("med","MED","Median rank across T1 & T2 systems","#8899aa",32),
         e("th",{key:"best",className:"tip",style:{padding:"5px 4px",textAlign:"center",width:36,cursor:"pointer"},onClick:()=>doSort("best")},
           e("span",{style:{fontSize:9,letterSpacing:.5,fontWeight:sk==="best"?700:500,color:sk==="best"?"#fff":"#00e676",textDecoration:sk==="best"?"underline":"none"}},"BEST"+arrow("best")),
@@ -662,7 +665,7 @@ function App(){
           e("span",null,e("span",{style:{color:"#00d4ff"}},"\u25CF")," T1 Efficiency"),
           e("span",null,e("span",{style:{color:"#8ab4d0"}},"\u25CF")," T2 Regression"),
           e("span",null,e("span",{style:{color:"#b8a0d0"}},"\u25CF")," T3 Comparison")),
-        e("div",{style:{fontSize:9,color:"#8899aa",textAlign:"center",marginBottom:0}},"Scroll right \u2192 to explore all systems")):null,
+        ):null,
       tab==="rankings"?rankingsTab():
       tab==="bracket"?bracketTab():
       tab==="matchups"?matchupsTab():
