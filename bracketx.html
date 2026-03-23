@@ -242,7 +242,7 @@ function App(){
           e("td",{style:{padding:"4px 4px",textAlign:"center"}},
             e("span",{style:{display:"inline-block",minWidth:18,padding:"1px 4px",borderRadius:3,fontSize:10,fontWeight:700,textAlign:"center",background:SC[t.s]+"20",border:"1px solid "+SC[t.s]+"44",color:SC[t.s]}},t.s)),
           e("td",{style:{padding:"4px 12px 4px 14px",display:"flex",alignItems:"center",gap:8}},
-            LOGOS[t.nm]?e("img",{src:"https://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/"+LOGOS[t.nm]+".png&h=24&w=24",style:{width:24,height:24,borderRadius:4},alt:t.nm}):null,
+            LOGOS[t.nm]?e("img",{src:"https://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/"+LOGOS[t.nm]+".png&h=24&w=24",style:{width:24,height:24,borderRadius:4,background:"rgba(255,255,255,.12)",padding:2},alt:t.nm}):null,
             e("span",null,
               e("span",{style:{fontFamily:"Outfit",fontWeight:700,fontSize:13,color:"#fff"}},t.nm),
               e("span",{style:{fontSize:9,color:"#8899aa",marginLeft:8}},t.cf+" \u00B7 "+t.rec))),
@@ -361,20 +361,23 @@ function App(){
             e("span",{style:{fontSize:9,color:RC[m.r],letterSpacing:2,fontWeight:600}},m.r.toUpperCase()),
             edgeVal>=3?e("span",{style:{fontSize:8,background:edgeVal>=5?"rgba(0,230,118,.12)":"rgba(255,214,0,.12)",color:edgeVal>=5?"#00e676":"#ffd600",padding:"2px 8px",borderRadius:8,fontWeight:700}},"EDGE "+edgeVal.toFixed(1)):null),
           e("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:3}},
-            e("span",{style:{fontFamily:"Outfit",fontWeight:700,fontSize:14,color:"#fff",display:"flex",alignItems:"center",gap:5}},LOGOS[m.h]?e("img",{src:"https://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/"+LOGOS[m.h]+".png&h=20&w=20",style:{width:20,height:20,borderRadius:3}}):null,"("+m.hs+") "+m.h),
+            e("span",{style:{fontFamily:"Outfit",fontWeight:700,fontSize:14,color:"#fff",display:"flex",alignItems:"center",gap:5}},LOGOS[m.h]?e("img",{src:"https://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/"+LOGOS[m.h]+".png&h=20&w=20",style:{width:20,height:20,borderRadius:3,background:"rgba(255,255,255,.12)",padding:1}}):null,"("+m.hs+") "+m.h,tMap[m.h]?e("span",{style:{fontSize:8,color:"#667",fontWeight:400,marginLeft:4}},tMap[m.h].cf+" "+tMap[m.h].rec):null),
             e("span",{style:{fontSize:13,fontWeight:700,color:"#00e676"}},(m.prob||95)+"%")),
           e("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:6}},
-            e("span",{style:{fontSize:11,color:"#667",display:"flex",alignItems:"center",gap:5}},LOGOS[m.a]?e("img",{src:"https://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/"+LOGOS[m.a]+".png&h=16&w=16",style:{width:16,height:16,borderRadius:2}}):null,"("+m.as+") "+m.a),
+            e("span",{style:{fontSize:11,color:"#aab",display:"flex",alignItems:"center",gap:5}},LOGOS[m.a]?e("img",{src:"https://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/"+LOGOS[m.a]+".png&h=16&w=16",style:{width:16,height:16,borderRadius:2,background:"rgba(255,255,255,.12)",padding:1}}):null,"("+m.as+") "+m.a,tMap[m.a]?e("span",{style:{fontSize:8,color:"#556",fontWeight:400,marginLeft:4}},tMap[m.a].cf+" "+tMap[m.a].rec):null),
             e("span",{style:{fontSize:11,color:"#ff6b35"}},(100-(m.prob||95))+"%")),
           e("div",{style:{display:"flex",height:3,borderRadius:2,overflow:"hidden",background:"#1a2a3a",marginBottom:8}},
             e("div",{style:{width:(m.prob||95)+"%",background:"linear-gradient(90deg,#00e676,#00d4ff)"}})),
           e("div",{style:{fontSize:10,borderTop:"1px solid #1a2a3a",paddingTop:5}},
             e("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:3}},
-              e("span",null,e("span",{style:{color:"#556"}},"BT: "),e("span",{style:{color:"#8ab4d0",fontWeight:700}},m.bts!=null?(m.bts>0?m.h:m.a)+" "+(-Math.abs(m.bts)).toFixed(1):"--")),
-              e("span",null,e("span",{style:{color:"#556"}},"KP: "),e("span",{style:{color:"#ff6b35",fontWeight:700}},m.kps!=null?(m.kps>0?m.h:m.a)+" "+(-Math.abs(m.kps)).toFixed(1):"--"))),
-            e("div",{style:{display:"flex",justifyContent:"space-between"}},
-              e("span",null,e("span",{style:{color:"#556"}},"X-Spread: "),e("span",{style:{color:"#00d4ff",fontWeight:700}},m.xsp!=null?(m.xsp>0?m.h:m.a)+" "+(-Math.abs(m.xsp)).toFixed(1):"--")),
-              e("span",null,e("span",{style:{color:"#556"}},"Book: "),e("span",{style:{color:"#ffd600",fontWeight:700}},m.bk!=null?m.h+" -"+m.bk:"--")))));
+              e("span",null,e("span",{style:{color:"#889"}},"BT: "),e("span",{style:{color:"#8ab4d0",fontWeight:700}},m.bts!=null?(m.bts>0?m.h:m.a)+" "+(-Math.abs(m.bts)).toFixed(1):"--")),
+              e("span",null,e("span",{style:{color:"#889"}},"KP: "),e("span",{style:{color:"#ff6b35",fontWeight:700}},m.kps!=null?(m.kps>0?m.h:m.a)+" "+(-Math.abs(m.kps)).toFixed(1):"--"))),
+            e("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:3}},
+              e("span",null,e("span",{style:{color:"#889"}},"X: "),e("span",{style:{color:"#00d4ff",fontWeight:700}},m.xsp!=null?(m.xsp>0?m.h:m.a)+" "+(-Math.abs(m.xsp)).toFixed(1):"--")),
+              e("span",null,e("span",{style:{color:"#889"}},"Book: "),e("span",{style:{color:"#ffd600",fontWeight:700}},m.bk!=null?m.h+" -"+m.bk:"--"))),
+            m.edge!=null&&m.edge>=2?e("div",{style:{display:"flex",justifyContent:"space-between",fontSize:9,marginTop:2}},
+              e("span",{style:{color:m.edge>=5?"#00e676":m.edge>=3?"#ffd600":"#8899aa",fontWeight:600}},"EDGE: "+m.edge.toFixed(1)+" pts"),
+              null):null)));
       })));
 
   // ════════ FUTURES TAB ════════
@@ -452,7 +455,7 @@ function App(){
           e("tbody",null,sorted.map((t,i)=>{const p=probs[t.nm];return e("tr",{key:t.nm,style:{borderBottom:"1px solid rgba(255,255,255,.02)",background:i%2===0?"#0e1218":"#0d1117"}},
             e("td",{style:{padding:"4px 8px",fontWeight:700,color:"#00d4ff",textAlign:"center"}},t.rk),
             e("td",{style:{padding:"4px 8px",color:RC[t.rg],textAlign:"center"}},t.s),
-            e("td",{style:{padding:"4px 8px",fontFamily:"Outfit",fontWeight:600,color:"#fff",display:"flex",alignItems:"center",gap:6}},LOGOS[t.nm]?e("img",{src:"https://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/"+LOGOS[t.nm]+".png&h=20&w=20",style:{width:20,height:20,borderRadius:3}}):null,e("span",null,t.nm," ",e("span",{style:{fontSize:8,color:"#556"}},t.cf))),
+            e("td",{style:{padding:"4px 8px",fontFamily:"Outfit",fontWeight:600,color:"#fff",display:"flex",alignItems:"center",gap:6}},LOGOS[t.nm]?e("img",{src:"https://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/"+LOGOS[t.nm]+".png&h=20&w=20",style:{width:20,height:20,borderRadius:3,background:"rgba(255,255,255,.12)",padding:1}}):null,e("span",null,t.nm," ",e("span",{style:{fontSize:8,color:"#556"}},t.cf))),
             e("td",{style:{padding:"4px 8px",textAlign:"center",fontWeight:700,color:p.champ>=.1?"#ffd600":p.champ>=.01?"#d4a020":"#667"}},fmt(p.champ)),
             e("td",{style:{padding:"4px 8px",textAlign:"center",fontWeight:600,color:p.title>=.1?"#ff6b35":"#778"}},fmt(p.title)),
             e("td",{style:{padding:"4px 8px",textAlign:"center",fontWeight:600,color:p.f4>=.1?"#00d4ff":"#778"}},fmt(p.f4)),
@@ -463,7 +466,7 @@ function App(){
   // ════════ METHODOLOGY TAB ════════
   const methodTab=()=>e("div",{style:{maxWidth:760}},
     e("h2",{style:{fontFamily:"Outfit",fontSize:22,fontWeight:900,color:"#fff",marginBottom:6}},"Methodology"),
-    e("p",{style:{fontSize:10,color:"#556",marginBottom:18}},"BracketX Composite Power Index \u2014 March 2026"),
+    e("p",{style:{fontSize:10,color:"#8899aa",marginBottom:18}},"BracketX Composite Power Index \u2014 March 2026"),
     e("div",{style:{fontSize:11,color:"#aab",lineHeight:1.9}},
       e("div",{style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:8,padding:14,marginBottom:16}},
         e("h3",{style:{fontFamily:"Outfit",fontSize:14,fontWeight:800,color:"#00d4ff",marginBottom:8}},"01 \u2014 WHAT IS X-SCORE?"),
@@ -638,7 +641,7 @@ function App(){
         e("div",{style:{display:"flex",alignItems:"baseline",gap:10,marginBottom:8}},
           e("span",{style:{fontFamily:"Outfit",fontSize:30,fontWeight:900,color:"#fff",letterSpacing:-1}},"BRACKET",e("span",{style:{color:"#00d4ff"}},"X")),
           e("span",{style:{fontFamily:"DM Mono",fontSize:13,fontWeight:500,color:"#ffd600",letterSpacing:2}},"COMPOSITE POWER INDEX")),
-        e("div",{style:{fontSize:9,color:"#8899aa",letterSpacing:1,marginBottom:6,fontFamily:"DM Mono"}},"48 SYSTEMS \u00B7 68 TEAMS \u00B7 INJURY-ADJUSTED \u00B7 UPDATED DAILY"),
+        e("div",{style:{fontSize:9,color:"#8899aa",letterSpacing:1,marginBottom:12,fontFamily:"DM Mono"}},"48 SYSTEMS \u00B7 68 TEAMS \u00B7 INJURY-ADJUSTED \u00B7 UPDATED DAILY"),
         e("div",{style:{display:"flex",gap:0}},
           ["rankings","matchups","futures","methodology"].map(v=>
             e("button",{key:v,onClick:()=>setTab(v),style:{padding:"7px 16px",fontFamily:"DM Mono",fontSize:11,fontWeight:tab===v?700:400,letterSpacing:1,color:tab===v?"#fff":"#8899aa",borderBottom:tab===v?"2px solid #00d4ff":"2px solid transparent",textTransform:"uppercase"}},v))))),
@@ -646,13 +649,16 @@ function App(){
       tab!=="methodology"?e("div",{style:{display:"flex",gap:6,marginBottom:8,flexWrap:"wrap",alignItems:"center"}},
         ["All","East","South","West","Midwest"].map(r=>
           e("button",{key:r,onClick:()=>setReg(r),style:{padding:"4px 14px",borderRadius:16,fontFamily:"DM Mono",fontSize:10,fontWeight:reg===r?700:400,letterSpacing:1,background:reg===r?(r==="All"?"rgba(255,255,255,.1)":(RC[r]+"18")):"rgba(255,255,255,.02)",color:reg===r?(r==="All"?"#fff":RC[r]):"#8899aa",border:"1px solid "+(reg===r?(r==="All"?"rgba(255,255,255,.2)":(RC[r]+"33")):"rgba(255,255,255,.04)"),textTransform:"uppercase"}},r))):null,
-      tab==="rankings"?e("div",{style:{display:"flex",gap:8,marginBottom:8,padding:"8px 12px",background:"#0e1218",borderRadius:6,border:"1px solid #1a2a3a",alignItems:"center",flexWrap:"wrap",justifyContent:"space-between"}},
-        e("div",{style:{fontSize:9,color:"#8899aa",lineHeight:1.6,flex:1}},
+      tab==="rankings"?e("div",{style:{marginBottom:8}},
+        e("div",{style:{padding:"7px 12px",background:"#0e1218",borderRadius:6,border:"1px solid #1a2a3a",fontSize:9,color:"#8899aa",lineHeight:1.6,marginBottom:6}},
           e("span",{style:{color:"#00d4ff",fontWeight:700}},"X-Score")," = Composite Power Rating from 36 efficiency models. ",
-          e("span",{style:{color:"#00e676"}},"Green"),"/",e("span",{style:{color:"#ff4444"}},"Red")," highlights = 10+ rank difference. Scroll right \u2192 to see all 48 systems."),
-        e("div",{style:{display:"flex",gap:8,alignItems:"center"}},
-          e("span",{style:{fontSize:8,color:"#8899aa"}},e("span",{style:{color:"#00d4ff"}},"\u25CF")," T1 ",e("span",{style:{color:"#8ab4d0"}},"\u25CF")," T2 ",e("span",{style:{color:"#b8a0d0"}},"\u25CF")," Compare"),
-          e("button",{onClick:()=>setShowKey(!showKey),style:{padding:"3px 8px",borderRadius:4,fontFamily:"DM Mono",fontSize:8,background:"rgba(0,212,255,.08)",color:"#00d4ff",border:"1px solid rgba(0,212,255,.2)",letterSpacing:1}},"RATINGS KEY"))):null,
+          e("span",{style:{color:"#00e676"}},"Green"),"/",e("span",{style:{color:"#ff4444"}},"Red")," highlights = 10+ rank difference vs X-Score. Scroll right \u2192 to explore all 48 systems."),
+        e("div",{style:{display:"flex",gap:10,alignItems:"center",justifyContent:"space-between"}},
+          e("div",{style:{display:"flex",gap:10,fontSize:9,color:"#8899aa"}},
+            e("span",null,e("span",{style:{color:"#00d4ff"}},"\u25CF")," T1 Efficiency"),
+            e("span",null,e("span",{style:{color:"#8ab4d0"}},"\u25CF")," T2 Regression"),
+            e("span",null,e("span",{style:{color:"#b8a0d0"}},"\u25CF")," Compare")),
+          e("button",{onClick:()=>setShowKey(!showKey),style:{padding:"4px 10px",borderRadius:4,fontFamily:"DM Mono",fontSize:9,background:"rgba(0,212,255,.08)",color:"#00d4ff",border:"1px solid rgba(0,212,255,.2)",letterSpacing:1}},"RATINGS KEY"))):null,
       tab==="rankings"?rankingsTab():
       tab==="bracket"?bracketTab():
       tab==="matchups"?matchupsTab():
@@ -665,7 +671,7 @@ function App(){
           e("button",{onClick:()=>{navigator.clipboard.writeText("https://bracketx.co").then(()=>alert("Link copied!"))},style:{padding:"4px 10px",borderRadius:4,fontSize:9,fontFamily:"DM Mono",background:"rgba(0,212,255,.1)",color:"#00d4ff",border:"1px solid rgba(0,212,255,.25)"}},"Copy Link"),
           e("button",{onClick:()=>window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent("BracketX: 48 systems. 68 teams. One composite score.\n\n75% straight-up in the first round. 55.6% ATS. Beat KenPom, BartTorvik & Vegas.\n\nbracketx.co"),"_blank"),style:{padding:"4px 10px",borderRadius:4,fontSize:9,fontFamily:"DM Mono",background:"rgba(29,161,242,.15)",color:"#1da1f2",border:"1px solid rgba(29,161,242,.3)"}},"X"),
           e("button",{onClick:()=>window.open("sms:?&body="+encodeURIComponent("Check out BracketX \u2014 48 systems, 68 teams, one composite power index. Beat KenPom & Vegas in the first round. bracketx.co")),style:{padding:"4px 10px",borderRadius:4,fontSize:9,fontFamily:"DM Mono",background:"rgba(0,230,118,.12)",color:"#00e676",border:"1px solid rgba(0,230,118,.3)"}},"Text"),
-          e("button",{onClick:()=>window.open("mailto:?subject="+encodeURIComponent("BracketX \u2014 Composite Power Index")+"&body="+encodeURIComponent("Check out BracketX \u2014 48 rating systems combined into one composite power index. Outperformed KenPom, BartTorvik, and Vegas closing lines in the 2026 NCAA Tournament.\n\nhttps://bracketx.co")),style:{padding:"4px 10px",borderRadius:4,fontSize:9,fontFamily:"DM Mono",background:"rgba(255,255,255,.1)",color:"#ccd",border:"1px solid rgba(255,255,255,.15)"}},"Email")),
+          e("button",{onClick:()=>window.open("mailto:?subject="+encodeURIComponent("BracketX \u2014 Composite Power Index")+"&body="+encodeURIComponent("Check out BracketX \u2014 48 rating systems combined into one composite power index. Outperformed KenPom, BartTorvik, and Vegas closing lines in the 2026 NCAA Tournament.\n\nhttps://bracketx.co")),style:{padding:"4px 10px",borderRadius:4,fontSize:9,fontFamily:"DM Mono",background:"rgba(255,107,53,.12)",color:"#ff6b35",border:"1px solid rgba(255,107,53,.3)"}},"Email")),
         e("span",{style:{fontSize:9,color:"#8899aa"}},"Chris Dell: Founder"))),
     keyModal,teamModal,previewEl);
 }
