@@ -18,6 +18,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
+@keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 html,body,#root,#root>div{background:#0d1117!important;color:#c8d0d8;font-family:'DM Mono',monospace;min-height:100vh}
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-track{background:#0d1117}
@@ -807,7 +808,23 @@ function App(){
         e("div",{style:{display:"flex",alignItems:"baseline",gap:10,marginBottom:8}},
           e("span",{onClick:()=>{setTab("rankings");setReg("All");},style:{fontFamily:"Outfit",fontSize:30,fontWeight:900,color:"#fff",letterSpacing:-1,cursor:"pointer"}},"BRACKET",e("span",{style:{color:"#00d4ff"}},"X")),
           e("span",{style:{fontFamily:"DM Mono",fontSize:13,fontWeight:500,color:"#ffd600",letterSpacing:2}},"COMPOSITE POWER INDEX")),
-        e("div",{style:{fontSize:9,color:"#8899aa",letterSpacing:1,marginBottom:16,fontFamily:"DM Mono"}},"48 SYSTEMS \u00B7 68 TEAMS \u00B7 INJURY-ADJUSTED \u00B7 UPDATED DAILY"),
+        e("div",{style:{fontSize:9,color:"#8899aa",letterSpacing:1,marginBottom:10,fontFamily:"DM Mono"}},"48 SYSTEMS \u00B7 68 TEAMS \u00B7 INJURY-ADJUSTED \u00B7 UPDATED DAILY"),
+        e("div",{style:{overflow:"hidden",marginBottom:10,borderTop:"1px solid #1a2a3a",borderBottom:"1px solid #1a2a3a",background:"#0a0e14"}},
+          e("div",{style:{display:"flex",gap:0,animation:"scroll 30s linear infinite",whiteSpace:"nowrap"}},
+            [...BRACKET_S16,...BRACKET_S16].map((m,i)=>{
+              const h=tMap[m.h],a=tMap[m.a];
+              const xsp=h&&a?+((h.xs-a.xs)*SF).toFixed(1):0;
+              const favTeam=xsp>0?m.h:m.a;const favSpread=Math.abs(xsp);
+              const bk=BS_BY_GAME[m.h+"-"+m.a]||BS_BY_GAME[m.a+"-"+m.h]||null;
+              return e("div",{key:i,style:{display:"inline-flex",alignItems:"center",gap:6,padding:"6px 16px",borderRight:"1px solid #1a2a3a",fontSize:10,flexShrink:0,cursor:"pointer"},onClick:()=>{setTab("matchups");setMRound("S16");}},
+                LOGOS[m.h]?e("img",{src:"https://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/"+LOGOS[m.h]+".png&h=16&w=16",style:{width:16,height:16,borderRadius:2}}):null,
+                e("span",{style:{color:"#fff",fontWeight:700,fontSize:10}},m.h),
+                e("span",{style:{color:"#556"}},"vs"),
+                LOGOS[m.a]?e("img",{src:"https://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/"+LOGOS[m.a]+".png&h=16&w=16",style:{width:16,height:16,borderRadius:2}}):null,
+                e("span",{style:{color:"#aab",fontWeight:600,fontSize:10}},m.a),
+                e("span",{style:{color:"#00d4ff",fontWeight:700,fontFamily:"DM Mono",fontSize:9}},favTeam+" -"+favSpread),
+                bk?e("span",{style:{color:"#ffd600",fontSize:8,fontFamily:"DM Mono"}},"BK -"+bk):null,
+                e("span",{style:{color:"#556",fontSize:8}},m.d+" "+m.t));}))),
         e("div",{style:{display:"flex",gap:0}},
           ["rankings","matchups","futures","results","methodology"].map(v=>
             e("button",{key:v,onClick:()=>{setTab(v);if(v==="futures")setReg("Field");else if(v!=="futures"&&reg==="Field")setReg("All");},style:{padding:"7px 16px",fontFamily:"DM Mono",fontSize:11,fontWeight:tab===v?700:400,letterSpacing:1,color:tab===v?"#fff":"#8899aa",borderBottom:tab===v?"2px solid #00d4ff":"2px solid transparent",textTransform:"uppercase"}},v))))),
