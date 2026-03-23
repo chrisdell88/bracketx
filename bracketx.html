@@ -375,9 +375,8 @@ function App(){
             e("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:3}},
               e("span",null,e("span",{style:{color:"#889"}},"X: "),e("span",{style:{color:"#00d4ff",fontWeight:700}},m.xsp!=null?(m.xsp>0?m.h:m.a)+" "+(-Math.abs(m.xsp)).toFixed(1):"--")),
               e("span",null,e("span",{style:{color:"#889"}},"Book: "),e("span",{style:{color:"#ffd600",fontWeight:700}},m.bk!=null?m.h+" -"+m.bk:"--"))),
-            m.edge!=null&&m.edge>=2?e("div",{style:{display:"flex",justifyContent:"space-between",fontSize:9,marginTop:2}},
-              e("span",{style:{color:m.edge>=5?"#00e676":m.edge>=3?"#ffd600":"#8899aa",fontWeight:600}},"EDGE: "+m.edge.toFixed(1)+" pts"),
-              null):null)));
+            m.edge!=null&&m.edge>=2?e("div",{style:{fontSize:9,marginTop:2}},
+              e("span",{style:{color:m.edge>=5?"#00e676":m.edge>=3?"#ffd600":"#8899aa",fontWeight:600}},"EDGE: "+m.edge.toFixed(1)+" pts")):null));
       })));
 
   // ════════ FUTURES TAB ════════
