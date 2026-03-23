@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BracketX — Composite Power Index</title>
+<meta property="og:title" content="BracketX — Composite Power Index">
+<meta property="og:description" content="36 ranking systems. 68 teams. One composite score. Outperformed KenPom, BartTorvik, and Vegas closing lines in the 2026 NCAA Tournament.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bracketx.co">
+<meta property="og:image" content="https://bracketx.co/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="BracketX — Composite Power Index">
+<meta name="twitter:description" content="36 systems. 68 teams. 75% straight-up. 55.6% ATS. Better than KenPom.">
+<meta name="twitter:image" content="https://bracketx.co/og-image.png">
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -128,7 +137,7 @@ const TC=i=>ST[i]>=3?"#00d4ff":"#8ab4d0";
 const VC=(v,i)=>"#aab";
 const SN={"KP":"KenPom","BT":"BartTorvik","EM":"Evan Miya BPR","COOP":"COOPER Elo","SW":"SwishStats","HAS":"Haslametrics","INCC":"INCC Stats","BPI":"ESPN BPI","MASSEY":"Massey","DRAT":"DRatings","TMRK":"TeamRankings","VERSUS":"Versus","DEEP":"DeepMetric","DUNK":"Dunkel","COLLEY":"Colley","WAYWD":"Wayward","WHEEL":"Wheelus","WHTLK":"Whitlock","JENG":"JamesEng","TALIS":"Talisman Red","QRI":"QRI","WHOE":"WhoEarnedIt","OMNI":"Omni","JNG":"JNG","AMSTS":"AMSTS","RAMS":"RAMS","BIHL":"Bihl","WOLFE":"Wolfe","OOSH":"Oosh","SRAT":"SportsRatings","SRCBB":"SRCBB","DLPHN":"DolphinSim","SIMM":"Simmons","TPR":"Power Rank","SONNY":"Sonny Moore","PACK":"Packard","BCM":"BC Moore","ELO":"ELO (Nolan)","AEI":"AEI","CMTE":"Committee 1-68"};
 const CN={"NET":"NET","RPI":"RPI","FTN":"FTN","LAURA":"Laura/UW","LRMCC":"LRMC Classic","LRMCB":"LRMC Bayesian","COOP":"COOPER Bayesian Elo","CPURE":"COOPER Pure Elo"};
-const LOGOS={"Duke":"150","Michigan":"130","Arizona":"12","Florida":"57","Houston":"248","Iowa State":"66","Purdue":"2509","Illinois":"356","Gonzaga":"2250","UConn":"41","Michigan State":"127","St. John's":"2599","Virginia":"258","Vanderbilt":"238","Arkansas":"8","Nebraska":"158","Tennessee":"2633","Louisville":"97","North Carolina":"153","Wisconsin":"275","Alabama":"333","Kentucky":"96","Texas Tech":"2641","UCLA":"26","Ohio State":"194","BYU":"252","Saint Mary's":"2608","Georgia":"61","Clemson":"228","Saint Louis":"139","Villanova":"222","Santa Clara":"2541","NC State":"152","TCU":"2628","Texas A&M":"245","VCU":"2670","South Florida":"58","SMU":"2567","Texas":"251","Missouri":"142","UCF":"2116","Akron":"2006","McNeese":"2377","Northern Iowa":"2460","Miami OH":"193","High Point":"2314","Hofstra":"2275","Cal Baptist":"324","Hawaii":"62","North Dakota State":"2449","Wright State":"2750","Troy":"2685","Kennesaw State":"2320","Penn":"219","Idaho":"70","Tennessee State":"2634","Queens":"3101","Furman":"231","UMBC":"2378","Siena":"2561","Howard":"47","LIU":"112358","Lehigh":"2329","Prairie View A&M":"2504","Iowa":"2294","Utah State":"328","Kansas":"2305","Miami FL":"2390"};
+const LOGOS={"Duke":"150","Michigan":"130","Arizona":"12","Florida":"57","Houston":"248","Iowa State":"66","Purdue":"2509","Illinois":"356","Gonzaga":"2250","UConn":"41","Michigan State":"127","St. John's":"2599","Virginia":"258","Vanderbilt":"238","Arkansas":"8","Nebraska":"158","Tennessee":"2633","Louisville":"97","North Carolina":"153","Wisconsin":"275","Alabama":"333","Kentucky":"96","Texas Tech":"2641","UCLA":"26","Ohio State":"194","BYU":"252","Saint Mary's":"2608","Georgia":"61","Clemson":"228","Saint Louis":"139","Villanova":"222","Santa Clara":"2541","NC State":"152","TCU":"2628","Texas A&M":"245","VCU":"2670","South Florida":"58","SMU":"2567","Texas":"251","Missouri":"142","UCF":"2116","Akron":"2006","McNeese":"2377","Northern Iowa":"2460","Miami OH":"193","High Point":"2272","Hofstra":"2275","Cal Baptist":"324","Hawaii":"62","North Dakota State":"2449","Wright State":"2750","Troy":"2685","Kennesaw State":"2320","Penn":"219","Idaho":"70","Tennessee State":"2634","Queens":"3101","Furman":"231","UMBC":"2378","Siena":"2561","Howard":"47","LIU":"112358","Lehigh":"2329","Prairie View A&M":"2504","Iowa":"2294","Utah State":"328","Kansas":"2305","Miami FL":"2390"};
 
 const BRACKET=[
 {r:"East",h:"Duke",a:"Siena",hs:1,as:16,d:"3/20",t:"2:50 PM"},{r:"East",h:"UConn",a:"Furman",hs:2,as:15,d:"3/20",t:"4:30 PM"},{r:"East",h:"Michigan State",a:"North Dakota State",hs:3,as:14,d:"3/20",t:"3:50 PM"},{r:"East",h:"Kansas",a:"Cal Baptist",hs:4,as:13,d:"3/20",t:"9:45 PM"},{r:"East",h:"St. John's",a:"Northern Iowa",hs:5,as:12,d:"3/20",t:"7:10 PM"},{r:"East",h:"Louisville",a:"South Florida",hs:6,as:11,d:"3/20",t:"1:30 PM"},{r:"East",h:"UCLA",a:"UCF",hs:7,as:10,d:"3/20",t:"2:00 PM"},{r:"East",h:"Ohio State",a:"TCU",hs:8,as:9,d:"3/20",t:"12:15 PM"},
@@ -475,7 +484,7 @@ function App(){
         e("div",{style:{background:"#161b22",borderRadius:6,padding:10,fontFamily:"DM Mono",fontSize:12,color:"#00e676",marginBottom:8,textAlign:"center"}},"Win% = \u03A6(X-Spread / 11)"),
         e("p",null,"Win probability uses the normal CDF with SD=11 (industry standard for college basketball game-margin variance).")),
       e("div",{style:{background:"#0e1218",border:"1px solid #00d4ff44",borderRadius:8,padding:14,marginBottom:16}},
-        e("h3",{style:{fontFamily:"Outfit",fontSize:14,fontWeight:800,color:"#ffd600",marginBottom:10}},"04 \u2014 2026 FIRST ROUND BACKTEST"),
+        e("h3",{style:{fontFamily:"Outfit",fontSize:14,fontWeight:800,color:"#00d4ff",marginBottom:10}},"04 \u2014 2026 FIRST ROUND BACKTEST"),
         e("p",{style:{marginBottom:10,color:"#fff"}},"All 36 games \u2014 4 Play-In + 32 Round of 64 (March 17\u201320, 2026):"),
         e("table",{style:{width:"100%",borderCollapse:"collapse",fontSize:11,marginBottom:12}},
           e("thead",null,e("tr",{style:{borderBottom:"1px solid #2a3a4a"}},
@@ -624,6 +633,7 @@ function App(){
         e("div",{style:{display:"flex",alignItems:"baseline",gap:10,marginBottom:10}},
           e("span",{style:{fontFamily:"Outfit",fontSize:30,fontWeight:900,color:"#fff",letterSpacing:-1}},"BRACKET",e("span",{style:{color:"#00d4ff"}},"X")),
           e("span",{style:{fontFamily:"DM Mono",fontSize:13,fontWeight:500,color:"#ffd600",letterSpacing:2}},"COMPOSITE POWER INDEX")),
+        e("div",{style:{fontSize:9,color:"#556",letterSpacing:1,marginBottom:6,fontFamily:"DM Mono"}},"48 SYSTEMS \u00B7 68 TEAMS \u00B7 INJURY-ADJUSTED \u00B7 UPDATED DAILY"),
         e("div",{style:{display:"flex",gap:0}},
           ["rankings","matchups","futures","methodology"].map(v=>
             e("button",{key:v,onClick:()=>setTab(v),style:{padding:"7px 16px",fontFamily:"DM Mono",fontSize:11,fontWeight:tab===v?700:400,letterSpacing:1,color:tab===v?"#fff":"#556",borderBottom:tab===v?"2px solid #00d4ff":"2px solid transparent",textTransform:"uppercase"}},v))))),
@@ -639,11 +649,12 @@ function App(){
       tab==="methodology"?methodTab():null,
       e("div",{style:{marginTop:30,background:"#000",borderRadius:8,padding:"14px 18px",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:8}},
         e("span",{style:{fontFamily:"Outfit",fontSize:16,fontWeight:900,color:"#fff",letterSpacing:1}},"BRACKET",e("span",{style:{color:"#00d4ff"}},"X")),
-        e("div",{style:{display:"flex",gap:6,alignItems:"center"}},
-          e("span",{style:{fontSize:9,color:"#445",marginRight:8}},"SHARE"),
-          e("button",{onClick:()=>{const u=window.location.href;navigator.clipboard.writeText(u);alert("Link copied!")},style:{padding:"4px 10px",borderRadius:4,fontSize:9,fontFamily:"DM Mono",background:"rgba(255,255,255,.08)",color:"#aab",border:"1px solid rgba(255,255,255,.1)"}},"Copy Link"),
-          e("button",{onClick:()=>window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent("Check out BracketX \u2014 the Composite Power Index for March Madness. 36 systems. One score. Better than KenPom. \ud83c\udfc0")+"&url="+encodeURIComponent(window.location.href),"_blank"),style:{padding:"4px 10px",borderRadius:4,fontSize:9,fontFamily:"DM Mono",background:"rgba(29,161,242,.15)",color:"#1da1f2",border:"1px solid rgba(29,161,242,.3)"}},"X / Twitter"),
-          e("button",{onClick:()=>window.open("mailto:?subject="+encodeURIComponent("BracketX - Composite Power Index")+"&body="+encodeURIComponent("Check out BracketX \u2014 36 rating systems combined into one composite power index. Outperformed KenPom, BartTorvik, and Vegas closing lines in the 2026 NCAA Tournament.\n\n"+window.location.href),"_blank"),style:{padding:"4px 10px",borderRadius:4,fontSize:9,fontFamily:"DM Mono",background:"rgba(255,255,255,.08)",color:"#aab",border:"1px solid rgba(255,255,255,.1)"}},"Email")),
+        e("div",{style:{display:"flex",gap:6,alignItems:"center",flexWrap:"wrap"}},
+          e("span",{style:{fontSize:9,color:"#445",marginRight:4}},"SHARE"),
+          e("button",{onClick:()=>{navigator.clipboard.writeText("https://bracketx.co").then(()=>alert("Link copied!"))},style:{padding:"4px 10px",borderRadius:4,fontSize:9,fontFamily:"DM Mono",background:"rgba(255,255,255,.08)",color:"#aab",border:"1px solid rgba(255,255,255,.1)"}},"Copy Link"),
+          e("button",{onClick:()=>window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent("BracketX: 48 systems. 68 teams. One composite score.\n\n75% straight-up in the first round. 55.6% ATS. Beat KenPom, BartTorvik & Vegas.\n\nbracketx.co"),"_blank"),style:{padding:"4px 10px",borderRadius:4,fontSize:9,fontFamily:"DM Mono",background:"rgba(29,161,242,.15)",color:"#1da1f2",border:"1px solid rgba(29,161,242,.3)"}},"X"),
+          e("button",{onClick:()=>window.open("sms:?&body="+encodeURIComponent("Check out BracketX \u2014 48 systems, 68 teams, one composite power index. Beat KenPom & Vegas in the first round. bracketx.co")),style:{padding:"4px 10px",borderRadius:4,fontSize:9,fontFamily:"DM Mono",background:"rgba(0,230,118,.12)",color:"#00e676",border:"1px solid rgba(0,230,118,.3)"}},"Text"),
+          e("button",{onClick:()=>window.open("mailto:?subject="+encodeURIComponent("BracketX \u2014 Composite Power Index")+"&body="+encodeURIComponent("Check out BracketX \u2014 48 rating systems combined into one composite power index. Outperformed KenPom, BartTorvik, and Vegas closing lines in the 2026 NCAA Tournament.\n\nhttps://bracketx.co")),style:{padding:"4px 10px",borderRadius:4,fontSize:9,fontFamily:"DM Mono",background:"rgba(255,255,255,.08)",color:"#aab",border:"1px solid rgba(255,255,255,.1)"}},"Email")),
         e("span",{style:{fontSize:9,color:"#445"}},"Chris Dell: Founder"))),
     keyModal,teamModal,previewEl);
 }
