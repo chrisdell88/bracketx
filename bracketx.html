@@ -148,7 +148,17 @@ const BRACKET=[
 {r:"South",h:"Florida",a:"Prairie View A&M",hs:1,as:16,d:"3/21",t:"12:15 PM"},{r:"South",h:"Houston",a:"Idaho",hs:2,as:15,d:"3/20",t:"9:55 PM"},{r:"South",h:"Illinois",a:"Penn",hs:3,as:14,d:"3/21",t:"9:40 PM"},{r:"South",h:"Nebraska",a:"Troy",hs:4,as:13,d:"3/20",t:"2:45 PM"},{r:"South",h:"Vanderbilt",a:"McNeese",hs:5,as:12,d:"3/20",t:"12:15 PM"},{r:"South",h:"North Carolina",a:"VCU",hs:6,as:11,d:"3/21",t:"7:10 PM"},{r:"South",h:"Saint Mary's",a:"Texas A&M",hs:7,as:10,d:"3/20",t:"7:25 PM"},{r:"South",h:"Clemson",a:"Iowa",hs:8,as:9,d:"3/21",t:"2:45 PM"},
 {r:"West",h:"Arizona",a:"LIU",hs:1,as:16,d:"3/21",t:"1:00 PM"},{r:"West",h:"Purdue",a:"Queens",hs:2,as:15,d:"3/20",t:"9:20 PM"},{r:"West",h:"Gonzaga",a:"Kennesaw State",hs:3,as:14,d:"3/21",t:"9:55 PM"},{r:"West",h:"Arkansas",a:"Hawaii",hs:4,as:13,d:"3/20",t:"3:10 PM"},{r:"West",h:"Wisconsin",a:"High Point",hs:5,as:12,d:"3/20",t:"12:40 PM"},{r:"West",h:"BYU",a:"Texas",hs:6,as:11,d:"3/21",t:"7:25 PM"},{r:"West",h:"Miami FL",a:"Missouri",hs:7,as:10,d:"3/20",t:"6:50 PM"},{r:"West",h:"Villanova",a:"Utah State",hs:8,as:9,d:"3/21",t:"3:30 PM"},
 {r:"Midwest",h:"Michigan",a:"Howard",hs:1,as:16,d:"3/20",t:"12:15 PM"},{r:"Midwest",h:"Iowa State",a:"Tennessee State",hs:2,as:15,d:"3/20",t:"4:00 PM"},{r:"Midwest",h:"Virginia",a:"Wright State",hs:3,as:14,d:"3/20",t:"9:40 PM"},{r:"Midwest",h:"Alabama",a:"Hofstra",hs:4,as:13,d:"3/20",t:"9:40 PM"},{r:"Midwest",h:"Texas Tech",a:"Akron",hs:5,as:12,d:"3/20",t:"7:10 PM"},{r:"Midwest",h:"Tennessee",a:"Miami OH",hs:6,as:11,d:"3/20",t:"7:10 PM"},{r:"Midwest",h:"Kentucky",a:"Santa Clara",hs:7,as:10,d:"3/20",t:"1:30 PM"},{r:"Midwest",h:"Georgia",a:"Saint Louis",hs:8,as:9,d:"3/20",t:"2:45 PM"}];
-const RESULTS={"Duke-Siena":"71-65","UConn-Furman":"82-71","Michigan State-North Dakota State":"92-67","Kansas-Cal Baptist":"68-60","St. John's-Northern Iowa":"79-53","Louisville-South Florida":"83-79","UCLA-UCF":"75-71","Ohio State-TCU":"64-66","Florida-Prairie View A&M":"114-55","Houston-Idaho":"78-47","Illinois-Penn":"105-70","Nebraska-Troy":"76-47","Vanderbilt-McNeese":"78-68","North Carolina-VCU":"78-82","Saint Mary's-Texas A&M":"50-63","Clemson-Iowa":"61-67","Arizona-LIU":"92-58","Purdue-Queens":"104-71","Gonzaga-Kennesaw State":"73-64","Arkansas-Hawaii":"97-78","Wisconsin-High Point":"82-83","BYU-Texas":"71-79","Miami FL-Missouri":"80-66","Villanova-Utah State":"76-86","Michigan-Howard":"101-80","Iowa State-Tennessee State":"108-74","Virginia-Wright State":"82-73","Alabama-Hofstra":"90-70","Texas Tech-Akron":"91-71","Tennessee-Miami OH":"78-56","Kentucky-Santa Clara":"89-84","Georgia-Saint Louis":"77-102"};
+const BRACKET_R32=[
+{r:"East",h:"Duke",a:"TCU",hs:1,as:9,d:"3/22",t:"12:10 PM",rd:"R32"},{r:"East",h:"Michigan State",a:"Louisville",hs:3,as:6,d:"3/22",t:"2:40 PM",rd:"R32"},{r:"East",h:"St. John's",a:"Kansas",hs:5,as:4,d:"3/23",t:"2:00 PM",rd:"R32"},{r:"East",h:"UConn",a:"UCLA",hs:2,as:7,d:"3/23",t:"5:15 PM",rd:"R32"},
+{r:"South",h:"Houston",a:"Texas A&M",hs:2,as:10,d:"3/22",t:"5:15 PM",rd:"R32"},{r:"South",h:"Illinois",a:"VCU",hs:3,as:11,d:"3/22",t:"7:45 PM",rd:"R32"},{r:"South",h:"Nebraska",a:"Vanderbilt",hs:4,as:5,d:"3/22",t:"9:45 PM",rd:"R32"},{r:"South",h:"Iowa",a:"Florida",hs:9,as:1,d:"3/23",t:"12:10 PM",rd:"R32"},
+{r:"West",h:"Arizona",a:"Utah State",hs:1,as:9,d:"3/23",t:"3:30 PM",rd:"R32"},{r:"West",h:"Purdue",a:"Miami FL",hs:2,as:7,d:"3/23",t:"12:10 PM",rd:"R32"},{r:"West",h:"Arkansas",a:"High Point",hs:4,as:12,d:"3/22",t:"12:15 PM",rd:"R32"},{r:"West",h:"Texas",a:"Gonzaga",hs:11,as:3,d:"3/22",t:"9:40 PM",rd:"R32"},
+{r:"Midwest",h:"Michigan",a:"Saint Louis",hs:1,as:9,d:"3/22",t:"12:10 PM",rd:"R32"},{r:"Midwest",h:"Iowa State",a:"Kentucky",hs:2,as:7,d:"3/23",t:"7:10 PM",rd:"R32"},{r:"Midwest",h:"Alabama",a:"Texas Tech",hs:4,as:5,d:"3/23",t:"9:40 PM",rd:"R32"},{r:"Midwest",h:"Tennessee",a:"Virginia",hs:6,as:3,d:"3/23",t:"2:40 PM",rd:"R32"}];
+const BRACKET_S16=[
+{r:"East",h:"Duke",a:"St. John's",hs:1,as:5,d:"3/27",t:"7:10 PM",rd:"S16"},{r:"East",h:"UConn",a:"Michigan State",hs:2,as:3,d:"3/27",t:"9:45 PM",rd:"S16"},
+{r:"South",h:"Houston",a:"Illinois",hs:2,as:3,d:"3/26",t:"10:05 PM",rd:"S16"},{r:"South",h:"Nebraska",a:"Iowa",hs:4,as:9,d:"3/26",t:"7:30 PM",rd:"S16"},
+{r:"West",h:"Arizona",a:"Arkansas",hs:1,as:4,d:"3/26",t:"9:45 PM",rd:"S16"},{r:"West",h:"Purdue",a:"Texas",hs:2,as:11,d:"3/26",t:"7:10 PM",rd:"S16"},
+{r:"Midwest",h:"Michigan",a:"Alabama",hs:1,as:4,d:"3/27",t:"7:30 PM",rd:"S16"},{r:"Midwest",h:"Iowa State",a:"Tennessee",hs:2,as:6,d:"3/27",t:"10:05 PM",rd:"S16"}];
+const RESULTS={"Duke-Siena":"71-65","UConn-Furman":"82-71","Michigan State-North Dakota State":"92-67","Kansas-Cal Baptist":"68-60","St. John's-Northern Iowa":"79-53","Louisville-South Florida":"83-79","UCLA-UCF":"75-71","Ohio State-TCU":"64-66","Florida-Prairie View A&M":"114-55","Houston-Idaho":"78-47","Illinois-Penn":"105-70","Nebraska-Troy":"76-47","Vanderbilt-McNeese":"78-68","North Carolina-VCU":"78-82","Saint Mary's-Texas A&M":"50-63","Clemson-Iowa":"61-67","Arizona-LIU":"92-58","Purdue-Queens":"104-71","Gonzaga-Kennesaw State":"73-64","Arkansas-Hawaii":"97-78","Wisconsin-High Point":"82-83","BYU-Texas":"71-79","Miami FL-Missouri":"80-66","Villanova-Utah State":"76-86","Michigan-Howard":"101-80","Iowa State-Tennessee State":"108-74","Virginia-Wright State":"82-73","Alabama-Hofstra":"90-70","Texas Tech-Akron":"91-71","Tennessee-Miami OH":"78-56","Kentucky-Santa Clara":"89-84","Georgia-Saint Louis":"77-102","Duke-TCU":"81-58","Michigan State-Louisville":"77-69","St. John's-Kansas":"67-65","UConn-UCLA":"73-57","Houston-Texas A&M":"88-57","Illinois-VCU":"76-55","Nebraska-Vanderbilt":"74-72","Iowa-Florida":"73-72","Arizona-Utah State":"78-66","Purdue-Miami FL":"79-69","Arkansas-High Point":"94-88","Texas-Gonzaga":"74-68","Michigan-Saint Louis":"95-72","Iowa State-Kentucky":"82-63","Alabama-Texas Tech":"90-65","Tennessee-Virginia":"79-72"};
 
 const{useState,useMemo,createElement:e}=React;
 
@@ -158,6 +168,7 @@ function App(){
   const[sk,setSk]=useState("rk");
   const[sd,setSd]=useState(1);
   const[modal,setModal]=useState(null);
+  const[mRound,setMRound]=useState("S16");
   const[showKey,setShowKey]=useState(false);
   const[picks,setPicks]=useState({});
   const[preview,setPreview]=useState(null);
@@ -182,19 +193,20 @@ function App(){
     });return f;
   },[teams,reg,sk,sd]);
 
-  const matchups=useMemo(()=>BRACKET.map(m=>{
+  const allBracket=useMemo(()=>[...BRACKET.map(m=>({...m,rd:"R64"})),...BRACKET_R32,...BRACKET_S16],[]);
+  const matchups=useMemo(()=>allBracket.map(m=>{
     const h=tMap[m.h],a=tMap[m.a];if(!h||!a)return m;
     const xsp=+((h.xs-a.xs)*SF).toFixed(1);
     const prob=Math.round(NC((h.xs-a.xs)*WK)*100);
     const kps=kpSpread(m.h,m.a);const bts=btSpread(m.h,m.a);
     const bk=BS[m.h]||null;const edge=bk!=null?Math.abs(Math.abs(xsp)-bk):null;
-    const res=RESULTS[m.h+"-"+m.a]||null;
+    const res=RESULTS[m.h+"-"+m.a]||RESULTS[m.a+"-"+m.h]||null;
     return{...m,xsp,prob,hRk:h.rk,aRk:a.rk,kps,bts,bk,edge,res};
-  }),[tMap]);
+  }),[tMap,allBracket]);
 
   const doSort=k=>{if(sk===k)setSd(d=>-d);else{setSk(k);setSd(1);}};
   const arrow=k=>sk===k?(sd===1?"\u25B2":"\u25BC"):"";
-  const regM=reg==="All"?matchups:matchups.filter(m=>m.r===reg);
+  const regM=(reg==="All"?matchups:matchups.filter(m=>m.r===reg)).filter(m=>tab!=="matchups"||m.rd===mRound);
   const calcSp=(a,b)=>{const ta=tMap[a],tb=tMap[b];return ta&&tb?+((ta.xs-tb.xs)*SF).toFixed(1):null;};
   const calcPr=(a,b)=>{const ta=tMap[a],tb=tMap[b];return ta&&tb?NC((ta.xs-tb.xs)*WK):null;};
 
@@ -357,8 +369,10 @@ function App(){
 
   // ════════ MATCHUPS TAB ════════
   const matchupsTab=()=>e("div",null,
-    e("div",{style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:6,padding:"8px 12px",marginBottom:12,fontSize:10,color:"#8899aa",textAlign:"center",lineHeight:1.8}},
-      e("div",null,e("strong",{style:{color:"#00d4ff"}},"X")," = X-Score composite spread",e("span",{style:{color:"#8899aa"}}," \u00B7 "),e("strong",{style:{color:"#ffd600"}},"BOOK")," = sportsbook closing line"),
+    e("div",{style:{display:"flex",gap:6,marginBottom:8,justifyContent:"center"}},
+      ["S16","R32","R64"].map(r=>e("button",{key:r,onClick:()=>setMRound(r),style:{padding:"5px 16px",borderRadius:16,fontFamily:"DM Mono",fontSize:10,fontWeight:mRound===r?700:400,letterSpacing:1,background:mRound===r?"rgba(0,212,255,.15)":"rgba(255,255,255,.02)",color:mRound===r?"#00d4ff":"#8899aa",border:"1px solid "+(mRound===r?"rgba(0,212,255,.3)":"rgba(255,255,255,.04)")}},r==="S16"?"SWEET 16":r==="R32"?"ROUND OF 32":"ROUND OF 64"))),
+    e("div",{style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:6,padding:"8px 12px",marginBottom:12,fontSize:10,color:"#aab",textAlign:"center",lineHeight:1.8}},
+      e("div",null,e("strong",{style:{color:"#00d4ff"}},"X")," = X-Score spread",e("span",{style:{color:"#8899aa"}}," \u00B7 "),e("strong",{style:{color:"#ffd600"}},"BOOK")," = closing line"),
       e("div",null,e("strong",{style:{color:"#ff6b35"}},"KP")," = KenPom spread",e("span",{style:{color:"#8899aa"}}," \u00B7 "),e("strong",{style:{color:"#8ab4d0"}},"BT")," = BartTorvik spread"),
       e("div",null,e("strong",{style:{color:"#00e676"}},"EDGE")," = difference between X-Spread and closing line")),
     e("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(310px,1fr))",gap:10}},
@@ -500,26 +514,27 @@ function App(){
         e("p",null,"The scaling factor is recalibrated each round of the tournament as new game data becomes available.")),
       e("div",{style:{background:"#0e1218",border:"1px solid #00d4ff44",borderRadius:8,padding:14,marginBottom:16}},
         e("h3",{style:{fontFamily:"Outfit",fontSize:14,fontWeight:800,color:"#00d4ff",marginBottom:10}},"04 \u2014 2026 TOURNAMENT RESULTS"),
-        e("p",{style:{marginBottom:6,color:"#fff"}},"52 games \u2014 4 Play-In + 32 Round of 64 + 16 Round of 32 (March 17\u201323, 2026)"),
+        e("p",{style:{marginBottom:6,color:"#fff"}},"48 games with closing lines \u2014 Round of 64 + Round of 32 (March 19\u201323, 2026)"),
         e("p",{style:{marginBottom:10,color:"#8899aa",fontSize:10}},"MAE = Mean Absolute Error (average points off from the actual result \u2014 lower is better). ATS = Against The Spread (picks vs. sportsbook closing lines \u2014 above 52.4% is profitable at standard odds)."),
         e("div",{style:{overflowX:"auto"}},
         e("table",{style:{width:"100%",borderCollapse:"collapse",fontSize:10,marginBottom:12,minWidth:360}},
           e("thead",null,e("tr",{style:{borderBottom:"1px solid #2a3a4a"}},
             ["","X","SILVER","KP","BT"].map(h=>e("th",{key:h,style:{padding:"5px 6px",textAlign:h===""?"left":"center",color:h==="X"?"#00d4ff":h==="SILVER"?"#e040fb":"#889",fontWeight:700,fontSize:9}},h)))),
           e("tbody",null,
-            [["SU Record","41-11 (78.8%)","42-10 (80.8%)","41-11 (78.8%)","39-13 (75.0%)"],
-             ["MAE (avg pts off)","8.52","7.99","9.08","9.28"],
-             ["Median AE (typical)","6.40 \u2705","7.70","8.70","8.60"],
-             ["ATS Record","28-16 (63.6%) \u2705","30-12 (71.4%)","20-20 (50.0%)","21-22 (48.8%)"]].map((row,i)=>
+            [["SU Record","38-10 (79.2%)","39-9 (81.2%)","38-10 (79.2%)","36-12 (75.0%)"],
+             ["MAE (avg pts off)","8.91","8.54","9.66","9.80"],
+             ["Median AE (typical)","7.20 \u2705","8.25","9.40","8.85"],
+             ["ATS Record","25-19 (56.8%) \u2705","28-10 (73.7%)","15-21 (41.7%)","18-24 (42.9%)"],
+             ["Profitable?","\u2705 +8.5% ROI","\u2705 +40.7% ROI","\u274C -20.5%","\u274C -18.2%"]].map((row,i)=>
               e("tr",{key:i,style:{borderBottom:"1px solid #1a2a3a",background:i%2===0?"#0e1218":"#0d1117"}},
                 row.map((c,j)=>e("td",{key:j,style:{padding:"4px 6px",textAlign:j===0?"left":"center",color:j===1?"#00d4ff":j===0?"#fff":"#aab",fontWeight:j<=1?700:400}},c))))))),
         e("div",{style:{marginTop:10,background:"#161b22",borderRadius:6,padding:12,marginBottom:12}},
-          e("div",{style:{fontSize:11,color:"#ffd600",fontWeight:700,marginBottom:6}},"\u2705 X-SCORE RESULTS THROUGH 52 GAMES"),
+          e("div",{style:{fontSize:11,color:"#ffd600",fontWeight:700,marginBottom:6}},"\u2705 X-SCORE RESULTS \u2014 48 GAMES, SAME SET FOR ALL SYSTEMS"),
           e("div",{style:{fontSize:10,color:"#ccd",lineHeight:1.8}},
-            e("p",{style:{marginBottom:6}},"\u2022 ",e("strong",{style:{color:"#fff"}},"63.6% ATS (28-16)")," \u2014 massively profitable against Vegas closing lines. KenPom bettors went 20-20 (coin flip). BartTorvik went 21-22 (lost money). X-Score found value where others couldn\u2019t."),
-            e("p",{style:{marginBottom:6}},"\u2022 ",e("strong",{style:{color:"#fff"}},"Best median error (6.40 pts)")," \u2014 the typical X-Score prediction is closer to the actual result than Silver (7.70), KenPom (8.70), and BartTorvik (8.60). Our line is the most reliable for the average game."),
-            e("p",{style:{marginBottom:6}},"\u2022 ",e("strong",{style:{color:"#fff"}},"78.8% straight-up accuracy")," \u2014 tied with KenPom, ahead of BartTorvik (75.0%)."),
-            e("p",null,"\u2022 ",e("strong",{style:{color:"#fff"}},"MAE of 8.52 pts")," \u2014 beats KenPom (9.08) and BartTorvik (9.28). Silver leads MAE at 7.99 due to wider spreads that better capture blowouts, but on typical games X-Score is more precise."))),
+            e("p",{style:{marginBottom:6}},"\u2022 ",e("strong",{style:{color:"#fff"}},"Best median error (7.20 pts)")," \u2014 the typical X-Score prediction is a full point closer to reality than Silver (8.25), and 2+ points better than KenPom (9.40) and BartTorvik (8.85). Half our predictions land within 7.2 points of the actual result."),
+            e("p",{style:{marginBottom:6}},"\u2022 ",e("strong",{style:{color:"#fff"}},"Profitable ATS at 56.8% (25-19)")," \u2014 +8.5% ROI against Vegas closing lines. KenPom bettors went 15-21 and ",e("em",null,"lost $810 on a $110/game basis"),". BartTorvik went 18-24 and lost $840. X-Score was one of only two profitable systems."),
+            e("p",{style:{marginBottom:6}},"\u2022 ",e("strong",{style:{color:"#fff"}},"79.2% straight-up accuracy (38-10)")," \u2014 tied with KenPom, ahead of BartTorvik (75.0%). Silver leads at 81.2%."),
+            e("p",null,"\u2022 ",e("strong",{style:{color:"#fff"}},"Silver\u2019s COOPER leads on MAE (8.54) and ATS (73.7%)")," \u2014 credit where it\u2019s due. His wider spreads better capture blowouts. But on typical games (median), X-Score is more consistent and reliable. Both systems are profitable; KenPom and BartTorvik are not."))),
         e("div",{style:{marginTop:0,background:"#0e1218",border:"1px solid #ffd60044",borderRadius:6,padding:12,marginBottom:12}},
           e("div",{style:{fontSize:11,color:"#ffd600",fontWeight:700,marginBottom:8}},"SHOW, DON\u2019T TELL \u2014 WHERE X-SCORE OUTPERFORMED"),
           e("div",{style:{fontSize:10,color:"#ccd",lineHeight:1.8}},
