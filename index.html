@@ -355,7 +355,7 @@ function App(){
   const matchupsTab=()=>e("div",null,
     e("div",{style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:6,padding:"8px 12px",marginBottom:12,fontSize:10,color:"#8899aa",textAlign:"center",lineHeight:1.8}},
       e("div",null,e("strong",{style:{color:"#00d4ff"}},"X")," = X-Score composite spread",e("span",{style:{color:"#8899aa"}}," \u00B7 "),e("strong",{style:{color:"#ffd600"}},"BOOK")," = sportsbook closing line"),
-      e("div",null,e("strong",{style:{color:"#ff6b35"}},"KP")," = KenPom projected spread",e("span",{style:{color:"#8899aa"}}," \u00B7 "),e("strong",{style:{color:"#8ab4d0"}},"BT")," = BartTorvik projected spread"),
+      e("div",null,e("strong",{style:{color:"#ff6b35"}},"KP")," = KenPom spread",e("span",{style:{color:"#8899aa"}}," \u00B7 "),e("strong",{style:{color:"#8ab4d0"}},"BT")," = BartTorvik spread"),
       e("div",null,e("strong",{style:{color:"#00e676"}},"EDGE")," = difference between X-Spread and closing line")),
     e("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(310px,1fr))",gap:10}},
       regM.map((m,i)=>{
@@ -662,7 +662,7 @@ function App(){
           e("span",null,e("span",{style:{color:"#8ab4d0"}},"\u25CF")," T2 Regression"),
           e("span",null,e("span",{style:{color:"#b8a0d0"}},"\u25CF")," T3 Comparison")),
         e("button",{onClick:()=>setShowKey(!showKey),style:{width:"100%",padding:"5px 10px",borderRadius:4,fontFamily:"DM Mono",fontSize:9,background:"rgba(0,212,255,.06)",color:"#00d4ff",border:"1px solid rgba(0,212,255,.15)",letterSpacing:1,textAlign:"center",marginBottom:4}},"RATINGS KEY: View All 48 Systems"),
-        e("div",{style:{fontSize:9,color:"#8899aa",textAlign:"center",marginBottom:2}},"Scroll right \u2192 to explore all systems")):null,
+        e("div",{style:{fontSize:9,color:"#8899aa",textAlign:"center",marginBottom:0}},"Scroll right \u2192 to explore all systems")):null,
       tab==="rankings"?rankingsTab():
       tab==="bracket"?bracketTab():
       tab==="matchups"?matchupsTab():
