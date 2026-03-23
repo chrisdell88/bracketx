@@ -653,16 +653,16 @@ function App(){
       tab!=="methodology"?e("div",{style:{display:"flex",gap:6,marginBottom:8,flexWrap:"wrap",alignItems:"center"}},
         ["All","East","South","West","Midwest"].map(r=>
           e("button",{key:r,onClick:()=>setReg(r),style:{padding:"4px 14px",borderRadius:16,fontFamily:"DM Mono",fontSize:10,fontWeight:reg===r?700:400,letterSpacing:1,background:reg===r?(r==="All"?"rgba(255,255,255,.1)":(RC[r]+"18")):"rgba(255,255,255,.02)",color:reg===r?(r==="All"?"#fff":RC[r]):"#8899aa",border:"1px solid "+(reg===r?(r==="All"?"rgba(255,255,255,.2)":(RC[r]+"33")):"rgba(255,255,255,.04)"),textTransform:"uppercase"}},r))):null,
-      tab==="rankings"?e("div",{style:{marginBottom:2}},
+      tab==="rankings"?e("div",{style:{marginBottom:0}},
         e("div",{style:{padding:"5px 12px",background:"#0e1218",borderRadius:6,border:"1px solid #1a2a3a",fontSize:9,color:"#8899aa",lineHeight:1.6,marginBottom:3}},
           e("span",{style:{color:"#00d4ff",fontWeight:700}},"X-Score")," = Composite Power Rating from 36 efficiency models. ",
           e("span",{style:{color:"#00e676"}},"Green"),"/",e("span",{style:{color:"#ff4444"}},"Red")," highlights = 10+ rank difference vs X-Score."),
         e("button",{onClick:()=>setShowKey(!showKey),style:{width:"100%",padding:"4px 10px",borderRadius:4,fontFamily:"DM Mono",fontSize:9,background:"rgba(0,212,255,.06)",color:"#00d4ff",border:"1px solid rgba(0,212,255,.15)",letterSpacing:1,textAlign:"center",marginBottom:3}},"RATINGS KEY: View All 48 Systems"),
-        e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",fontSize:9,color:"#8899aa",marginBottom:2}},
+        e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",fontSize:9,color:"#8899aa",marginBottom:1}},
           e("span",null,e("span",{style:{color:"#00d4ff"}},"\u25CF")," T1 Efficiency"),
           e("span",null,e("span",{style:{color:"#8ab4d0"}},"\u25CF")," T2 Regression"),
           e("span",null,e("span",{style:{color:"#b8a0d0"}},"\u25CF")," T3 Comparison")),
-        e("div",{style:{fontSize:9,color:"#8899aa",textAlign:"center",marginBottom:0}},"Scroll right \u2192")):null,
+        e("div",{style:{fontSize:9,color:"#8899aa",textAlign:"center",marginBottom:0}},"Scroll right \u2192 to explore all systems")):null,
       tab==="rankings"?rankingsTab():
       tab==="bracket"?bracketTab():
       tab==="matchups"?matchupsTab():
