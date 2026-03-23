@@ -128,6 +128,7 @@ const _CR_COOP=[1,2,3,6,5,4,8,18,7,10,9,15,12,11,13,17,19,14,20,24,16,22,29,27,2
 
 const RC={East:"#00d4ff",West:"#ff6b35",South:"#00e676",Midwest:"#ffd600"};
 const SF=8.88;
+const S16_TEAMS=new Set(["Duke","Arizona","Michigan","Houston","Iowa State","Purdue","UConn","Illinois","Michigan State","Alabama","Arkansas","Nebraska","St. John's","Tennessee","Iowa","Texas"]);
 const NC=x=>{const s=x>=0?1:-1,a=Math.abs(x),t=1/(1+.2316419*a),p=.3989423*Math.exp(-a*a/2)*t*(.3193815+t*(-.3565638+t*(1.781478+t*(-1.821256+t*1.330274))));return s>0?1-p:p;};
 const WK=SF/11;
 const KP={"Duke":[38.9,65.3],"Michigan":[37.59,70.9],"Arizona":[37.66,69.8],"Florida":[33.79,70.5],"Houston":[33.43,63.3],"Iowa State":[32.42,66.5],"Purdue":[31.2,64.4],"Illinois":[32.1,65.5],"Gonzaga":[28.1,68.6],"UConn":[27.87,64.4],"Michigan State":[28.31,66.0],"St. John's":[25.91,69.6],"Virginia":[26.71,65.7],"Vanderbilt":[27.51,68.8],"Arkansas":[26.05,71.0],"Nebraska":[26.16,66.7],"Tennessee":[26.02,65.0],"Louisville":[25.42,69.6],"North Carolina":[20.84,67.9],"Wisconsin":[23.39,68.7],"Alabama":[25.72,73.1],"Kentucky":[21.48,68.3],"Texas Tech":[25.22,66.2],"UCLA":[21.67,64.6],"Ohio State":[22.24,66.1],"BYU":[23.25,69.9],"Saint Mary's":[23.07,65.2],"Georgia":[20.48,71.4],"Clemson":[19.24,64.2],"Saint Louis":[18.32,71.0],"Villanova":[19.97,65.2],"Santa Clara":[19.4,69.2],"NC State":[19.6,69.1],"TCU":[17.59,67.7],"Texas A&M":[18.67,70.5],"VCU":[17.21,68.5],"South Florida":[16.39,71.5],"SMU":[18.09,68.5],"Texas":[19.03,66.9],"Missouri":[15.39,66.2],"UCF":[15.04,69.2],"Akron":[12.8,70.3],"McNeese":[12.48,66.2],"Northern Iowa":[11.81,62.3],"Miami OH":[8.26,69.9],"High Point":[8.4,69.9],"Hofstra":[9.49,64.7],"Cal Baptist":[5.99,65.8],"Hawaii":[5.97,69.7],"North Dakota State":[5.13,66.3],"Wright State":[2.04,67.2],"Troy":[1.72,64.9],"Kennesaw State":[0.57,71.2],"Penn":[1.47,69.0],"Idaho":[1.53,67.7],"Tennessee State":[-1.83,70.2],"Queens":[-1.44,69.6],"Furman":[-1.98,65.9],"UMBC":[-1.67,66.2],"Siena":[-2.1,64.6],"Howard":[-3.19,69.0],"LIU":[-3.95,67.8],"Lehigh":[-10.37,66.9],"Prairie View A&M":[-10.69,70.9],"Iowa":[22.44,63.0],"Utah State":[20.76,67.7],"Kansas":[24.44,67.6],"Miami FL":[20.68,67.6]};
@@ -383,7 +384,7 @@ function App(){
               e("span",null,e("span",{style:{color:"#889"}},"X: "),e("span",{style:{color:"#00d4ff",fontWeight:700}},m.xsp!=null?(m.xsp>0?m.h:m.a)+" "+(-Math.abs(m.xsp)).toFixed(1):"--")),
               e("span",null,e("span",{style:{color:"#889"}},"Book: "),e("span",{style:{color:"#ffd600",fontWeight:700}},m.bk!=null?m.h+" -"+m.bk:"--"))),
             e("div",{style:{display:"flex",justifyContent:"space-between"}},
-              e("span",null,e("span",{style:{color:"#889"}},"Edge: "),e("span",{style:{color:m.edge!=null&&m.edge>=5?"#00e676":m.edge!=null&&m.edge>=3?"#ffd600":"#8899aa",fontWeight:700}},m.edge!=null?m.edge.toFixed(1)+" pts":"--")),
+              e("span",null,e("span",{style:{color:"#889"}},"Edge: "),e("span",{style:{color:m.edge!=null&&m.edge>=5?"#00e676":m.edge!=null&&m.edge>=3?"#ffd600":"#8899aa",fontWeight:700}},m.edge!=null?(()=>{const xFav=m.xsp!=null&&m.xsp>0?m.h:m.a;const bkFav=m.h;const xAbs=Math.abs(m.xsp||0);const bkAbs=m.bk||0;const edgeTeam=xAbs<bkAbs?m.a:m.h;return m.edge.toFixed(1)+" "+edgeTeam;})():"--")),
               e("span",null,e("span",{style:{color:"#889"}},"Final: "),e("span",{style:{color:"#fff",fontWeight:700}},m.res||"--")))));
       })));
 
@@ -443,7 +444,7 @@ function App(){
     const fmt=v=>v>=.01?(v*100).toFixed(1)+"%":v>=.001?(v*100).toFixed(2)+"%":"<0.1%";
     const fSortKeys={"X#":"rk",SD:"sd",TEAM:"nm",CHAMP:"champ",FINALS:"title",F4:"f4",E8:"e8",S16:"s16"};
     const fColor=h=>h==="CHAMP"?"#ffd600":h==="FINALS"?"#ff6b35":h==="F4"?"#00d4ff":h==="E8"?"#00e676":h==="S16"?"#e040fb":"#8899aa";
-    const baseList=(reg==="All"?teams:teams.filter(t=>t.rg===reg)).filter(t=>probs[t.nm].s16>0.001);
+    const baseList=(reg==="Field"?teams.filter(t=>S16_TEAMS.has(t.nm)):reg==="All"?teams:teams.filter(t=>t.rg===reg)).filter(t=>probs[t.nm].s16>0.001);
     const sorted=baseList.slice().sort((a,b)=>{
       const pa=probs[a.nm],pb=probs[b.nm];
       if(sk==="rk")return sd*(a.rk-b.rk);if(sk==="sd")return sd*(a.s-b.s)||(a.rk-b.rk);
@@ -473,11 +474,11 @@ function App(){
   // ════════ METHODOLOGY TAB ════════
   const methodTab=()=>e("div",{style:{maxWidth:760}},
     e("h2",{style:{fontFamily:"Outfit",fontSize:22,fontWeight:900,color:"#fff",marginBottom:6}},"Methodology"),
-    e("p",{style:{fontSize:10,color:"#8899aa",marginBottom:18}},"BracketX Composite Power Index \u2014 March 2026"),
+    e("p",{style:{fontSize:10,color:"#aab",marginBottom:18}},"BracketX Composite Power Index \u2014 March 2026"),
     e("div",{style:{fontSize:11,color:"#aab",lineHeight:1.9}},
       e("div",{style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:8,padding:14,marginBottom:16}},
         e("h3",{style:{fontFamily:"Outfit",fontSize:14,fontWeight:800,color:"#00d4ff",marginBottom:8}},"01 \u2014 WHAT IS X-SCORE?"),
-        e("p",null,"The X-Score is a ",e("strong",{style:{color:"#fff"}},"composite power rating")," that aggregates ",e("strong",{style:{color:"#fff"}},"36 independent ranking systems")," across 68 tournament teams. Each system\u2019s ",e("strong",{style:{color:"#fff"}},"raw efficiency values")," (not ranks) are Z-score normalized across the field, then combined using tier-weighted averaging. The result is a single number representing each team\u2019s strength relative to the field.")),
+        e("p",null,"The X-Score is a ",e("strong",{style:{color:"#fff"}},"composite power rating")," that aggregates ",e("strong",{style:{color:"#fff"}},"36 independent ranking systems")," across 68 tournament teams. Think of it as a meta-model: instead of relying on any single analyst or algorithm, X-Score combines the raw efficiency values from every major rating system into one consensus number. Each system\u2019s actual rating values (not just rankings) are standardized across the field, then combined using proprietary tier-weighted averaging. Systems that account for player injuries receive premium weighting. The result is a single number representing each team\u2019s true strength relative to the entire tournament field.")),
       e("div",{style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:8,padding:14,marginBottom:16}},
         e("h3",{style:{fontFamily:"Outfit",fontSize:14,fontWeight:800,color:"#00d4ff",marginBottom:8}},"02 \u2014 TIER STRUCTURE & WEIGHTS"),
         e("div",{style:{marginBottom:10}},
@@ -493,13 +494,14 @@ function App(){
           e("p",null,"Systems that account for player injuries (Evan Miya, BPI, COOPER) receive higher weights because injury data is ",e("strong",{style:{color:"#fff"}},"not captured")," by most rating systems, including KenPom and BartTorvik. The INJ column on the Rankings page shows each team\u2019s injury impact factor."))),
       e("div",{style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:8,padding:14,marginBottom:16}},
         e("h3",{style:{fontFamily:"Outfit",fontSize:14,fontWeight:800,color:"#00d4ff",marginBottom:8}},"03 \u2014 X-SPREAD FORMULA"),
-        e("div",{style:{background:"#161b22",borderRadius:6,padding:10,fontFamily:"DM Mono",fontSize:12,color:"#00d4ff",marginBottom:8,textAlign:"center"}},"X-Spread = (X-Score\u2081 \u2212 X-Score\u2082) \u00D7 SF"),
-        e("p",{style:{marginBottom:6}},"The proprietary scaling factor (SF) was calibrated by regressing X-Score differentials against KenPom, BartTorvik, and sportsbook closing lines across all first-round matchups."),
-        e("div",{style:{background:"#161b22",borderRadius:6,padding:10,fontFamily:"DM Mono",fontSize:12,color:"#00e676",marginBottom:8,textAlign:"center"}},"Win% = \u03A6(X-Spread / 11)"),
-        e("p",null,"Win probability uses the normal CDF with SD=11 (industry standard for college basketball game-margin variance).")),
+        e("div",{style:{background:"#161b22",borderRadius:6,padding:10,fontFamily:"DM Mono",fontSize:12,color:"#00d4ff",marginBottom:8,textAlign:"center"}},"X-Spread = Team A\u2019s X-Score \u2212 Team B\u2019s X-Score"),
+        e("p",{style:{marginBottom:6}},"The X-Spread is a projected point spread for any matchup. A proprietary scaling factor, calibrated against KenPom, BartTorvik, and sportsbook closing lines, converts the raw X-Score differential into points."),
+        e("p",{style:{marginBottom:6}},"Win probability is derived from the X-Spread using industry-standard conversion (the same approach used by KenPom and sportsbooks). A spread of 5 points translates to roughly 68% win probability; 10 points to ~82%; 15 points to ~91%."),
+        e("p",null,"The scaling factor is recalibrated each round of the tournament as new game data becomes available.")),
       e("div",{style:{background:"#0e1218",border:"1px solid #00d4ff44",borderRadius:8,padding:14,marginBottom:16}},
-        e("h3",{style:{fontFamily:"Outfit",fontSize:14,fontWeight:800,color:"#00d4ff",marginBottom:10}},"04 \u2014 2026 FIRST ROUND BACKTEST"),
-        e("p",{style:{marginBottom:10,color:"#fff"}},"All 36 games \u2014 4 Play-In + 32 Round of 64 (March 17\u201320, 2026):"),
+        e("h3",{style:{fontFamily:"Outfit",fontSize:14,fontWeight:800,color:"#00d4ff",marginBottom:10}},"04 \u2014 2026 TOURNAMENT RESULTS"),
+        e("p",{style:{marginBottom:6,color:"#fff"}},"First Round: 36 games \u2014 4 Play-In + 32 Round of 64 (March 17\u201321, 2026)"),
+        e("p",{style:{marginBottom:10,color:"#8899aa",fontSize:10}},"MAE = Mean Absolute Error (average points off from the actual result \u2014 lower is better). ATS = Against The Spread (picks vs. sportsbook closing lines \u2014 above 52.4% is profitable at standard odds)."),
         e("div",{style:{overflowX:"auto"}},
         e("table",{style:{width:"100%",borderCollapse:"collapse",fontSize:10,marginBottom:12,minWidth:360}},
           e("thead",null,e("tr",{style:{borderBottom:"1px solid #2a3a4a"}},
@@ -524,7 +526,7 @@ function App(){
             e("div",{style:{marginBottom:8,padding:8,background:"#161b22",borderRadius:4,borderLeft:"3px solid #ffd600"}},
               e("div",{style:{color:"#fff",fontWeight:700,marginBottom:2}},"(9) Saint Louis 102, (8) Georgia 77"),
               e("div",null,"X-Score: ",e("strong",{style:{color:"#00e676"}},"Saint Louis -0.5 \u2714"),"  |  KenPom: Georgia -1.5 \u2718  |  BartTorvik: Georgia -1.7 \u2718  |  Vegas: Georgia -2.5 \u2718"),
-              e("div",{style:{color:"#889",marginTop:2}},"X-Score was the ONLY system in the world to pick this upset. The composite saw what no individual model could.")),
+              e("div",{style:{color:"#889",marginTop:2}},"While KenPom, BartTorvik, and Vegas all picked Georgia, X-Score correctly identified Saint Louis as the better team. The composite saw what no individual model could.")),
             e("div",{style:{marginBottom:8,padding:8,background:"#161b22",borderRadius:4,borderLeft:"3px solid #00d4ff"}},
               e("div",{style:{color:"#fff",fontWeight:700,marginBottom:2}},"(5) St. John\u2019s 79, (12) Northern Iowa 53"),
               e("div",null,"X-Score: ",e("strong",{style:{color:"#00d4ff"}},"SJU -11.9"),"  |  KenPom: SJU -9.3  |  BartTorvik: SJU -9.6  |  Vegas: SJU -9.5"),
@@ -533,15 +535,12 @@ function App(){
               e("div",{style:{color:"#fff",fontWeight:700,marginBottom:2}},"(2) Houston 78, (15) Idaho 47"),
               e("div",null,"X-Score: ",e("strong",{style:{color:"#00d4ff"}},"Houston -23.5"),"  |  KenPom: -20.9  |  BartTorvik: -19.8  |  Vegas: -23.5"),
               e("div",{style:{color:"#889",marginTop:2}},"X-Score matched Vegas exactly. Actual margin: 31 pts. Our composite nailed the line while KP and BT undershot by 3\u20134 points.")),
-            e("div",{style:{padding:8,background:"#161b22",borderRadius:4,borderLeft:"3px solid #00e676"}},
-              e("div",{style:{color:"#fff",fontWeight:700,marginBottom:2}},"(7) Kentucky 89, (10) Santa Clara 84 (OT)"),
-              e("div",null,"X-Score: ",e("strong",{style:{color:"#00e676"}},"Kentucky -2.0 \u2714"),"  |  KenPom: Kentucky -1.4 \u2714  |  BartTorvik: ",e("strong",{style:{color:"#ff4444"}},"Santa Clara -0.9 \u2718")),
-              e("div",{style:{color:"#889",marginTop:2}},"BartTorvik picked the wrong team. X-Score and KenPom got it right. The composite\u2019s injury-adjusted weighting correctly valued Kentucky\u2019s healthy roster."))))),
+))),
       e("div",{style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:8,padding:14,marginBottom:16}},
         e("h3",{style:{fontFamily:"Outfit",fontSize:14,fontWeight:800,color:"#00d4ff",marginBottom:8}},"05 \u2014 WHY COMPOSITE BEATS INDIVIDUAL"),
         e("p",{style:{marginBottom:8}},"KenPom is one model with one set of assumptions. BartTorvik is another. COOPER is a third. Each has blind spots. The X-Score aggregates ",e("strong",{style:{color:"#fff"}},"36 independent perspectives"),", canceling out idiosyncratic errors through the wisdom of crowds."),
         e("p",{style:{marginBottom:8}},"PCA analysis shows ",e("strong",{style:{color:"#fff"}},"93.8% of variance")," across all 36 systems is explained by a single factor \u2014 they largely agree on team quality. The remaining 6.2% of disagreement is where the composite adds value: averaging out noise and surfacing the true signal."),
-        e("p",null,"Mathematically, if each system has error variance \u03C3\u00B2 and average pairwise correlation \u03C1, the composite error is \u03C3\u00B2(1+(n\u22121)\u03C1)/n. With 36 systems at \u03C1\u22480.93, our composite error is measurably lower than any single system\u2019s.")),
+        e("p",null,"This means that while individual systems largely agree on team quality, the remaining disagreement is precisely where the composite adds value \u2014 averaging out noise and surfacing the true signal. The net result: X-Score\u2019s prediction error is measurably lower than any single system\u2019s.")),
       e("div",{style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:8,padding:14,marginBottom:16}},
         e("h3",{style:{fontFamily:"Outfit",fontSize:14,fontWeight:800,color:"#00d4ff",marginBottom:10}},"06 \u2014 HOW X-SCORE DIFFERS FROM THE BEST"),
         e("div",{style:{display:"grid",gridTemplateColumns:"1fr",gap:12}},
@@ -549,33 +548,33 @@ function App(){
             e("div",{style:{fontSize:12,fontWeight:800,color:"#fff",marginBottom:6}},"X-SCORE vs. KENPOM"),
             e("div",{style:{fontSize:10,color:"#ccd",lineHeight:1.8}},
               e("p",{style:{marginBottom:4}},"KenPom is a ",e("strong",{style:{color:"#aab"}},"single team-level efficiency model"),". It measures adjusted offensive and defensive efficiency per 100 possessions, producing one spread estimate based on one methodology."),
-              e("p",{style:{marginBottom:4}},"X-Score is a ",e("strong",{style:{color:"#00d4ff"}},"meta-model"),". It includes KenPom as one of 36 inputs, then cross-references against 35 other systems that use different data, different adjustments, and different methodologies. Where KenPom has a blind spot, other systems fill the gap."),
-              e("p",null,e("strong",{style:{color:"#ffd600"}},"Key difference:")," KenPom does ",e("strong",{style:{color:"#ff4444"}},"not adjust for injuries"),". When a star player goes down, KenPom\u2019s rating won\u2019t reflect it until several games of on-court data accumulate. X-Score captures this immediately via Evan Miya and BPI."))),
+              e("p",{style:{marginBottom:4}},"X-Score is a ",e("strong",{style:{color:"#00d4ff"}},"meta-model")," \u2014 a model that combines other models. Think of it like a panel of 36 expert analysts all giving their opinion, and X-Score finds the consensus. It includes KenPom as one of 36 inputs, then cross-references against 35 other systems that use different data, different adjustments, and different methodologies. Where KenPom has a blind spot, other systems fill the gap."),
+              e("p",null,e("strong",{style:{color:"#ffd600"}},"Key differences:")," (1) KenPom is one perspective; X-Score is 36. (2) KenPom does ",e("strong",{style:{color:"#ff4444"}},"not adjust for injuries"),". When a star player goes down, KenPom\u2019s rating won\u2019t reflect it until several games of on-court data accumulate. X-Score captures this immediately via injury-adjusted systems. (3) X-Score uses raw efficiency values from each system, not just rankings, preserving the magnitude of how much better one team is than another."))),
           e("div",{style:{background:"#161b22",borderRadius:6,padding:12,borderLeft:"3px solid #8ab4d0"}},
             e("div",{style:{fontSize:12,fontWeight:800,color:"#fff",marginBottom:6}},"X-SCORE vs. BARTTORVIK"),
             e("div",{style:{fontSize:10,color:"#ccd",lineHeight:1.8}},
               e("p",{style:{marginBottom:4}},"BartTorvik (T-Rank) uses a ",e("strong",{style:{color:"#aab"}},"Pythagorean framework")," with adjusted offensive and defensive efficiency, GameScript filtering to remove garbage time, and recency weighting. It\u2019s excellent \u2014 arguably the second-best individual system after KenPom."),
-              e("p",{style:{marginBottom:4}},"But T-Rank is still ",e("strong",{style:{color:"#8ab4d0"}},"one model with one set of assumptions"),". In the 2026 R64, BartTorvik picked ",e("strong",{style:{color:"#ff4444"}},"Santa Clara over Kentucky")," \u2014 getting the wrong team entirely. X-Score got it right."),
-              e("p",null,e("strong",{style:{color:"#ffd600"}},"Key difference:")," Like KenPom, BartTorvik has ",e("strong",{style:{color:"#ff4444"}},"no systematic injury adjustment"),". It also uses a multiplicative (Pythagorean) rather than additive (linear) framework, which can behave differently at the extremes."))),
+              e("p",{style:{marginBottom:4}},"But T-Rank is still ",e("strong",{style:{color:"#8ab4d0"}},"one model with one set of assumptions"),". Any individual system can have blind spots for specific teams or matchups."),
+              e("p",null,e("strong",{style:{color:"#ffd600"}},"Key difference:")," Like KenPom, BartTorvik has ",e("strong",{style:{color:"#ff4444"}},"no systematic injury adjustment"),". X-Score\u2019s composite approach catches what BartTorvik misses by cross-referencing against 35 other perspectives."))),
           e("div",{style:{background:"#161b22",borderRadius:6,padding:12,borderLeft:"3px solid #e040fb"}},
             e("div",{style:{fontSize:12,fontWeight:800,color:"#fff",marginBottom:6}},"X-SCORE vs. NATE SILVER (COOPER)"),
             e("div",{style:{fontSize:10,color:"#ccd",lineHeight:1.8}},
               e("p",{style:{marginBottom:4}},"Silver\u2019s COOPER is a ",e("strong",{style:{color:"#aab"}},"Bayesian Elo system")," that updates game-by-game with offensive/defensive splits, travel distance adjustments, and preseason poll priors. For tournament predictions, Silver blends COOPER (62.5%) with KenPom (37.5%) plus an injury overlay."),
               e("p",{style:{marginBottom:4}},"X-Score takes this further: instead of blending ",e("strong",{style:{color:"#e040fb"}},"2 systems, we blend 36"),". Silver\u2019s approach is a composite of 2. Ours is a composite of 36. The wisdom-of-crowds advantage scales with the number of independent perspectives."),
-              e("p",null,e("strong",{style:{color:"#ffd600"}},"Key difference:")," Silver\u2019s model weights tournament games more heavily (the \u201Cimpact factor\u201D). X-Score currently uses pre-tournament ratings as baseline, blending in updated data round by round. Both approaches have merit \u2014 we are testing which produces better ATS results."))),
+              e("p",null,e("strong",{style:{color:"#ffd600"}},"Key difference:")," X-Score uses pre-tournament ratings as a stable baseline, then blends in updated data from systems that refresh between rounds. This prevents overreacting to 1\u20132 games of small-sample tournament data while still capturing real changes like injuries and momentum."))),
           e("div",{style:{background:"#161b22",borderRadius:6,padding:12,borderLeft:"3px solid #00e676"}},
             e("div",{style:{fontSize:12,fontWeight:800,color:"#fff",marginBottom:6}},"X-SCORE vs. EVAN MIYA (BPR)"),
             e("div",{style:{fontSize:10,color:"#ccd",lineHeight:1.8}},
               e("p",{style:{marginBottom:4}},"Evan Miya\u2019s BPR is the ",e("strong",{style:{color:"#aab"}},"most advanced individual system")," we track. It\u2019s player-level (not team-level), Bayesian, trained on college data, and fully injury-adjusted. Evan Miyakawa holds a Ph.D. in statistics and 120+ D1 programs use the platform."),
-              e("p",{style:{marginBottom:4}},"BPR is X-Score\u2019s ",e("strong",{style:{color:"#00e676"}},"highest-weighted input (4.5x)")," for exactly these reasons. But even the best individual system has biases. BPR\u2019s Bayesian priors can occasionally overvalue preseason expectations for teams that changed significantly mid-season."),
-              e("p",null,e("strong",{style:{color:"#ffd600"}},"Key difference:")," BPR is one perspective. X-Score uses BPR as its strongest signal, then validates and adjusts it against 35 other measurements. When BPR and KenPom disagree, the composite finds the truth between them."))))),
+              e("p",{style:{marginBottom:4}},"BPR is one of X-Score\u2019s most important inputs for exactly these reasons. But even the most advanced individual system has biases. BPR\u2019s Bayesian priors can occasionally overvalue preseason expectations for teams that changed significantly mid-season."),
+              e("p",null,e("strong",{style:{color:"#ffd600"}},"Key difference:")," BPR is one perspective, which X-Score validates and adjusts against 35 other measurements. When BPR and KenPom disagree, the composite finds the truth between them."))))),
       e("div",{style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:8,padding:14}},
         e("h3",{style:{fontFamily:"Outfit",fontSize:14,fontWeight:800,color:"#00d4ff",marginBottom:8}},"07 \u2014 THE INJURY ADVANTAGE"),
         e("p",{style:{marginBottom:8}},"Three of our eight T1 systems incorporate ",e("strong",{style:{color:"#00e676"}},"player-level injury data"),":"),
         e("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:10}},
-          [["Evan Miya (4.5x)","Subtracts injured player\u2019s BPR from team projection. Automated, player-level.","#00e676"],
-           ["ESPN BPI (3.5x)","Down-weights games with missing players. Uses peak minutes played as proxy.","#00e676"],
-           ["COOPER (3.25x)","Tournament model uses Win Shares to quantify player importance and replacement quality.","#00e676"]].map((s,i)=>
+          [["Evan Miya BPR","Subtracts injured player\u2019s BPR from team projection. Automated, player-level. The most granular injury adjustment available.","#00e676"],
+           ["ESPN BPI","Down-weights games with missing players. Uses peak minutes played to estimate player importance.","#00e676"],
+           ["COOPER (Nate Silver)","Tournament model uses Win Shares to quantify player importance and estimates replacement quality based on team depth.","#00e676"]].map((s,i)=>
             e("div",{key:i,style:{background:"#161b22",borderRadius:6,padding:8,borderTop:"2px solid "+s[2]}},
               e("div",{style:{fontSize:10,fontWeight:700,color:"#fff",marginBottom:4}},s[0]),
               e("div",{style:{fontSize:9,color:"#889"}},s[1])))),
@@ -651,20 +650,16 @@ function App(){
         e("div",{style:{fontSize:9,color:"#8899aa",letterSpacing:1,marginBottom:16,fontFamily:"DM Mono"}},"48 SYSTEMS \u00B7 68 TEAMS \u00B7 INJURY-ADJUSTED \u00B7 UPDATED DAILY"),
         e("div",{style:{display:"flex",gap:0}},
           ["rankings","matchups","futures","methodology"].map(v=>
-            e("button",{key:v,onClick:()=>setTab(v),style:{padding:"7px 16px",fontFamily:"DM Mono",fontSize:11,fontWeight:tab===v?700:400,letterSpacing:1,color:tab===v?"#fff":"#8899aa",borderBottom:tab===v?"2px solid #00d4ff":"2px solid transparent",textTransform:"uppercase"}},v))))),
+            e("button",{key:v,onClick:()=>{setTab(v);if(v==="futures")setReg("Field");else if(v!=="futures"&&reg==="Field")setReg("All");},style:{padding:"7px 16px",fontFamily:"DM Mono",fontSize:11,fontWeight:tab===v?700:400,letterSpacing:1,color:tab===v?"#fff":"#8899aa",borderBottom:tab===v?"2px solid #00d4ff":"2px solid transparent",textTransform:"uppercase"}},v))))),
     e("div",{style:{maxWidth:1600,margin:"0 auto",padding:"12px 16px 50px",background:"#0d1117"}},
       tab!=="methodology"?e("div",{style:{display:"flex",gap:6,marginBottom:8,flexWrap:"wrap",alignItems:"center"}},
-        ["All","East","South","West","Midwest"].map(r=>
-          e("button",{key:r,onClick:()=>setReg(r),style:{padding:"4px 14px",borderRadius:16,fontFamily:"DM Mono",fontSize:10,fontWeight:reg===r?700:400,letterSpacing:1,background:reg===r?(r==="All"?"rgba(255,255,255,.1)":(RC[r]+"18")):"rgba(255,255,255,.02)",color:reg===r?(r==="All"?"#fff":RC[r]):"#8899aa",border:"1px solid "+(reg===r?(r==="All"?"rgba(255,255,255,.2)":(RC[r]+"33")):"rgba(255,255,255,.04)"),textTransform:"uppercase"}},r))):null,
+        (tab==="futures"?["Field","All","East","South","West","Midwest"]:["All","East","South","West","Midwest"]).map(r=>
+          e("button",{key:r,onClick:()=>setReg(r),style:{padding:"4px 14px",borderRadius:16,fontFamily:"DM Mono",fontSize:10,fontWeight:reg===r?700:400,letterSpacing:1,background:reg===r?(r==="Field"?"rgba(0,212,255,.15)":r==="All"?"rgba(255,255,255,.1)":(RC[r]+"18")):"rgba(255,255,255,.02)",color:reg===r?(r==="Field"?"#00d4ff":r==="All"?"#fff":RC[r]):"#8899aa",border:"1px solid "+(reg===r?(r==="Field"?"rgba(0,212,255,.3)":r==="All"?"rgba(255,255,255,.2)":(RC[r]+"33")):"rgba(255,255,255,.04)"),textTransform:"uppercase"}},r==="Field"?"SWEET 16":r))):null,
       tab==="rankings"?e("div",{style:{marginBottom:0}},
         e("div",{style:{padding:"5px 12px",background:"#0e1218",borderRadius:6,border:"1px solid #1a2a3a",fontSize:9,color:"#8899aa",lineHeight:1.6,marginBottom:3}},
           e("span",{style:{color:"#00d4ff",fontWeight:700}},"X-Score")," = Composite Power Rating from 36 efficiency models. ",
           e("span",{style:{color:"#00e676"}},"Green"),"/",e("span",{style:{color:"#ff4444"}},"Red")," highlights = 10+ rank difference vs X-Score."),
         e("button",{onClick:()=>setShowKey(!showKey),style:{width:"100%",padding:"4px 10px",borderRadius:4,fontFamily:"DM Mono",fontSize:9,background:"rgba(0,212,255,.06)",color:"#00d4ff",border:"1px solid rgba(0,212,255,.15)",letterSpacing:1,textAlign:"center",marginBottom:3}},"RATINGS KEY: View All 48 Systems"),
-        e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",fontSize:9,color:"#8899aa",marginBottom:1}},
-          e("span",null,e("span",{style:{color:"#00d4ff"}},"\u25CF")," T1 Efficiency"),
-          e("span",null,e("span",{style:{color:"#8ab4d0"}},"\u25CF")," T2 Regression"),
-          e("span",null,e("span",{style:{color:"#b8a0d0"}},"\u25CF")," T3 Comparison")),
         ):null,
       tab==="rankings"?rankingsTab():
       tab==="bracket"?bracketTab():
