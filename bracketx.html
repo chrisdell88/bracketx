@@ -283,11 +283,11 @@ function App(){
     const s=t1&&t2?calcSp(t1,t2):null;
     const hasTeam=t1||t2;
     if(!hasTeam)return e("div",{style:{background:"rgba(255,255,255,.015)",borderRadius:8,padding:12,minHeight:56,display:"flex",alignItems:"center",justifyContent:"center",border:"1px solid rgba(255,255,255,.06)",marginBottom:8,maxWidth:400}},
-      e("span",{style:{fontSize:11,color:"#667"}},"Awaiting picks"));
+      e("span",{style:{fontSize:11,color:"#8899aa"}},"Awaiting picks"));
     return e("div",{style:{background:"rgba(255,255,255,.025)",borderRadius:8,padding:8,border:"1px solid "+(sel?"rgba(0,230,118,.2)":"rgba(255,255,255,.1)"),marginBottom:8,maxWidth:400}},
       date?e("div",{style:{fontFamily:"DM Mono",fontSize:8,color:"#889",marginBottom:3,paddingLeft:2}},date+(time?" \u00B7 "+time:"")):null,
-      t1?e(TR,{team:t1,prob:p?Math.round(p*100):null,sel:sel===t1,onClick:()=>pk(gid,t1)}):e("div",{style:{padding:"7px 10px",fontSize:11,color:"#556"}},"\u2014 TBD \u2014"),
-      t2?e(TR,{team:t2,prob:p?Math.round((1-p)*100):null,sel:sel===t2,onClick:()=>pk(gid,t2)}):e("div",{style:{padding:"7px 10px",fontSize:11,color:"#556"}},"\u2014 TBD \u2014"),
+      t1?e(TR,{team:t1,prob:p?Math.round(p*100):null,sel:sel===t1,onClick:()=>pk(gid,t1)}):e("div",{style:{padding:"7px 10px",fontSize:11,color:"#8899aa"}},"\u2014 TBD \u2014"),
+      t2?e(TR,{team:t2,prob:p?Math.round((1-p)*100):null,sel:sel===t2,onClick:()=>pk(gid,t2)}):e("div",{style:{padding:"7px 10px",fontSize:11,color:"#8899aa"}},"\u2014 TBD \u2014"),
       s!==null?e("div",{style:{fontFamily:"DM Mono",fontSize:9,color:"#00d4ff",padding:"2px 0 0 26px"}},s>0?t1+" -"+Math.abs(s):s<0?t2+" -"+Math.abs(s):"EVEN"):null,
       e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"2px 2px 0",marginTop:2}},
         t1&&t2?e("span",{onClick:ev=>{ev.stopPropagation();setPreview([t1,t2]);},style:{fontFamily:"DM Mono",fontSize:8,color:"#00d4ff",cursor:"pointer",padding:"2px 6px",border:"1px solid rgba(0,212,255,.12)",borderRadius:6}},"PREVIEW"):e("span"),
@@ -375,8 +375,9 @@ function App(){
             e("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:3}},
               e("span",null,e("span",{style:{color:"#889"}},"X: "),e("span",{style:{color:"#00d4ff",fontWeight:700}},m.xsp!=null?(m.xsp>0?m.h:m.a)+" "+(-Math.abs(m.xsp)).toFixed(1):"--")),
               e("span",null,e("span",{style:{color:"#889"}},"Book: "),e("span",{style:{color:"#ffd600",fontWeight:700}},m.bk!=null?m.h+" -"+m.bk:"--"))),
-            m.edge!=null&&m.edge>=2?e("div",{style:{fontSize:9,marginTop:2}},
-              e("span",{style:{color:m.edge>=5?"#00e676":m.edge>=3?"#ffd600":"#8899aa",fontWeight:600}},"EDGE: "+m.edge.toFixed(1)+" pts")):null));
+            e("div",{style:{display:"flex",justifyContent:"space-between"}},
+              e("span",null,e("span",{style:{color:"#889"}},"Edge: "),e("span",{style:{color:m.edge!=null&&m.edge>=5?"#00e676":m.edge!=null&&m.edge>=3?"#ffd600":"#8899aa",fontWeight:700}},m.edge!=null?m.edge.toFixed(1)+" pts":"--")),
+              e("span",null,e("span",{style:{color:"#889"}},"Final: "),e("span",{style:{color:"#fff",fontWeight:700}},"--")))));
       })));
 
   // ════════ FUTURES TAB ════════
@@ -596,16 +597,16 @@ function App(){
       e("div",{onClick:ev=>ev.stopPropagation(),style:{background:"#0d1117",border:"1px solid #1a2a3a",borderRadius:12,padding:20,maxWidth:420,width:"100%",maxHeight:"80vh",overflow:"auto"}},
         e("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:10}},
           e("div",null,e("div",{style:{fontFamily:"Outfit",fontSize:20,fontWeight:900,color:"#fff"}},t.nm),
-            e("div",{style:{fontSize:10,color:"#667"}},t.cf+" \u00B7 "+t.rec+" \u00B7 "+t.rg)),
+            e("div",{style:{fontSize:10,color:"#8899aa"}},t.cf+" \u00B7 "+t.rec+" \u00B7 "+t.rg)),
           e("div",{style:{fontFamily:"Outfit",fontSize:20,fontWeight:900,color:RC[t.rg]}},t.s)),
         e("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:6,marginBottom:10}},
           [["X#","#"+t.rk,"#00d4ff"],["X-SCORE",(t.xs>=0?"+":"")+t.xs.toFixed(3),"#00d4ff"],["KP#","#"+t.kp,"#aab"],["\u00B1KP",(dkp>0?"+":"")+dkp,dkp>0?"#00e676":dkp<0?"#ff4444":"#556"]].map(a=>
             e("div",{key:a[0],style:{background:"#161b22",borderRadius:6,padding:"5px 6px",textAlign:"center"}},
-              e("div",{style:{fontSize:7,color:"#556",letterSpacing:1}},a[0]),e("div",{style:{fontSize:14,fontWeight:700,color:a[2]}},a[1])))),
+              e("div",{style:{fontSize:7,color:"#8899aa",letterSpacing:1}},a[0]),e("div",{style:{fontSize:14,fontWeight:700,color:a[2]}},a[1])))),
         e("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6,marginBottom:10}},
           [["MED",t.med,"#aab"],["BEST",t.best,"#00e676"],["WORST",t.worst,"#ff4444"]].map(a=>
             e("div",{key:a[0],style:{background:"#161b22",borderRadius:6,padding:"5px 6px",textAlign:"center"}},
-              e("div",{style:{fontSize:7,color:"#556",letterSpacing:1}},a[0]),e("div",{style:{fontSize:14,fontWeight:700,color:a[2]}},a[1])))),
+              e("div",{style:{fontSize:7,color:"#8899aa",letterSpacing:1}},a[0]),e("div",{style:{fontSize:14,fontWeight:700,color:a[2]}},a[1])))),
         mu?e("div",{style:{background:"#161b22",borderRadius:6,padding:8,marginBottom:8}},
           e("div",{style:{fontSize:8,color:"#00d4ff",letterSpacing:1,marginBottom:3}},"R64 MATCHUP"),
           e("div",{style:{fontFamily:"Outfit",fontSize:12,fontWeight:700,color:"#fff"}},"("+mu.hs+") "+mu.h+" vs ("+mu.as+") "+mu.a),
@@ -623,7 +624,7 @@ function App(){
           e("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}},
             [a,b].map(t=>e("div",{key:t.nm,style:{textAlign:"center"}},
               e("div",{style:{fontFamily:"Outfit",fontSize:14,fontWeight:700,color:"#fff"}},t.nm),
-              e("div",{style:{fontSize:9,color:"#667"}},t.cf+" \u00B7 "+t.rec),
+              e("div",{style:{fontSize:9,color:"#8899aa"}},t.cf+" \u00B7 "+t.rec),
               e("div",{style:{fontSize:9,color:RC[t.rg],marginTop:4}},t.rg+" "+t.s+"-seed"),
               e("div",{style:{fontSize:20,fontWeight:900,color:"#00d4ff",marginTop:4}},"#"+t.rk),
               e("div",{style:{fontSize:12,fontWeight:700,color:"#00d4ff",marginTop:2}},(t.xs>=0?"+":"")+t.xs.toFixed(3))))),
@@ -651,14 +652,16 @@ function App(){
       tab==="rankings"?e("div",{style:{marginBottom:8}},
         e("div",{style:{padding:"7px 12px",background:"#0e1218",borderRadius:6,border:"1px solid #1a2a3a",fontSize:9,color:"#8899aa",lineHeight:1.6,marginBottom:6}},
           e("span",{style:{color:"#00d4ff",fontWeight:700}},"X-Score")," = Composite Power Rating from 36 efficiency models. ",
-          e("span",{style:{color:"#00e676"}},"Green"),"/",e("span",{style:{color:"#ff4444"}},"Red")," highlights = 10+ rank difference vs X-Score. Scroll right \u2192 to explore all 48 systems."),
-        e("div",{style:{display:"flex",gap:10,alignItems:"center",justifyContent:"space-between"}},
+          e("span",{style:{color:"#00e676"}},"Green"),"/",e("span",{style:{color:"#ff4444"}},"Red")," highlights = 10+ rank difference vs X-Score."),
+        e("div",{style:{display:"flex",gap:10,alignItems:"center",justifyContent:"space-between",marginBottom:0}},
           e("div",{style:{display:"flex",gap:10,fontSize:9,color:"#8899aa"}},
             e("span",null,e("span",{style:{color:"#00d4ff"}},"\u25CF")," T1 Efficiency"),
             e("span",null,e("span",{style:{color:"#8ab4d0"}},"\u25CF")," T2 Regression"),
             e("span",null,e("span",{style:{color:"#b8a0d0"}},"\u25CF")," Compare")),
-          e("button",{onClick:()=>setShowKey(!showKey),style:{padding:"4px 10px",borderRadius:4,fontFamily:"DM Mono",fontSize:9,background:"rgba(0,212,255,.08)",color:"#00d4ff",border:"1px solid rgba(0,212,255,.2)",letterSpacing:1}},"RATINGS KEY")),
-        e("div",{style:{height:8}})):null,
+          e("div",{style:{display:"flex",gap:8,alignItems:"center"}},
+            e("span",{style:{fontSize:9,color:"#8899aa"}},"Scroll right \u2192"),
+            e("button",{onClick:()=>setShowKey(!showKey),style:{padding:"4px 10px",borderRadius:4,fontFamily:"DM Mono",fontSize:9,background:"rgba(0,212,255,.08)",color:"#00d4ff",border:"1px solid rgba(0,212,255,.2)",letterSpacing:1}},"RATINGS KEY"))),
+        e("div",{style:{height:6}})):null,
       tab==="rankings"?rankingsTab():
       tab==="bracket"?bracketTab():
       tab==="matchups"?matchupsTab():
