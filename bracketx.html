@@ -519,6 +519,114 @@ function App(){
             !isField?e("td",{style:{padding:"4px 8px",textAlign:"center",color:(p.s16||0)>=.5?"#e040fb":"#aab"}},fmt(p.s16||0)):null);})))));
   };
 
+  // ════════ RESULTS TRACKER TAB ════════
+  const TRACKER=[
+{rd:"R64",fav:"Duke",dog:"Siena",fs:71,ds:65,cl:28.5,xs:36.6,kps:26.6,bts:25.5,xSU:"W",kpSU:"W",btSU:"W",xATS:"L",kpATS:"W",btATS:"W"},
+{rd:"R64",fav:"Michigan State",dog:"North Dakota State",fs:92,ds:67,cl:15.5,xs:21.4,kps:15.3,bts:14.1,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"PUSH",btATS:"L"},
+{rd:"R64",fav:"Louisville",dog:"South Florida",fs:83,ds:79,cl:6.5,xs:6.9,kps:6.4,bts:7.3,xSU:"W",kpSU:"W",btSU:"W",xATS:"PUSH",kpATS:"PUSH",btATS:"L"},
+{rd:"R64",fav:"Ohio State",dog:"TCU",fs:64,ds:66,cl:2.5,xs:3.2,kps:3.1,bts:5.6,xSU:"L",kpSU:"L",btSU:"L",xATS:"L",kpATS:"L",btATS:"L"},
+{rd:"R64",fav:"Nebraska",dog:"Troy",fs:76,ds:47,cl:13.5,xs:21.2,kps:16.1,bts:14.5,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"W",btATS:"W"},
+{rd:"R64",fav:"Vanderbilt",dog:"McNeese",fs:78,ds:68,cl:10.5,xs:12.7,kps:10.1,bts:11.5,xSU:"W",kpSU:"W",btSU:"W",xATS:"L",kpATS:"PUSH",btATS:"L"},
+{rd:"R64",fav:"North Carolina",dog:"VCU",fs:78,ds:82,cl:2.5,xs:2.6,kps:2.5,bts:3.5,xSU:"L",kpSU:"L",btSU:"L",xATS:"PUSH",kpATS:"PUSH",btATS:"L"},
+{rd:"R64",fav:"Saint Mary's",dog:"Texas A&M",fs:50,ds:63,cl:2.5,xs:4.4,kps:3.0,bts:2.3,xSU:"L",kpSU:"L",btSU:"L",xATS:"L",kpATS:"L",btATS:"PUSH"},
+{rd:"R64",fav:"Illinois",dog:"Penn",fs:105,ds:70,cl:22.5,xs:25.5,kps:20.6,bts:21.9,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"L",btATS:"L"},
+{rd:"R64",fav:"Houston",dog:"Idaho",fs:78,ds:47,cl:21.5,xs:30.4,kps:20.9,bts:19.8,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"L",btATS:"L"},
+{rd:"R64",fav:"Wisconsin",dog:"High Point",fs:82,ds:83,cl:11.5,xs:11.6,kps:10.4,bts:12.1,xSU:"L",kpSU:"L",btSU:"L",xATS:"PUSH",kpATS:"W",btATS:"L"},
+{rd:"R64",fav:"Arkansas",dog:"Hawaii",fs:97,ds:78,cl:15.5,xs:17.7,kps:14.1,bts:14.9,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"L",btATS:"L"},
+{rd:"R64",fav:"BYU",dog:"Texas",fs:71,ds:79,cl:1.5,xs:5.4,kps:2.9,bts:2.0,xSU:"L",kpSU:"L",btSU:"L",xATS:"L",kpATS:"L",btATS:"L"},
+{rd:"R64",fav:"Gonzaga",dog:"Kennesaw State",fs:73,ds:64,cl:19.5,xs:25.3,kps:19.2,bts:17.5,xSU:"W",kpSU:"W",btSU:"W",xATS:"L",kpATS:"PUSH",btATS:"W"},
+{rd:"R64",fav:"Michigan",dog:"Howard",fs:101,ds:80,cl:35.0,xs:37.7,kps:28.5,bts:27.6,xSU:"W",kpSU:"W",btSU:"W",xATS:"L",kpATS:"W",btATS:"W"},
+{rd:"R64",fav:"Georgia",dog:"Saint Louis",fs:77,ds:102,cl:1.5,xs:-0.6,kps:1.5,bts:1.7,xSU:"W",kpSU:"L",btSU:"L",xATS:"W",kpATS:"PUSH",btATS:"PUSH"},
+{rd:"R64",fav:"UConn",dog:"Furman",fs:82,ds:71,cl:19.5,xs:24.7,kps:19.4,bts:19.7,xSU:"W",kpSU:"W",btSU:"W",xATS:"L",kpATS:"PUSH",btATS:"PUSH"},
+{rd:"R64",fav:"Miami FL",dog:"Missouri",fs:67,ds:58,cl:2.5,xs:5.7,kps:3.5,bts:1.8,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"W",btATS:"L"},
+{rd:"R64",fav:"Kansas",dog:"Cal Baptist",fs:68,ds:60,cl:13.5,xs:16.5,kps:12.3,bts:10.8,xSU:"W",kpSU:"W",btSU:"W",xATS:"L",kpATS:"W",btATS:"W"},
+{rd:"R64",fav:"Florida",dog:"Prairie View A&M",fs:114,ds:55,cl:35.0,xs:39.6,kps:31.4,bts:30.9,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"L",btATS:"L"},
+{rd:"R64",fav:"UCLA",dog:"UCF",fs:75,ds:71,cl:6.5,xs:5.7,kps:4.4,bts:5.7,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"W",btATS:"W"},
+{rd:"R64",fav:"Clemson",dog:"Iowa",fs:61,ds:67,cl:1.5,xs:-1.1,kps:-2.0,bts:-1.5,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"W",btATS:"W"},
+{rd:"R64",fav:"St. John's",dog:"Northern Iowa",fs:79,ds:53,cl:9.5,xs:15.4,kps:9.3,bts:9.6,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"PUSH",btATS:"PUSH"},
+{rd:"R64",fav:"Purdue",dog:"Queens",fs:104,ds:71,cl:22.5,xs:29.3,kps:21.9,bts:23.7,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"L",btATS:"W"},
+{rd:"R64",fav:"Tennessee",dog:"Miami OH",fs:78,ds:56,cl:12.0,xs:11.4,kps:12.0,bts:11.4,xSU:"W",kpSU:"W",btSU:"W",xATS:"L",kpATS:"PUSH",btATS:"L"},
+{rd:"R64",fav:"Utah State",dog:"Villanova",fs:86,ds:76,cl:2.5,xs:1.8,kps:0.5,bts:1.2,xSU:"W",kpSU:"W",btSU:"W",xATS:"L",kpATS:"L",btATS:"L"},
+{rd:"R64",fav:"Alabama",dog:"Hofstra",fs:82,ds:61,cl:12.5,xs:14.7,kps:11.2,bts:12.7,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"L",btATS:"PUSH"},
+{rd:"R64",fav:"Arizona",dog:"Wright State",fs:89,ds:56,cl:29.5,xs:30.6,kps:24.4,bts:22.0,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"L",btATS:"L"},
+{rd:"R64",fav:"Kentucky",dog:"Santa Clara",fs:89,ds:84,cl:2.5,xs:2.6,kps:1.4,bts:-0.9,xSU:"W",kpSU:"W",btSU:"L",xATS:"PUSH",kpATS:"L",btATS:"L"},
+{rd:"R64",fav:"Texas Tech",dog:"Akron",fs:91,ds:71,cl:8.5,xs:10.9,kps:8.5,bts:10.7,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"PUSH",btATS:"W"},
+{rd:"R64",fav:"Virginia",dog:"Akron",fs:67,ds:51,cl:17.5,xs:12.0,kps:9.5,bts:10.0,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"W",btATS:"W"},
+{rd:"R64",fav:"Iowa State",dog:"Tennessee State",fs:108,ds:74,cl:23.5,xs:29.7,kps:23.4,bts:24.2,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"PUSH",btATS:"W"},
+{rd:"R32",fav:"Michigan",dog:"Saint Louis",fs:95,ds:72,cl:12.5,xs:17.0,kps:13.7,bts:13.9,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"W",btATS:"W"},
+{rd:"R32",fav:"Michigan State",dog:"Louisville",fs:77,ds:69,cl:4.5,xs:3.2,kps:2.0,bts:0.6,xSU:"W",kpSU:"W",btSU:"W",xATS:"L",kpATS:"L",btATS:"L"},
+{rd:"R32",fav:"Duke",dog:"TCU",fs:81,ds:58,cl:12.0,xs:18.7,kps:14.2,bts:14.7,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"W",btATS:"W"},
+{rd:"R32",fav:"Houston",dog:"Texas A&M",fs:88,ds:57,cl:10.5,xs:12.0,kps:9.9,bts:9.7,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"L",btATS:"L"},
+{rd:"R32",fav:"Gonzaga",dog:"Texas",fs:68,ds:74,cl:6.5,xs:11.0,kps:6.1,bts:5.9,xSU:"L",kpSU:"L",btSU:"L",xATS:"L",kpATS:"PUSH",btATS:"W"},
+{rd:"R32",fav:"Illinois",dog:"VCU",fs:76,ds:55,cl:11.5,xs:9.9,kps:10.0,bts:11.7,xSU:"W",kpSU:"W",btSU:"W",xATS:"L",kpATS:"L",btATS:"PUSH"},
+{rd:"R32",fav:"Vanderbilt",dog:"Nebraska",fs:72,ds:74,cl:1.5,xs:1.5,kps:0.9,bts:3.0,xSU:"L",kpSU:"L",btSU:"L",xATS:"PUSH",kpATS:"W",btATS:"L"},
+{rd:"R32",fav:"Arkansas",dog:"High Point",fs:94,ds:88,cl:11.5,xs:12.5,kps:12.4,bts:12.8,xSU:"W",kpSU:"W",btSU:"W",xATS:"L",kpATS:"L",btATS:"L"},
+{rd:"R32",fav:"Purdue",dog:"Miami FL",fs:79,ds:69,cl:7.5,xs:9.0,kps:6.9,bts:8.9,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"L",btATS:"W"},
+{rd:"R32",fav:"Iowa State",dog:"Kentucky",fs:82,ds:63,cl:4.5,xs:8.5,kps:7.4,bts:7.6,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"W",btATS:"W"},
+{rd:"R32",fav:"St. John's",dog:"Kansas",fs:67,ds:65,cl:3.5,xs:2.9,kps:1.0,bts:1.6,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"W",btATS:"W"},
+{rd:"R32",fav:"Tennessee",dog:"Virginia",fs:79,ds:72,cl:1.5,xs:-2.5,kps:-0.5,bts:-0.3,xSU:"L",kpSU:"L",btSU:"L",xATS:"L",kpATS:"L",btATS:"L"},
+{rd:"R32",fav:"Florida",dog:"Iowa",fs:72,ds:73,cl:10.5,xs:9.0,kps:7.6,bts:7.9,xSU:"L",kpSU:"L",btSU:"L",xATS:"W",kpATS:"W",btATS:"W"},
+{rd:"R32",fav:"Arizona",dog:"Utah State",fs:78,ds:66,cl:11.5,xs:13.0,kps:11.6,bts:10.0,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"PUSH",btATS:"L"},
+{rd:"R32",fav:"UConn",dog:"UCLA",fs:73,ds:57,cl:4.5,xs:3.7,kps:4.0,bts:3.4,xSU:"W",kpSU:"W",btSU:"W",xATS:"L",kpATS:"L",btATS:"L"},
+{rd:"R32",fav:"Alabama",dog:"Texas Tech",fs:90,ds:65,cl:1.5,xs:-0.8,kps:0.3,bts:-0.6,xSU:"L",kpSU:"W",btSU:"L",xATS:"L",kpATS:"L",btATS:"L"}];
+
+  const[rRound,setRRound]=useState("ALL");
+  const resultsTab=()=>{
+    const games=rRound==="ALL"?TRACKER:TRACKER.filter(g=>g.rd===rRound);
+    // Compute summary stats
+    const stats={};
+    ["x","kp","bt"].forEach(s=>{
+      const suW=games.filter(g=>g[s+"SU"]==="W").length;
+      const suN=games.filter(g=>g[s+"SU"]==="W"||g[s+"SU"]==="L").length;
+      const atsW=games.filter(g=>g[s+"ATS"]==="W").length;
+      const atsN=games.filter(g=>g[s+"ATS"]==="W"||g[s+"ATS"]==="L").length;
+      const errs=games.map(g=>{const m=g.fs-g.ds;return Math.abs(m-g[s==="x"?"xs":s==="kp"?"kps":"bts"]);});
+      const sorted=errs.slice().sort((a,b)=>a-b);
+      stats[s]={suW,suN,atsW,atsN,mae:+(errs.reduce((a,b)=>a+b,0)/errs.length).toFixed(2),med:+sorted[Math.floor(sorted.length/2)].toFixed(2)};
+    });
+    const wc=v=>v==="W"?"#00e676":v==="L"?"#ff4444":"#8899aa";
+    return e("div",{style:{maxWidth:900}},
+      e("h2",{style:{fontFamily:"Outfit",fontSize:22,fontWeight:900,color:"#fff",marginBottom:6}},"Results Tracker"),
+      e("p",{style:{fontSize:10,color:"#aab",marginBottom:12}},"Game-by-game predictions vs. actual results \u2014 X-Score, KenPom, BartTorvik"),
+      e("div",{style:{display:"flex",gap:6,marginBottom:12}},
+        ["ALL","R64","R32"].map(r=>e("button",{key:r,onClick:()=>setRRound(r),style:{padding:"5px 16px",borderRadius:16,fontFamily:"DM Mono",fontSize:10,fontWeight:rRound===r?700:400,background:rRound===r?"rgba(0,212,255,.15)":"rgba(255,255,255,.02)",color:rRound===r?"#00d4ff":"#8899aa",border:"1px solid "+(rRound===r?"rgba(0,212,255,.3)":"rgba(255,255,255,.04)")}},r==="ALL"?"ALL (48)":r==="R64"?"ROUND OF 64 (32)":"ROUND OF 32 (16)"))),
+      e("div",{style:{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:16}},
+        [["X-SCORE","x","#00d4ff"],["KENPOM","kp","#ff6b35"],["BARTTORVIK","bt","#8ab4d0"]].map(([label,k,color])=>{
+          const s=stats[k];return e("div",{key:k,style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:8,padding:10,borderTop:"3px solid "+color}},
+            e("div",{style:{fontSize:10,fontWeight:700,color,letterSpacing:1,marginBottom:8}},label),
+            e("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:4,fontSize:10}},
+              e("div",null,e("span",{style:{color:"#889"}},"SU: "),e("span",{style:{color:"#fff",fontWeight:700}},s.suW+"-"+(s.suN-s.suW)+" ("+Math.round(s.suW/s.suN*100)+"%)")),
+              e("div",null,e("span",{style:{color:"#889"}},"ATS: "),e("span",{style:{color:s.atsW/s.atsN>.52?"#00e676":"#ff4444",fontWeight:700}},s.atsW+"-"+(s.atsN-s.atsW)+" ("+Math.round(s.atsW/s.atsN*100)+"%)")),
+              e("div",null,e("span",{style:{color:"#889"}},"MAE: "),e("span",{style:{color:"#fff",fontWeight:700}},s.mae)),
+              e("div",null,e("span",{style:{color:"#889"}},"Med: "),e("span",{style:{color:"#fff",fontWeight:700}},s.med))));})),
+      e("div",{style:{overflowX:"auto"}},
+        e("table",{style:{width:"100%",borderCollapse:"collapse",fontSize:10,background:"#0d1117",minWidth:700}},
+          e("thead",null,e("tr",{style:{borderBottom:"1px solid #2a3a4a"}},
+            ["RD","MATCHUP","SCORE","MARGIN","CLOSE","X","KP","BT","X SU","KP SU","BT SU","X ATS","KP ATS","BT ATS"].map(h=>
+              e("th",{key:h,style:{padding:"4px 5px",textAlign:"center",fontSize:8,color:h.startsWith("X")?"#00d4ff":h.startsWith("KP")?"#ff6b35":h.startsWith("BT")?"#8ab4d0":"#889",fontWeight:700,letterSpacing:.5,whiteSpace:"nowrap"}},h)))),
+          e("tbody",null,games.map((g,i)=>{
+            const margin=g.fs-g.ds;const winner=margin>0?g.fav:g.dog;
+            return e("tr",{key:i,style:{borderBottom:"1px solid #1a2a3a",background:i%2===0?"#0e1218":"#0d1117"}},
+              e("td",{style:{padding:"3px 5px",textAlign:"center",color:"#889",fontSize:8}},g.rd),
+              e("td",{style:{padding:"3px 5px",color:"#fff",fontSize:9,whiteSpace:"nowrap"}},
+                LOGOS[g.fav]?e("img",{src:"https://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/"+LOGOS[g.fav]+".png&h=14&w=14",style:{width:14,height:14,borderRadius:2,verticalAlign:"middle",marginRight:3}}):null,
+                e("span",{style:{fontWeight:margin>0?700:400}},g.fav)," vs ",
+                LOGOS[g.dog]?e("img",{src:"https://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/"+LOGOS[g.dog]+".png&h=14&w=14",style:{width:14,height:14,borderRadius:2,verticalAlign:"middle",marginRight:3,marginLeft:3}}):null,
+                e("span",{style:{fontWeight:margin<0?700:400}},g.dog)),
+              e("td",{style:{padding:"3px 5px",textAlign:"center",color:"#fff",fontWeight:700,fontSize:9}},g.fs+"-"+g.ds),
+              e("td",{style:{padding:"3px 5px",textAlign:"center",color:margin>0?"#00e676":"#ff4444",fontWeight:700}},winner+" +"+(Math.abs(margin))),
+              e("td",{style:{padding:"3px 5px",textAlign:"center",color:"#ffd600",fontWeight:600}},g.fav+" -"+g.cl),
+              e("td",{style:{padding:"3px 5px",textAlign:"center",color:"#00d4ff",fontWeight:600}},(g.xs>0?g.fav:g.dog)+" "+(-Math.abs(g.xs))),
+              e("td",{style:{padding:"3px 5px",textAlign:"center",color:"#ff6b35"}},(g.kps>0?g.fav:g.dog)+" "+(-Math.abs(g.kps))),
+              e("td",{style:{padding:"3px 5px",textAlign:"center",color:"#8ab4d0"}},(g.bts>0?g.fav:g.dog)+" "+(-Math.abs(g.bts))),
+              e("td",{style:{padding:"3px 5px",textAlign:"center",color:wc(g.xSU),fontWeight:700}},g.xSU),
+              e("td",{style:{padding:"3px 5px",textAlign:"center",color:wc(g.kpSU),fontWeight:700}},g.kpSU),
+              e("td",{style:{padding:"3px 5px",textAlign:"center",color:wc(g.btSU),fontWeight:700}},g.btSU),
+              e("td",{style:{padding:"3px 5px",textAlign:"center",color:wc(g.xATS),fontWeight:700}},g.xATS),
+              e("td",{style:{padding:"3px 5px",textAlign:"center",color:wc(g.kpATS),fontWeight:700}},g.kpATS),
+              e("td",{style:{padding:"3px 5px",textAlign:"center",color:wc(g.btATS),fontWeight:700}},g.btATS));})))));
+  };
+
   // ════════ METHODOLOGY TAB ════════
   const methodTab=()=>e("div",{style:{maxWidth:760}},
     e("h2",{style:{fontFamily:"Outfit",fontSize:22,fontWeight:900,color:"#fff",marginBottom:6}},"Methodology"),
@@ -701,7 +809,7 @@ function App(){
           e("span",{style:{fontFamily:"DM Mono",fontSize:13,fontWeight:500,color:"#ffd600",letterSpacing:2}},"COMPOSITE POWER INDEX")),
         e("div",{style:{fontSize:9,color:"#8899aa",letterSpacing:1,marginBottom:16,fontFamily:"DM Mono"}},"48 SYSTEMS \u00B7 68 TEAMS \u00B7 INJURY-ADJUSTED \u00B7 UPDATED DAILY"),
         e("div",{style:{display:"flex",gap:0}},
-          ["rankings","matchups","futures","methodology"].map(v=>
+          ["rankings","matchups","futures","results","methodology"].map(v=>
             e("button",{key:v,onClick:()=>{setTab(v);if(v==="futures")setReg("Field");else if(v!=="futures"&&reg==="Field")setReg("All");},style:{padding:"7px 16px",fontFamily:"DM Mono",fontSize:11,fontWeight:tab===v?700:400,letterSpacing:1,color:tab===v?"#fff":"#8899aa",borderBottom:tab===v?"2px solid #00d4ff":"2px solid transparent",textTransform:"uppercase"}},v))))),
     e("div",{style:{maxWidth:1600,margin:"0 auto",padding:"12px 16px 50px",background:"#0d1117"}},
       tab!=="methodology"?e("div",{style:{display:"flex",gap:6,marginBottom:8,flexWrap:"wrap",alignItems:"center"}},
@@ -717,6 +825,7 @@ function App(){
       tab==="bracket"?bracketTab():
       tab==="matchups"?matchupsTab():
       tab==="futures"?futuresTab():
+      tab==="results"?resultsTab():
       tab==="methodology"?methodTab():null,
       e("div",{style:{marginTop:30,background:"#000",borderRadius:8,padding:"14px 18px",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:8}},
         e("span",{style:{fontFamily:"Outfit",fontSize:16,fontWeight:900,color:"#fff",letterSpacing:1}},"BRACKET",e("span",{style:{color:"#00d4ff"}},"X")),
