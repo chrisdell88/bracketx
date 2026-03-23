@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BracketX — Composite Power Index</title>
 <meta property="og:title" content="BracketX — Composite Power Index">
-<meta property="og:description" content="36 ranking systems. 68 teams. One composite score. Outperformed KenPom, BartTorvik, and Vegas closing lines in the 2026 NCAA Tournament.">
+<meta property="og:description" content="48 ranking systems. 68 teams. 79.2% straight-up. 56.8% ATS (profitable). Beats KenPom and BartTorvik on every metric in the 2026 NCAA Tournament.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://bracketx.co">
 <meta property="og:image" content="https://bracketx.co/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="BracketX — Composite Power Index">
-<meta name="twitter:description" content="36 systems. 68 teams. 75% straight-up. 55.6% ATS. Better than KenPom.">
+<meta name="twitter:description" content="48 systems. 79.2% SU. 56.8% ATS. KenPom went 15-21 ATS and lost money. We went 25-19 and profited. bracketx.co">
 <meta name="twitter:image" content="https://bracketx.co/og-image.png">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -456,34 +456,67 @@ function App(){
     const tgEW=getTG("EW"),tgSM=getTG("SM");
     tgEW.forEach(a=>{tgSM.forEach(b=>{const p=pw((tMap[a.nm]||{xs:0}).xs,(tMap[b.nm]||{xs:0}).xs);
       probs[a.nm].champ+=a.p*b.p*p;probs[b.nm].champ+=a.p*b.p*(1-p);});});
+    // S16-specific simulation: start from known Sweet 16 matchups
+    const s16probs={};teams.forEach(t=>{s16probs[t.nm]={e8:0,f4:0,title:0,champ:0};});
+    ["East","South","West","Midwest"].forEach(rg=>{
+      const s16g=BRACKET_S16.filter(m=>m.r===rg);// 2 games per region
+      if(s16g.length<2)return;
+      // S16 matchups: each team starts at p=1.0
+      const s16t=s16g.map(m=>[{nm:m.h,p:1},{nm:m.a,p:1}]);
+      // E8 from S16
+      for(let i=0;i<2;i++){const[a1,a2]=s16t[i];
+        const p=pw((tMap[a1.nm]||{xs:0}).xs,(tMap[a2.nm]||{xs:0}).xs);
+        s16probs[a1.nm].e8=p;s16probs[a2.nm].e8=1-p;}
+      // F4: E8 winners play each other
+      const e8w=s16t.map(([a,b])=>{const p=pw((tMap[a.nm]||{xs:0}).xs,(tMap[b.nm]||{xs:0}).xs);
+        return[{nm:a.nm,p},{nm:b.nm,p:1-p}];});
+      e8w[0].forEach(a=>{e8w[1].forEach(b=>{const p=pw((tMap[a.nm]||{xs:0}).xs,(tMap[b.nm]||{xs:0}).xs);
+        s16probs[a.nm].f4+=a.p*b.p*p;s16probs[b.nm].f4+=a.p*b.p*(1-p);});});
+    });
+    // F4 matchups for s16probs: East vs West, South vs Midwest
+    const gs16F4=(rg)=>Object.entries(s16probs).filter(([nm])=>{const t=tMap[nm];return t&&t.rg===rg&&s16probs[nm].f4>0;}).map(([nm,p])=>({nm,p:p.f4}));
+    const s16ew=gs16F4("East"),s16ww=gs16F4("West"),s16sw=gs16F4("South"),s16mw=gs16F4("Midwest");
+    s16ew.forEach(a=>{s16ww.forEach(b=>{const p=pw((tMap[a.nm]||{xs:0}).xs,(tMap[b.nm]||{xs:0}).xs);
+      s16probs[a.nm].title+=a.p*b.p*p;s16probs[b.nm].title+=a.p*b.p*(1-p);});});
+    s16sw.forEach(a=>{s16mw.forEach(b=>{const p=pw((tMap[a.nm]||{xs:0}).xs,(tMap[b.nm]||{xs:0}).xs);
+      s16probs[a.nm].title+=a.p*b.p*p;s16probs[b.nm].title+=a.p*b.p*(1-p);});});
+    // Championship for s16probs
+    const gs16TG=(side)=>Object.entries(s16probs).filter(([nm])=>{const t=tMap[nm];return t&&s16probs[nm].title>0&&(side==="EW"?(t.rg==="East"||t.rg==="West"):(t.rg==="South"||t.rg==="Midwest"));}).map(([nm,p])=>({nm,p:p.title}));
+    const s16tgEW=gs16TG("EW"),s16tgSM=gs16TG("SM");
+    s16tgEW.forEach(a=>{s16tgSM.forEach(b=>{const p=pw((tMap[a.nm]||{xs:0}).xs,(tMap[b.nm]||{xs:0}).xs);
+      s16probs[a.nm].champ+=a.p*b.p*p;s16probs[b.nm].champ+=a.p*b.p*(1-p);});});
+
+    const isField=reg==="Field";
+    const activeProbs=isField?s16probs:probs;
     const fmt=v=>v>=.01?(v*100).toFixed(1)+"%":v>=.001?(v*100).toFixed(2)+"%":"<0.1%";
+    const cols=isField?["X#","SD","TEAM","CHAMP","FINALS","F4","E8"]:["X#","SD","TEAM","CHAMP","FINALS","F4","E8","S16"];
     const fSortKeys={"X#":"rk",SD:"sd",TEAM:"nm",CHAMP:"champ",FINALS:"title",F4:"f4",E8:"e8",S16:"s16"};
     const fColor=h=>h==="CHAMP"?"#ffd600":h==="FINALS"?"#ff6b35":h==="F4"?"#00d4ff":h==="E8"?"#00e676":h==="S16"?"#e040fb":"#8899aa";
-    const baseList=(reg==="Field"?teams.filter(t=>S16_TEAMS.has(t.nm)):reg==="All"?teams:teams.filter(t=>t.rg===reg)).filter(t=>probs[t.nm].s16>0.001);
+    const baseList=(isField?teams.filter(t=>S16_TEAMS.has(t.nm)):reg==="All"?teams:teams.filter(t=>t.rg===reg)).filter(t=>isField?true:probs[t.nm].s16>0.001);
     const sorted=baseList.slice().sort((a,b)=>{
-      const pa=probs[a.nm],pb=probs[b.nm];
+      const pa=activeProbs[a.nm],pb=activeProbs[b.nm];if(!pa||!pb)return 0;
       if(sk==="rk")return sd*(a.rk-b.rk);if(sk==="sd")return sd*(a.s-b.s)||(a.rk-b.rk);
       if(sk==="nm")return sd*a.nm.localeCompare(b.nm);
-      if(sk==="champ")return sd*(pb.champ-pa.champ);if(sk==="title")return sd*(pb.title-pa.title);
-      if(sk==="f4")return sd*(pb.f4-pa.f4);if(sk==="e8")return sd*(pb.e8-pa.e8);
-      if(sk==="s16")return sd*(pb.s16-pa.s16);return a.rk-b.rk;
+      if(sk==="champ")return sd*((pb.champ||0)-(pa.champ||0));if(sk==="title")return sd*((pb.title||0)-(pa.title||0));
+      if(sk==="f4")return sd*((pb.f4||0)-(pa.f4||0));if(sk==="e8")return sd*((pb.e8||0)-(pa.e8||0));
+      if(sk==="s16")return sd*((pb.s16||0)-(pa.s16||0));return a.rk-b.rk;
     });
     return e("div",null,
-      e("div",{style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:6,padding:"7px 12px",marginBottom:12,fontSize:10,color:"#8899aa"}},
-        e("strong",{style:{color:"#ffd600"}},"FUTURES:")," Composite-implied probability to reach each round based on full bracket-path simulation using X-Scores."),
+      e("div",{style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:6,padding:"7px 12px",marginBottom:12,fontSize:10,color:"#aab"}},
+        e("strong",{style:{color:"#ffd600"}},"FUTURES:")," ",isField?"Updated implied probabilities for the 16 remaining teams, starting from known Sweet 16 matchups.":"Pre-tournament implied probability to reach each round based on full bracket-path simulation using X-Scores."),
       e("div",{style:{overflowX:"auto",background:"#0d1117"}},
         e("table",{style:{width:"100%",borderCollapse:"collapse",fontSize:11,background:"#0d1117"}},
           e("thead",null,e("tr",{style:{borderBottom:"1px solid #1a2a3a"}},
-            ["X#","SD","TEAM","CHAMP","FINALS","F4","E8","S16"].map(h=>e("th",{key:h,style:{padding:"5px 8px",textAlign:h==="TEAM"?"left":"center",fontSize:9,color:sk===fSortKeys[h]?"#fff":fColor(h),fontWeight:600,cursor:"pointer",userSelect:"none",textDecoration:sk===fSortKeys[h]?"underline":"none"},onClick:()=>doSort(fSortKeys[h])},h+arrow(fSortKeys[h]))))),
-          e("tbody",null,sorted.map((t,i)=>{const p=probs[t.nm];return e("tr",{key:t.nm,style:{borderBottom:"1px solid rgba(255,255,255,.02)",background:i%2===0?"#0e1218":"#0d1117"}},
+            cols.map(h=>e("th",{key:h,style:{padding:"5px 8px",textAlign:h==="TEAM"?"left":"center",fontSize:9,color:sk===fSortKeys[h]?"#fff":fColor(h),fontWeight:600,cursor:"pointer",userSelect:"none",textDecoration:sk===fSortKeys[h]?"underline":"none"},onClick:()=>doSort(fSortKeys[h])},h+arrow(fSortKeys[h]))))),
+          e("tbody",null,sorted.map((t,i)=>{const p=activeProbs[t.nm];if(!p)return null;return e("tr",{key:t.nm,style:{borderBottom:"1px solid rgba(255,255,255,.02)",background:i%2===0?"#0e1218":"#0d1117"}},
             e("td",{style:{padding:"4px 8px",fontWeight:700,color:"#00d4ff",textAlign:"center"}},t.rk),
             e("td",{style:{padding:"4px 8px",color:RC[t.rg],textAlign:"center"}},t.s),
             e("td",{style:{padding:"4px 8px",fontFamily:"Outfit",fontWeight:600,color:"#fff",display:"flex",alignItems:"center",gap:6}},LOGOS[t.nm]?e("img",{src:"https://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/"+LOGOS[t.nm]+".png&h=20&w=20",style:{width:20,height:20,borderRadius:3,background:"transparent"}}):null,e("span",null,t.nm,e("span",{style:{fontSize:8,color:"#8899aa",marginLeft:6}},t.cf+" \u00B7 "+t.rec))),
-            e("td",{style:{padding:"4px 8px",textAlign:"center",fontWeight:700,color:p.champ>=.1?"#ffd600":p.champ>=.01?"#d4a020":"#667"}},fmt(p.champ)),
-            e("td",{style:{padding:"4px 8px",textAlign:"center",fontWeight:600,color:p.title>=.1?"#ff6b35":"#778"}},fmt(p.title)),
-            e("td",{style:{padding:"4px 8px",textAlign:"center",fontWeight:600,color:p.f4>=.1?"#00d4ff":"#778"}},fmt(p.f4)),
-            e("td",{style:{padding:"4px 8px",textAlign:"center",color:p.e8>=.2?"#00e676":"#778"}},fmt(p.e8)),
-            e("td",{style:{padding:"4px 8px",textAlign:"center",color:p.s16>=.5?"#e040fb":"#aab"}},fmt(p.s16)));})))));
+            e("td",{style:{padding:"4px 8px",textAlign:"center",fontWeight:700,color:(p.champ||0)>=.1?"#ffd600":(p.champ||0)>=.01?"#d4a020":"#667"}},fmt(p.champ||0)),
+            e("td",{style:{padding:"4px 8px",textAlign:"center",fontWeight:600,color:(p.title||0)>=.1?"#ff6b35":"#778"}},fmt(p.title||0)),
+            e("td",{style:{padding:"4px 8px",textAlign:"center",fontWeight:600,color:(p.f4||0)>=.1?"#00d4ff":"#778"}},fmt(p.f4||0)),
+            e("td",{style:{padding:"4px 8px",textAlign:"center",color:(p.e8||0)>=.2?"#00e676":"#778"}},fmt(p.e8||0)),
+            !isField?e("td",{style:{padding:"4px 8px",textAlign:"center",color:(p.s16||0)>=.5?"#e040fb":"#aab"}},fmt(p.s16||0)):null);})))));
   };
 
   // ════════ METHODOLOGY TAB ════════
