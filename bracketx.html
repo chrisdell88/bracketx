@@ -13,6 +13,8 @@
 <meta name="twitter:title" content="BracketX — Composite Power Index">
 <meta name="twitter:description" content="36 systems. 68 teams. 75% straight-up. 55.6% ATS. Better than KenPom.">
 <meta name="twitter:image" content="https://bracketx.co/og-image.png">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -132,6 +134,7 @@ const KP={"Duke":[38.9,65.3],"Michigan":[37.59,70.9],"Arizona":[37.66,69.8],"Flo
 const kpSpread=(a,b)=>{const ka=KP[a],kb=KP[b];if(!ka||!kb)return null;return+((ka[0]-kb[0])*(ka[1]+kb[1])/200).toFixed(1);};
 const BTV={"Duke":[128.2,90.8,65.8],"Michigan":[127.7,91.0,71.2],"Arizona":[126.9,91.4,70.0],"Florida":[126.1,92.3,70.4],"Houston":[125.3,92.4,63.3],"Iowa State":[123.8,92.6,67.0],"Purdue":[133.3,100.3,64.4],"Illinois":[131.9,98.2,65.7],"Gonzaga":[120.3,94.0,68.9],"UConn":[123.1,95.0,64.6],"Michigan State":[122.9,96.2,66.0],"St. John's":[119.8,94.1,69.6],"Virginia":[122.3,95.8,65.6],"Vanderbilt":[127.5,99.4,69.0],"Arkansas":[127.9,101.6,71.0],"Nebraska":[117.2,93.5,66.8],"Tennessee":[121.5,95.5,65.2],"Louisville":[124.0,98.2,69.7],"North Carolina":[121.4,100.0,68.0],"Wisconsin":[127.2,101.6,68.7],"Alabama":[129.5,102.8,73.1],"Kentucky":[119.9,100.0,68.3],"Texas Tech":[126.3,98.8,66.4],"UCLA":[124.6,101.8,64.7],"Ohio State":[125.2,101.6,66.2],"BYU":[124.8,104.3,69.8],"Saint Mary's":[119.4,97.5,65.3],"Georgia":[124.4,104.8,72.0],"Clemson":[116.6,97.0,64.3],"Saint Louis":[119.5,102.3,71.0],"Villanova":[119.6,100.5,64.9],"Santa Clara":[125.0,103.8,69.3],"NC State":[124.1,104.7,69.1],"TCU":[114.9,99.6,67.6],"Texas A&M":[119.9,101.4,71.0],"VCU":[119.3,103.0,68.7],"South Florida":[116.8,101.4,71.4],"SMU":[123.0,105.0,68.6],"Texas":[124.0,106.4,67.1],"Missouri":[119.9,103.0,66.4],"UCF":[120.0,105.7,69.1],"Akron":[117.2,105.4,70.3],"McNeese":[113.2,102.1,66.1],"Northern Iowa":[109.8,98.6,62.2],"Miami OH":[116.7,107.6,69.9],"High Point":[115.7,107.5,69.9],"Hofstra":[113.2,104.9,64.7],"Cal Baptist":[107.5,100.3,65.9],"Hawaii":[106.9,101.8,69.6],"North Dakota State":[111.4,106.0,66.4],"Wright State":[112.4,109.0,67.0],"Troy":[110.7,109.0,65.1],"Kennesaw State":[110.8,109.5,71.3],"Penn":[106.6,105.4,69.0],"Idaho":[108.8,106.2,67.4],"Tennessee State":[107.8,111.9,70.1],"Queens":[114.7,117.1,69.5],"Furman":[106.9,109.0,65.8],"UMBC":[107.6,109.2,66.0],"Siena":[107.2,108.9,64.6],"Howard":[103.5,106.2,69.0],"LIU":[103.6,109.8,67.8],"Lehigh":[102.6,112.8,66.9],"Prairie View A&M":[101.5,111.4,70.9],"Iowa":[122.1,100.2,63.0],"Utah State":[123.0,102.1,67.6],"Kansas":[117.8,94.4,67.6],"Miami FL":[121.1,101.5,67.9]};
 const btSpread=(a,b)=>{const ba=BTV[a],bb=BTV[b];if(!ba||!bb)return null;const em_a=ba[0]-ba[1],em_b=bb[0]-bb[1];return+((em_a-em_b)*(ba[2]+bb[2])/200).toFixed(1);};
+const BS={"Duke":28.5,"Michigan":30.5,"Houston":23.5,"Michigan State":15.5,"Illinois":21.5,"Gonzaga":21.5,"Nebraska":13.5,"Arkansas":15.5,"Wisconsin":10.5,"Vanderbilt":12.5,"Louisville":4.5,"North Carolina":2.5,"BYU":2.5,"Saint Mary's":2.5,"Ohio State":2.5,"Georgia":2.5,"Arizona":30.5,"Florida":32.0,"Iowa State":24.5,"Purdue":25.5,"UConn":20.5,"Virginia":17.5,"Alabama":11.5,"Kansas":14.5,"Texas Tech":7.5,"St. John's":9.5,"Tennessee":12.5,"Kentucky":3.5,"UCLA":5.5,"Miami FL":1.5,"Utah State":1.5,"Iowa":2.5};
 const SC={1:"#ffd700",2:"#00d4ff",3:"#00e676",4:"#ff6b35",5:"#e040fb",6:"#ff4081",7:"#40c4ff",8:"#ffab40",9:"#26c6da",10:"#ab47bc",11:"#ef5350",12:"#d4a574",13:"#90b4c8",14:"#8ed44e",15:"#ec407a",16:"#7986cb"};
 const TC=i=>ST[i]>=3?"#00d4ff":"#8ab4d0";
 const VC=(v,i)=>"#aab";
@@ -182,7 +185,8 @@ function App(){
     const xsp=+((h.xs-a.xs)*SF).toFixed(1);
     const prob=Math.round(NC((h.xs-a.xs)*WK)*100);
     const kps=kpSpread(m.h,m.a);const bts=btSpread(m.h,m.a);
-    return{...m,xsp,prob,hRk:h.rk,aRk:a.rk,kps,bts};
+    const bk=BS[m.h]||null;const edge=bk!=null?Math.abs(Math.abs(xsp)-bk):null;
+    return{...m,xsp,prob,hRk:h.rk,aRk:a.rk,kps,bts,bk,edge};
   }),[tMap]);
 
   const doSort=k=>{if(sk===k)setSd(d=>-d);else{setSk(k);setSd(1);}};
@@ -351,11 +355,11 @@ function App(){
       e("strong",{style:{color:"#00d4ff"}},"OUR LINE")," = composite-implied spread | ",e("strong",{style:{color:"#ffd600"}},"BOOK")," = sportsbook consensus | ",e("strong",{style:{color:"#00e676"}},"EDGE")," = value in points"),
     e("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(310px,1fr))",gap:10}},
       regM.map((m,i)=>{
-        const edge=m.xsp!=null?Math.abs(m.xsp):0;
+        const edgeVal=m.edge!=null?m.edge:0;
         return e("div",{key:i,style:{background:"#0e1218",borderRadius:8,padding:"12px 14px",border:"1px solid #1a2a3a",borderLeft:"3px solid "+RC[m.r]}},
           e("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:6}},
             e("span",{style:{fontSize:9,color:RC[m.r],letterSpacing:2,fontWeight:600}},m.r.toUpperCase()),
-            edge>=5?e("span",{style:{fontSize:8,background:"rgba(0,230,118,.12)",color:"#00e676",padding:"2px 8px",borderRadius:8,fontWeight:700}},"EDGE +"+Math.abs(m.xsp)):null),
+            edgeVal>=3?e("span",{style:{fontSize:8,background:edgeVal>=5?"rgba(0,230,118,.12)":"rgba(255,214,0,.12)",color:edgeVal>=5?"#00e676":"#ffd600",padding:"2px 8px",borderRadius:8,fontWeight:700}},"EDGE "+edgeVal.toFixed(1)):null),
           e("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:3}},
             e("span",{style:{fontFamily:"Outfit",fontWeight:700,fontSize:14,color:"#fff",display:"flex",alignItems:"center",gap:5}},LOGOS[m.h]?e("img",{src:"https://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/"+LOGOS[m.h]+".png&h=20&w=20",style:{width:20,height:20,borderRadius:3}}):null,"("+m.hs+") "+m.h),
             e("span",{style:{fontSize:13,fontWeight:700,color:"#00e676"}},(m.prob||95)+"%")),
@@ -370,7 +374,7 @@ function App(){
               e("span",null,e("span",{style:{color:"#556"}},"KP: "),e("span",{style:{color:"#ff6b35",fontWeight:700}},m.kps!=null?(m.kps>0?m.h:m.a)+" "+(-Math.abs(m.kps)).toFixed(1):"--"))),
             e("div",{style:{display:"flex",justifyContent:"space-between"}},
               e("span",null,e("span",{style:{color:"#556"}},"X-Spread: "),e("span",{style:{color:"#00d4ff",fontWeight:700}},m.xsp!=null?(m.xsp>0?m.h:m.a)+" "+(-Math.abs(m.xsp)).toFixed(1):"--")),
-              e("span",null,e("span",{style:{color:"#556"}},"Book: "),e("span",{style:{color:"#ffd600"}},"TBD")))));
+              e("span",null,e("span",{style:{color:"#556"}},"Book: "),e("span",{style:{color:"#ffd600",fontWeight:700}},m.bk!=null?m.h+" -"+m.bk:"--")))));
       })));
 
   // ════════ FUTURES TAB ════════
@@ -486,16 +490,17 @@ function App(){
       e("div",{style:{background:"#0e1218",border:"1px solid #00d4ff44",borderRadius:8,padding:14,marginBottom:16}},
         e("h3",{style:{fontFamily:"Outfit",fontSize:14,fontWeight:800,color:"#00d4ff",marginBottom:10}},"04 \u2014 2026 FIRST ROUND BACKTEST"),
         e("p",{style:{marginBottom:10,color:"#fff"}},"All 36 games \u2014 4 Play-In + 32 Round of 64 (March 17\u201320, 2026):"),
-        e("table",{style:{width:"100%",borderCollapse:"collapse",fontSize:11,marginBottom:12}},
+        e("div",{style:{overflowX:"auto"}},
+        e("table",{style:{width:"100%",borderCollapse:"collapse",fontSize:10,marginBottom:12,minWidth:360}},
           e("thead",null,e("tr",{style:{borderBottom:"1px solid #2a3a4a"}},
-            ["Metric","X-Score","KenPom","BartTorvik","Vegas Close"].map(h=>e("th",{key:h,style:{padding:"6px 8px",textAlign:h==="Metric"?"left":"center",color:h==="X-Score"?"#00d4ff":"#889",fontWeight:700,fontSize:10}},h)))),
+            ["","X","KP","BT","Vegas"].map(h=>e("th",{key:h,style:{padding:"5px 6px",textAlign:h===""?"left":"center",color:h==="X"?"#00d4ff":"#889",fontWeight:700,fontSize:9}},h)))),
           e("tbody",null,
-            [["Straight-Up Record","27-9 (75.0%)","26-10 (72.2%)","26-10 (72.2%)","26-10 (72.2%)"],
-             ["Mean Absolute Error","9.76 pts","9.85 pts","9.87 pts","9.88 pts"],
-             ["Median Abs Error","8.65 pts","9.84 pts","9.04 pts","9.50 pts"],
-             ["ATS Record","20-16 (55.6%)","17-19 (47.2%)","19-17 (52.8%)","\u2014"]].map((row,i)=>
+            [["SU Record","27-9 (75%)","26-10 (72%)","26-10 (72%)","26-10 (72%)"],
+             ["MAE","9.76","9.85","9.87","9.88"],
+             ["Median AE","8.65","9.84","9.04","9.50"],
+             ["ATS","20-16 (56%)","17-19 (47%)","19-17 (53%)","\u2014"]].map((row,i)=>
               e("tr",{key:i,style:{borderBottom:"1px solid #1a2a3a",background:i%2===0?"#0e1218":"#0d1117"}},
-                row.map((c,j)=>e("td",{key:j,style:{padding:"5px 8px",textAlign:j===0?"left":"center",color:j===1?"#00d4ff":j===0?"#fff":"#aab",fontWeight:j<=1?700:400}},c)))))),
+                row.map((c,j)=>e("td",{key:j,style:{padding:"4px 6px",textAlign:j===0?"left":"center",color:j===1?"#00d4ff":j===0?"#fff":"#aab",fontWeight:j<=1?700:400}},c))))))),
         e("div",{style:{marginTop:10,background:"#161b22",borderRadius:6,padding:12,marginBottom:12}},
           e("div",{style:{fontSize:11,color:"#ffd600",fontWeight:700,marginBottom:6}},"\u2705 X-SCORE LEADS EVERY CATEGORY"),
           e("div",{style:{fontSize:10,color:"#ccd",lineHeight:1.8}},
@@ -628,9 +633,9 @@ function App(){
 
   // ════════ MAIN RENDER ════════
   return e("div",{style:{background:"#0d1117",minHeight:"100vh",color:"#c8d0d8",fontFamily:"'DM Mono',monospace"}},
-    e("div",{style:{padding:"18px 16px 0",borderBottom:"1px solid #161b22",background:"#0d1117"}},
+    e("div",{style:{padding:"24px 16px 0",borderBottom:"1px solid #1a2a3a",background:"#0d1117"}},
       e("div",{style:{maxWidth:1600,margin:"0 auto"}},
-        e("div",{style:{display:"flex",alignItems:"baseline",gap:10,marginBottom:10}},
+        e("div",{style:{display:"flex",alignItems:"baseline",gap:10,marginBottom:8}},
           e("span",{style:{fontFamily:"Outfit",fontSize:30,fontWeight:900,color:"#fff",letterSpacing:-1}},"BRACKET",e("span",{style:{color:"#00d4ff"}},"X")),
           e("span",{style:{fontFamily:"DM Mono",fontSize:13,fontWeight:500,color:"#ffd600",letterSpacing:2}},"COMPOSITE POWER INDEX")),
         e("div",{style:{fontSize:9,color:"#8899aa",letterSpacing:1,marginBottom:6,fontFamily:"DM Mono"}},"48 SYSTEMS \u00B7 68 TEAMS \u00B7 INJURY-ADJUSTED \u00B7 UPDATED DAILY"),
@@ -638,19 +643,16 @@ function App(){
           ["rankings","matchups","futures","methodology"].map(v=>
             e("button",{key:v,onClick:()=>setTab(v),style:{padding:"7px 16px",fontFamily:"DM Mono",fontSize:11,fontWeight:tab===v?700:400,letterSpacing:1,color:tab===v?"#fff":"#8899aa",borderBottom:tab===v?"2px solid #00d4ff":"2px solid transparent",textTransform:"uppercase"}},v))))),
     e("div",{style:{maxWidth:1600,margin:"0 auto",padding:"12px 16px 50px",background:"#0d1117"}},
-      tab!=="methodology"?e("div",{style:{display:"flex",gap:6,marginBottom:12,flexWrap:"wrap",alignItems:"center"}},
+      tab!=="methodology"?e("div",{style:{display:"flex",gap:6,marginBottom:8,flexWrap:"wrap",alignItems:"center"}},
         ["All","East","South","West","Midwest"].map(r=>
-          e("button",{key:r,onClick:()=>setReg(r),style:{padding:"4px 14px",borderRadius:16,fontFamily:"DM Mono",fontSize:10,fontWeight:reg===r?700:400,letterSpacing:1,background:reg===r?(r==="All"?"rgba(255,255,255,.1)":(RC[r]+"18")):"rgba(255,255,255,.02)",color:reg===r?(r==="All"?"#fff":RC[r]):"#8899aa",border:"1px solid "+(reg===r?(r==="All"?"rgba(255,255,255,.2)":(RC[r]+"33")):"rgba(255,255,255,.04)"),textTransform:"uppercase"}},r)),
-        tab==="rankings"?e("button",{onClick:()=>setShowKey(!showKey),style:{marginLeft:"auto",padding:"4px 10px",borderRadius:4,fontFamily:"DM Mono",fontSize:9,background:"rgba(0,212,255,.08)",color:"#00d4ff",border:"1px solid rgba(0,212,255,.2)",letterSpacing:1}},"RATINGS KEY"):null):null,
-      tab==="rankings"?e("div",{style:{display:"flex",gap:10,marginBottom:10,alignItems:"center",flexWrap:"wrap",justifyContent:"space-between"}},
-        e("div",{style:{fontSize:9,color:"#8899aa",lineHeight:1.6}},
+          e("button",{key:r,onClick:()=>setReg(r),style:{padding:"4px 14px",borderRadius:16,fontFamily:"DM Mono",fontSize:10,fontWeight:reg===r?700:400,letterSpacing:1,background:reg===r?(r==="All"?"rgba(255,255,255,.1)":(RC[r]+"18")):"rgba(255,255,255,.02)",color:reg===r?(r==="All"?"#fff":RC[r]):"#8899aa",border:"1px solid "+(reg===r?(r==="All"?"rgba(255,255,255,.2)":(RC[r]+"33")):"rgba(255,255,255,.04)"),textTransform:"uppercase"}},r))):null,
+      tab==="rankings"?e("div",{style:{display:"flex",gap:8,marginBottom:8,padding:"8px 12px",background:"#0e1218",borderRadius:6,border:"1px solid #1a2a3a",alignItems:"center",flexWrap:"wrap",justifyContent:"space-between"}},
+        e("div",{style:{fontSize:9,color:"#8899aa",lineHeight:1.6,flex:1}},
           e("span",{style:{color:"#00d4ff",fontWeight:700}},"X-Score")," = Composite Power Rating from 36 efficiency models. ",
-          e("span",{style:{color:"#00e676"}},"Green"),"/",e("span",{style:{color:"#ff4444"}},"Red")," highlights = 10+ rank difference vs X-Score. ",
-          e("span",{style:{color:"#8899aa"}},"Scroll right \u2192 to see all 48 systems.")),
-        e("div",{style:{fontSize:9,color:"#556",display:"flex",gap:8}},
-          e("span",null,e("span",{style:{color:"#00d4ff"}},"\u25CF")," T1"),
-          e("span",null,e("span",{style:{color:"#8ab4d0"}},"\u25CF")," T2"),
-          e("span",null,e("span",{style:{color:"#b8a0d0"}},"\u25CF")," Compare"))):null,
+          e("span",{style:{color:"#00e676"}},"Green"),"/",e("span",{style:{color:"#ff4444"}},"Red")," highlights = 10+ rank difference. Scroll right \u2192 to see all 48 systems."),
+        e("div",{style:{display:"flex",gap:8,alignItems:"center"}},
+          e("span",{style:{fontSize:8,color:"#8899aa"}},e("span",{style:{color:"#00d4ff"}},"\u25CF")," T1 ",e("span",{style:{color:"#8ab4d0"}},"\u25CF")," T2 ",e("span",{style:{color:"#b8a0d0"}},"\u25CF")," Compare"),
+          e("button",{onClick:()=>setShowKey(!showKey),style:{padding:"3px 8px",borderRadius:4,fontFamily:"DM Mono",fontSize:8,background:"rgba(0,212,255,.08)",color:"#00d4ff",border:"1px solid rgba(0,212,255,.2)",letterSpacing:1}},"RATINGS KEY"))):null,
       tab==="rankings"?rankingsTab():
       tab==="bracket"?bracketTab():
       tab==="matchups"?matchupsTab():
