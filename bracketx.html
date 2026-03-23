@@ -351,8 +351,8 @@ function App(){
 
   // ════════ MATCHUPS TAB ════════
   const matchupsTab=()=>e("div",null,
-    e("div",{style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:6,padding:"7px 12px",marginBottom:12,fontSize:10,color:"#5a6a7a"}},
-      e("strong",{style:{color:"#00d4ff"}},"OUR LINE")," = composite-implied spread | ",e("strong",{style:{color:"#ffd600"}},"BOOK")," = sportsbook consensus | ",e("strong",{style:{color:"#00e676"}},"EDGE")," = value in points"),
+    e("div",{style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:6,padding:"7px 12px",marginBottom:12,fontSize:10,color:"#8899aa"}},
+      e("strong",{style:{color:"#00d4ff"}},"X")," = composite-implied spread | ",e("strong",{style:{color:"#ffd600"}},"BOOK")," = sportsbook closing line | ",e("strong",{style:{color:"#00e676"}},"EDGE")," = difference in points"),
     e("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(310px,1fr))",gap:10}},
       regM.map((m,i)=>{
         const edgeVal=m.edge!=null?m.edge:0;
@@ -361,10 +361,10 @@ function App(){
             e("span",{style:{fontSize:9,color:RC[m.r],letterSpacing:2,fontWeight:600}},m.r.toUpperCase()),
             edgeVal>=3?e("span",{style:{fontSize:8,background:edgeVal>=5?"rgba(0,230,118,.12)":"rgba(255,214,0,.12)",color:edgeVal>=5?"#00e676":"#ffd600",padding:"2px 8px",borderRadius:8,fontWeight:700}},"EDGE "+edgeVal.toFixed(1)):null),
           e("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:3}},
-            e("span",{style:{fontFamily:"Outfit",fontWeight:700,fontSize:14,color:"#fff",display:"flex",alignItems:"center",gap:5}},LOGOS[m.h]?e("img",{src:"https://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/"+LOGOS[m.h]+".png&h=20&w=20",style:{width:20,height:20,borderRadius:3,background:"rgba(255,255,255,.12)",padding:1}}):null,"("+m.hs+") "+m.h,tMap[m.h]?e("span",{style:{fontSize:8,color:"#667",fontWeight:400,marginLeft:4}},tMap[m.h].cf+" "+tMap[m.h].rec):null),
+            e("span",{style:{fontFamily:"Outfit",fontWeight:700,fontSize:14,color:"#fff",display:"flex",alignItems:"center",gap:5}},LOGOS[m.h]?e("img",{src:"https://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/"+LOGOS[m.h]+".png&h=20&w=20",style:{width:20,height:20,borderRadius:3,background:"rgba(255,255,255,.12)",padding:1}}):null,"("+m.hs+") "+m.h,tMap[m.h]?e("span",{style:{fontSize:8,color:"#8899aa",fontWeight:400,marginLeft:4}},tMap[m.h].cf+" \u00B7 "+tMap[m.h].rec):null),
             e("span",{style:{fontSize:13,fontWeight:700,color:"#00e676"}},(m.prob||95)+"%")),
           e("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:6}},
-            e("span",{style:{fontSize:11,color:"#aab",display:"flex",alignItems:"center",gap:5}},LOGOS[m.a]?e("img",{src:"https://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/"+LOGOS[m.a]+".png&h=16&w=16",style:{width:16,height:16,borderRadius:2,background:"rgba(255,255,255,.12)",padding:1}}):null,"("+m.as+") "+m.a,tMap[m.a]?e("span",{style:{fontSize:8,color:"#556",fontWeight:400,marginLeft:4}},tMap[m.a].cf+" "+tMap[m.a].rec):null),
+            e("span",{style:{fontSize:11,color:"#aab",display:"flex",alignItems:"center",gap:5}},LOGOS[m.a]?e("img",{src:"https://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/"+LOGOS[m.a]+".png&h=16&w=16",style:{width:16,height:16,borderRadius:2,background:"rgba(255,255,255,.12)",padding:1}}):null,"("+m.as+") "+m.a,tMap[m.a]?e("span",{style:{fontSize:8,color:"#8899aa",fontWeight:400,marginLeft:4}},tMap[m.a].cf+" \u00B7 "+tMap[m.a].rec):null),
             e("span",{style:{fontSize:11,color:"#ff6b35"}},(100-(m.prob||95))+"%")),
           e("div",{style:{display:"flex",height:3,borderRadius:2,overflow:"hidden",background:"#1a2a3a",marginBottom:8}},
             e("div",{style:{width:(m.prob||95)+"%",background:"linear-gradient(90deg,#00e676,#00d4ff)"}})),
@@ -445,7 +445,7 @@ function App(){
       if(sk==="s16")return sd*(pb.s16-pa.s16);return a.rk-b.rk;
     });
     return e("div",null,
-      e("div",{style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:6,padding:"7px 12px",marginBottom:12,fontSize:10,color:"#5a6a7a"}},
+      e("div",{style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:6,padding:"7px 12px",marginBottom:12,fontSize:10,color:"#8899aa"}},
         e("strong",{style:{color:"#ffd600"}},"FUTURES:")," Composite-implied probability to reach each round based on full bracket-path simulation using X-Scores."),
       e("div",{style:{overflowX:"auto",background:"#0d1117"}},
         e("table",{style:{width:"100%",borderCollapse:"collapse",fontSize:11,background:"#0d1117"}},
@@ -454,7 +454,7 @@ function App(){
           e("tbody",null,sorted.map((t,i)=>{const p=probs[t.nm];return e("tr",{key:t.nm,style:{borderBottom:"1px solid rgba(255,255,255,.02)",background:i%2===0?"#0e1218":"#0d1117"}},
             e("td",{style:{padding:"4px 8px",fontWeight:700,color:"#00d4ff",textAlign:"center"}},t.rk),
             e("td",{style:{padding:"4px 8px",color:RC[t.rg],textAlign:"center"}},t.s),
-            e("td",{style:{padding:"4px 8px",fontFamily:"Outfit",fontWeight:600,color:"#fff",display:"flex",alignItems:"center",gap:6}},LOGOS[t.nm]?e("img",{src:"https://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/"+LOGOS[t.nm]+".png&h=20&w=20",style:{width:20,height:20,borderRadius:3,background:"rgba(255,255,255,.12)",padding:1}}):null,e("span",null,t.nm," ",e("span",{style:{fontSize:8,color:"#556"}},t.cf))),
+            e("td",{style:{padding:"4px 8px",fontFamily:"Outfit",fontWeight:600,color:"#fff",display:"flex",alignItems:"center",gap:6}},LOGOS[t.nm]?e("img",{src:"https://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/"+LOGOS[t.nm]+".png&h=20&w=20",style:{width:20,height:20,borderRadius:3,background:"rgba(255,255,255,.12)",padding:1}}):null,e("span",null,t.nm,e("span",{style:{fontSize:8,color:"#8899aa",marginLeft:6}},t.cf+" \u00B7 "+t.rec))),
             e("td",{style:{padding:"4px 8px",textAlign:"center",fontWeight:700,color:p.champ>=.1?"#ffd600":p.champ>=.01?"#d4a020":"#667"}},fmt(p.champ)),
             e("td",{style:{padding:"4px 8px",textAlign:"center",fontWeight:600,color:p.title>=.1?"#ff6b35":"#778"}},fmt(p.title)),
             e("td",{style:{padding:"4px 8px",textAlign:"center",fontWeight:600,color:p.f4>=.1?"#00d4ff":"#778"}},fmt(p.f4)),
@@ -640,7 +640,7 @@ function App(){
         e("div",{style:{display:"flex",alignItems:"baseline",gap:10,marginBottom:8}},
           e("span",{style:{fontFamily:"Outfit",fontSize:30,fontWeight:900,color:"#fff",letterSpacing:-1}},"BRACKET",e("span",{style:{color:"#00d4ff"}},"X")),
           e("span",{style:{fontFamily:"DM Mono",fontSize:13,fontWeight:500,color:"#ffd600",letterSpacing:2}},"COMPOSITE POWER INDEX")),
-        e("div",{style:{fontSize:9,color:"#8899aa",letterSpacing:1,marginBottom:12,fontFamily:"DM Mono"}},"48 SYSTEMS \u00B7 68 TEAMS \u00B7 INJURY-ADJUSTED \u00B7 UPDATED DAILY"),
+        e("div",{style:{fontSize:9,color:"#8899aa",letterSpacing:1,marginBottom:16,fontFamily:"DM Mono"}},"48 SYSTEMS \u00B7 68 TEAMS \u00B7 INJURY-ADJUSTED \u00B7 UPDATED DAILY"),
         e("div",{style:{display:"flex",gap:0}},
           ["rankings","matchups","futures","methodology"].map(v=>
             e("button",{key:v,onClick:()=>setTab(v),style:{padding:"7px 16px",fontFamily:"DM Mono",fontSize:11,fontWeight:tab===v?700:400,letterSpacing:1,color:tab===v?"#fff":"#8899aa",borderBottom:tab===v?"2px solid #00d4ff":"2px solid transparent",textTransform:"uppercase"}},v))))),
@@ -657,7 +657,8 @@ function App(){
             e("span",null,e("span",{style:{color:"#00d4ff"}},"\u25CF")," T1 Efficiency"),
             e("span",null,e("span",{style:{color:"#8ab4d0"}},"\u25CF")," T2 Regression"),
             e("span",null,e("span",{style:{color:"#b8a0d0"}},"\u25CF")," Compare")),
-          e("button",{onClick:()=>setShowKey(!showKey),style:{padding:"4px 10px",borderRadius:4,fontFamily:"DM Mono",fontSize:9,background:"rgba(0,212,255,.08)",color:"#00d4ff",border:"1px solid rgba(0,212,255,.2)",letterSpacing:1}},"RATINGS KEY"))):null,
+          e("button",{onClick:()=>setShowKey(!showKey),style:{padding:"4px 10px",borderRadius:4,fontFamily:"DM Mono",fontSize:9,background:"rgba(0,212,255,.08)",color:"#00d4ff",border:"1px solid rgba(0,212,255,.2)",letterSpacing:1}},"RATINGS KEY")),
+        e("div",{style:{height:8}})):null,
       tab==="rankings"?rankingsTab():
       tab==="bracket"?bracketTab():
       tab==="matchups"?matchupsTab():
