@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BracketX — Composite Power Index</title>
 <meta property="og:title" content="BracketX — Composite Power Index">
-<meta property="og:description" content="48 ranking systems. 68 teams. 79.2% straight-up. 56.8% ATS (profitable). Beats KenPom and BartTorvik on every metric in the 2026 NCAA Tournament.">
+<meta property="og:description" content="46 ranking systems. 68 teams. 79.2% straight-up. 56.8% ATS (profitable). Beats KenPom and BartTorvik on every metric in the 2026 NCAA Tournament.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://bracketx.co">
 <meta property="og:image" content="https://bracketx.co/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="BracketX — Composite Power Index">
-<meta name="twitter:description" content="48 systems. 79.2% SU. 56.8% ATS. KenPom went 15-21 ATS and lost money. We went 25-19 and profited. bracketx.co">
+<meta name="twitter:description" content="46 systems. 79.2% SU. 56.8% ATS. KenPom went 15-21 ATS and lost money. We went 25-19 and profited. bracketx.co">
 <meta name="twitter:image" content="https://bracketx.co/og-image.png">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -503,10 +503,10 @@ function App(){
 
   // ════════ RESULTS TRACKER TAB ════════
   const TRACKER=[
-{rd:"PI",fav:"Texas",dog:"Lehigh",fs:73,ds:49,cl:null,xs:24.7,kps:19.7,bts:18.6,xSU:"W",kpSU:"W",btSU:"W",xATS:"--",kpATS:"--",btATS:"--"},
-{rd:"PI",fav:"Iowa",dog:"Penn",fs:82,ds:68,cl:null,xs:18.2,kps:13.8,bts:13.7,xSU:"W",kpSU:"W",btSU:"W",xATS:"--",kpATS:"--",btATS:"--"},
-{rd:"PI",fav:"Miami OH",dog:"Howard",fs:69,ds:62,cl:null,xs:13.1,kps:8.0,bts:8.2,xSU:"W",kpSU:"W",btSU:"W",xATS:"--",kpATS:"--",btATS:"--"},
-{rd:"PI",fav:"Tennessee State",dog:"Cal Baptist",fs:65,ds:60,cl:null,xs:-7.1,kps:-5.3,bts:-7.7,xSU:"L",kpSU:"L",btSU:"L",xATS:"--",kpATS:"--",btATS:"--"},
+{rd:"PI",fav:"Texas",dog:"Lehigh",fs:73,ds:49,cl:13.5,xs:24.7,kps:19.7,bts:18.6,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"W",btATS:"W"},
+{rd:"PI",fav:"Iowa",dog:"Penn",fs:82,ds:68,cl:9.5,xs:18.2,kps:13.8,bts:13.7,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"W",btATS:"W"},
+{rd:"PI",fav:"Miami OH",dog:"Howard",fs:69,ds:62,cl:5.5,xs:13.1,kps:8.0,bts:8.2,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"W",btATS:"W"},
+{rd:"PI",fav:"Tennessee State",dog:"Cal Baptist",fs:65,ds:60,cl:2.5,xs:-7.1,kps:-5.3,bts:-7.7,xSU:"L",kpSU:"L",btSU:"L",xATS:"L",kpATS:"L",btATS:"L"},
 {rd:"R64",fav:"Duke",dog:"Siena",fs:71,ds:65,cl:28.5,xs:36.6,kps:26.6,bts:25.5,xSU:"W",kpSU:"W",btSU:"W",xATS:"L",kpATS:"W",btATS:"W"},
 {rd:"R64",fav:"Michigan State",dog:"North Dakota State",fs:92,ds:67,cl:15.5,xs:21.4,kps:15.3,bts:14.1,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"PUSH",btATS:"L"},
 {rd:"R64",fav:"Louisville",dog:"South Florida",fs:83,ds:79,cl:6.5,xs:6.9,kps:6.4,bts:7.3,xSU:"W",kpSU:"W",btSU:"W",xATS:"PUSH",kpATS:"PUSH",btATS:"L"},
@@ -639,7 +639,9 @@ function App(){
         e("div",{style:{background:"#161b22",borderRadius:6,padding:10,fontFamily:"DM Mono",fontSize:12,color:"#00d4ff",marginBottom:8,textAlign:"center"}},"X-Spread = Team A\u2019s X-Score \u2212 Team B\u2019s X-Score"),
         e("p",{style:{marginBottom:6}},"The X-Spread is a projected point spread for any matchup. A proprietary scaling factor, calibrated against KenPom, BartTorvik, and sportsbook closing lines, converts the raw X-Score differential into points."),
         e("p",{style:{marginBottom:6}},"Win probability is derived from the X-Spread using industry-standard conversion (the same approach used by KenPom and sportsbooks). A spread of 5 points translates to roughly 68% win probability; 10 points to ~82%; 15 points to ~91%."),
-        e("p",null,"The scaling factor is recalibrated each round of the tournament as new game data becomes available.")),
+        e("p",{style:{marginBottom:6}},"The scaling factor is recalibrated each round of the tournament as new game data becomes available."),
+        e("p",{style:{marginBottom:6,color:"#ffd600"}},"Sportsbook Data Sources:"),
+        e("p",null,"Closing line spreads are sourced from the-odds-api.com, which aggregates lines from FanDuel, DraftKings, BetOnline, MyBookie, LowVig, and other major US sportsbooks. The consensus closing line (median across books) is used for ATS comparisons.")),
       e("div",{style:{background:"#0e1218",border:"1px solid #00d4ff44",borderRadius:8,padding:14,marginBottom:16}},
         e("h3",{style:{fontFamily:"Outfit",fontSize:14,fontWeight:800,color:"#00d4ff",marginBottom:10}},"04 \u2014 2026 TOURNAMENT RESULTS"),
         e("p",{style:{marginBottom:6,color:"#fff"}},"48 games with closing lines \u2014 Round of 64 + Round of 32 (March 19\u201323, 2026)"),
@@ -935,7 +937,7 @@ function App(){
         e("div",{style:{display:"flex",alignItems:"baseline",gap:10,marginBottom:8}},
           e("span",{onClick:()=>{setTab("rankings");setReg("All");},style:{fontFamily:"Outfit",fontSize:30,fontWeight:900,color:"#fff",letterSpacing:-1,cursor:"pointer"}},"BRACKET",e("span",{style:{color:"#00d4ff"}},"X")),
           e("span",{style:{fontFamily:"DM Mono",fontSize:13,fontWeight:500,color:"#ffd600",letterSpacing:2}},"COMPOSITE POWER INDEX")),
-        e("div",{style:{fontSize:9,color:"#8899aa",letterSpacing:1,marginBottom:10,fontFamily:"DM Mono"}},"58 SYSTEMS \u00B7 68 TEAMS \u00B7 INJURY-ADJUSTED \u00B7 UPDATED DAILY"),
+        e("div",{style:{fontSize:9,color:"#8899aa",letterSpacing:1,marginBottom:10,fontFamily:"DM Mono"}},"46 SYSTEMS \u00B7 86 METRICS \u00B7 68 TEAMS \u00B7 INJURY-ADJUSTED \u00B7 UPDATED DAILY"),
         e("div",{style:{overflow:"hidden",marginBottom:10,borderTop:"1px solid #1a2a3a",borderBottom:"1px solid #1a2a3a",background:"#0a0e14"}},
           e("div",{style:{display:"flex",gap:0,animation:"scroll 30s linear infinite",whiteSpace:"nowrap"}},
             [...BRACKET_S16,...BRACKET_S16].map((m,i)=>{
@@ -949,8 +951,9 @@ function App(){
                 e("span",{style:{color:"#556"}},"vs"),
                 LOGOS[m.a]?e("img",{src:"https://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/"+LOGOS[m.a]+".png&h=16&w=16",style:{width:16,height:16,borderRadius:2}}):null,
                 e("span",{style:{color:"#aab",fontWeight:600,fontSize:10}},m.a),
-                e("span",{style:{color:"#00d4ff",fontWeight:700,fontFamily:"DM Mono",fontSize:9}},favTeam+" -"+favSpread),
-                bk?e("span",{style:{color:"#ffd600",fontSize:8,fontFamily:"DM Mono"}},"BK -"+bk):null,
+                e("span",{style:{color:"#00d4ff",fontWeight:700,fontFamily:"DM Mono",fontSize:9}},"X: "+favTeam+" -"+favSpread),
+                bk?e("span",{style:{color:"#ffd600",fontSize:8,fontFamily:"DM Mono"}},"BOOK: -"+bk):null,
+                bk?e("span",{style:{color:Math.abs(favSpread-bk)>=3?"#00e676":Math.abs(favSpread-bk)>=1.5?"#ffd600":"#556",fontSize:8,fontWeight:700,fontFamily:"DM Mono"}},"EDGE: "+Math.abs(favSpread-bk).toFixed(1)):null,
                 e("span",{style:{color:"#556",fontSize:8}},m.d+" "+m.t));}))),
         e("div",{style:{display:"flex",gap:0}},
           ["rankings","matchups","futures","results","methodology"].map(v=>
@@ -976,8 +979,8 @@ function App(){
         e("div",{style:{display:"flex",gap:6,alignItems:"center",flexWrap:"wrap"}},
           e("span",{style:{fontSize:9,color:"#8899aa",marginRight:4,letterSpacing:1}},"SHARE"),
           e("button",{onClick:()=>{navigator.clipboard.writeText("https://bracketx.co").then(()=>alert("Link copied!"))},style:{padding:"4px 10px",borderRadius:4,fontSize:9,fontFamily:"DM Mono",background:"rgba(0,212,255,.1)",color:"#00d4ff",border:"1px solid rgba(0,212,255,.25)"}},"Copy Link"),
-          e("button",{onClick:()=>window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent("BracketX: 48 systems. 68 teams. One composite score.\n\n75% straight-up in the first round. 55.6% ATS. Beat KenPom, BartTorvik & Vegas.\n\nbracketx.co"),"_blank"),style:{padding:"4px 10px",borderRadius:4,fontSize:9,fontFamily:"DM Mono",background:"rgba(29,161,242,.15)",color:"#1da1f2",border:"1px solid rgba(29,161,242,.3)"}},"X"),
-          e("button",{onClick:()=>window.open("sms:?&body="+encodeURIComponent("Check out BracketX \u2014 48 systems, 68 teams, one composite power index. Beat KenPom & Vegas in the first round. bracketx.co")),style:{padding:"4px 10px",borderRadius:4,fontSize:9,fontFamily:"DM Mono",background:"rgba(0,230,118,.12)",color:"#00e676",border:"1px solid rgba(0,230,118,.3)"}},"Text"),
+          e("button",{onClick:()=>window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent("BracketX: 46 systems. 68 teams. One composite score.\n\n75% straight-up in the first round. 55.6% ATS. Beat KenPom, BartTorvik & Vegas.\n\nbracketx.co"),"_blank"),style:{padding:"4px 10px",borderRadius:4,fontSize:9,fontFamily:"DM Mono",background:"rgba(29,161,242,.15)",color:"#1da1f2",border:"1px solid rgba(29,161,242,.3)"}},"X"),
+          e("button",{onClick:()=>window.open("sms:?&body="+encodeURIComponent("Check out BracketX \u2014 46 systems, 68 teams, one composite power index. Beat KenPom & Vegas in the first round. bracketx.co")),style:{padding:"4px 10px",borderRadius:4,fontSize:9,fontFamily:"DM Mono",background:"rgba(0,230,118,.12)",color:"#00e676",border:"1px solid rgba(0,230,118,.3)"}},"Text"),
           e("button",{onClick:()=>window.open("mailto:?subject="+encodeURIComponent("BracketX \u2014 Composite Power Index")+"&body="+encodeURIComponent("Check out BracketX \u2014 48 rating systems combined into one composite power index. Outperformed KenPom, BartTorvik, and Vegas closing lines in the 2026 NCAA Tournament.\n\nhttps://bracketx.co")),style:{padding:"4px 10px",borderRadius:4,fontSize:9,fontFamily:"DM Mono",background:"rgba(255,107,53,.12)",color:"#ff6b35",border:"1px solid rgba(255,107,53,.3)"}},"Email")),
         e("span",{style:{fontSize:9,color:"#8899aa"}},"Chris Dell: Founder"))),
     keyModal,teamModal,previewEl);
