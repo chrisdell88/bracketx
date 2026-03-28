@@ -19,6 +19,8 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 @keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.ticker-wrap::-webkit-scrollbar{display:none}.ticker-wrap{-ms-overflow-style:none;scrollbar-width:none}
+@media(pointer:coarse){.ticker-wrap>div{animation-play-state:paused!important}}
 html,body,#root,#root>div{background:#0d1117!important;color:#c8d0d8;font-family:'DM Mono',monospace;min-height:100vh}
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-track{background:#0d1117}
@@ -358,7 +360,7 @@ function App(){
         return e("div",{key:i,style:{background:"#0e1218",borderRadius:8,padding:"12px 14px",border:"1px solid #1a2a3a",borderLeft:"3px solid "+RC[m.r]}},
           e("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:6}},
             e("span",{style:{fontSize:9,color:RC[m.r],letterSpacing:2,fontWeight:600}},m.r.toUpperCase()),
-            edgeVal>=3?e("span",{style:{fontSize:8,background:edgeVal>=5?"rgba(0,230,118,.12)":"rgba(255,214,0,.12)",color:edgeVal>=5?"#00e676":"#ffd600",padding:"2px 8px",borderRadius:8,fontWeight:700}},"EDGE "+edgeVal.toFixed(1)):null),
+            edgeVal>=1?e("span",{style:{fontSize:8,background:"rgba(0,230,118,.15)",color:"#00e676",padding:"2px 8px",borderRadius:8,fontWeight:700}},"EDGE "+edgeVal.toFixed(1)):null),
           e("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:3}},
             e("span",{style:{fontFamily:"Outfit",fontWeight:700,fontSize:14,color:"#fff",display:"flex",alignItems:"center",gap:5}},LOGOS[m.h]?e("img",{src:"https://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/"+LOGOS[m.h]+".png&h=20&w=20",style:{width:20,height:20,borderRadius:3,background:"transparent"}}):null,"("+m.hs+") "+m.h,tMap[m.h]?e("span",{style:{fontSize:8,color:"#8899aa",fontWeight:400,marginLeft:4}},tMap[m.h].cf+" \u00B7 "+tMap[m.h].rec):null),
             e("span",{style:{fontSize:13,fontWeight:700,color:"#00e676"}},(m.prob||95)+"%")),
@@ -381,7 +383,7 @@ function App(){
               e("span",null,e("span",{style:{color:"#00d4ff"}},"X "),e("span",{style:{color:"#00d4ff",fontWeight:700}},m.xsp!=null?(m.xsp>0?m.h:m.a)+" "+(-Math.abs(m.xsp)).toFixed(1):"--")),
               e("span",null,e("span",{style:{color:"#ffd600"}},"Book "),e("span",{style:{color:"#ffd600",fontWeight:700}},m.bk!=null?m.h+" -"+m.bk:"TBD"))),
             e("div",{style:{display:"flex",justifyContent:"space-between",marginTop:3}},
-              e("span",null,e("span",{style:{color:"#00e676"}},"Edge "),e("span",{style:{color:m.edge!=null&&m.edge>=5?"#00e676":m.edge!=null&&m.edge>=3?"#ffd600":"#8899aa",fontWeight:700}},m.edge!=null?(()=>{const xAbs=Math.abs(m.xsp||0);const bkAbs=m.bk||0;const edgeTeam=xAbs<bkAbs?m.a:m.h;return m.edge.toFixed(1)+" "+edgeTeam;})():"--")),
+              e("span",null,e("span",{style:{color:"#00e676",fontWeight:700}},"EDGE "),e("span",{style:{color:"#00e676",fontWeight:700}},m.edge!=null?(()=>{const xAbs=Math.abs(m.xsp||0);const bkAbs=m.bk||0;const edgeTeam=xAbs<bkAbs?m.a:m.h;return m.edge.toFixed(1)+" "+edgeTeam;})():"--")),
               e("span",null,e("span",{style:{color:"#fff"}},"Final "),e("span",{style:{color:"#fff",fontWeight:700}},m.res||"--")))));
       })));
 
@@ -938,8 +940,8 @@ function App(){
           e("span",{onClick:()=>{setTab("rankings");setReg("All");},style:{fontFamily:"Outfit",fontSize:30,fontWeight:900,color:"#fff",letterSpacing:-1,cursor:"pointer"}},"BRACKET",e("span",{style:{color:"#00d4ff"}},"X")),
           e("span",{style:{fontFamily:"DM Mono",fontSize:13,fontWeight:500,color:"#ffd600",letterSpacing:2}},"COMPOSITE POWER INDEX")),
         e("div",{style:{fontSize:9,color:"#8899aa",letterSpacing:1,marginBottom:10,fontFamily:"DM Mono"}},"46 SYSTEMS \u00B7 86 METRICS \u00B7 68 TEAMS \u00B7 INJURY-ADJUSTED \u00B7 UPDATED DAILY"),
-        e("div",{style:{overflow:"hidden",marginBottom:10,borderTop:"1px solid #1a2a3a",borderBottom:"1px solid #1a2a3a",background:"#0a0e14"}},
-          e("div",{style:{display:"flex",gap:0,animation:"scroll 30s linear infinite",whiteSpace:"nowrap"}},
+        e("div",{className:"ticker-wrap",style:{overflow:"hidden",overflowX:"auto",WebkitOverflowScrolling:"touch",marginBottom:10,borderTop:"1px solid #1a2a3a",borderBottom:"1px solid #1a2a3a",background:"#0a0e14"}},
+          e("div",{style:{display:"flex",gap:0,animation:"scroll 18s linear infinite",whiteSpace:"nowrap"}},
             [...BRACKET_S16,...BRACKET_S16].map((m,i)=>{
               const h=tMap[m.h],a=tMap[m.a];
               const xsp=h&&a?+((h.xs-a.xs)*SF).toFixed(1):0;
@@ -953,7 +955,7 @@ function App(){
                 e("span",{style:{color:"#aab",fontWeight:600,fontSize:10}},m.a),
                 e("span",{style:{color:"#00d4ff",fontWeight:700,fontFamily:"DM Mono",fontSize:9}},"X: "+favTeam+" -"+favSpread),
                 bk?e("span",{style:{color:"#ffd600",fontSize:8,fontFamily:"DM Mono"}},"BOOK: -"+bk):null,
-                bk?e("span",{style:{color:Math.abs(favSpread-bk)>=3?"#00e676":Math.abs(favSpread-bk)>=1.5?"#ffd600":"#556",fontSize:8,fontWeight:700,fontFamily:"DM Mono"}},"EDGE: "+Math.abs(favSpread-bk).toFixed(1)):null,
+                bk?e("span",{style:{color:"#00e676",fontSize:8,fontWeight:700,fontFamily:"DM Mono"}},"EDGE: "+Math.abs(favSpread-bk).toFixed(1)):null,
                 e("span",{style:{color:"#556",fontSize:8}},m.d+" "+m.t));}))),
         e("div",{style:{display:"flex",gap:0}},
           ["rankings","matchups","futures","results","methodology"].map(v=>
