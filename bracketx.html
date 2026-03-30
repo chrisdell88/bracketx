@@ -572,7 +572,7 @@ function App(){
       e("h2",{style:{fontFamily:"Outfit",fontSize:22,fontWeight:900,color:"#fff",marginBottom:6}},"Results Tracker"),
       e("p",{style:{fontSize:10,color:"#aab",marginBottom:12}},"Game-by-game predictions vs. actual results \u2014 X-Score, KenPom, BartTorvik"),
       e("div",{style:{display:"flex",gap:6,marginBottom:12}},
-        ["ALL","PI","R64","R32","S16"].map(r=>e("button",{key:r,onClick:()=>setRRound(r),style:{padding:"5px 16px",borderRadius:16,fontFamily:"DM Mono",fontSize:10,fontWeight:rRound===r?700:400,background:rRound===r?"rgba(0,212,255,.15)":"rgba(255,255,255,.02)",color:rRound===r?"#00d4ff":"#8899aa",border:"1px solid "+(rRound===r?"rgba(0,212,255,.3)":"rgba(255,255,255,.04)")}},r==="ALL"?"ALL (60)":r==="PI"?"FIRST FOUR (4)":r==="R64"?"ROUND OF 64 (32)":r==="R32"?"ROUND OF 32 (16)":"SWEET 16 (8)"))),
+        ["ALL","PI","R64","R32","S16","E8"].map(r=>e("button",{key:r,onClick:()=>setRRound(r),style:{padding:"5px 16px",borderRadius:16,fontFamily:"DM Mono",fontSize:10,fontWeight:rRound===r?700:400,background:rRound===r?"rgba(0,212,255,.15)":"rgba(255,255,255,.02)",color:rRound===r?"#00d4ff":"#8899aa",border:"1px solid "+(rRound===r?"rgba(0,212,255,.3)":"rgba(255,255,255,.04)")}},r==="ALL"?"ALL (64)":r==="PI"?"FIRST FOUR (4)":r==="R64"?"ROUND OF 64 (32)":r==="R32"?"ROUND OF 32 (16)":r==="S16"?"SWEET 16 (8)":"ELITE 8 (4)"))),
       e("div",{style:{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:16}},
         [["X-SCORE","x","#00d4ff"],["KENPOM","kp","#ff6b35"],["BARTTORVIK","bt","#8ab4d0"]].map(([label,k,color])=>{
           const s=stats[k];return e("div",{key:k,style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:8,padding:10,borderTop:"3px solid "+color}},
