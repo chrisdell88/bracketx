@@ -805,8 +805,8 @@ function App(){
     const NSIM=10000;
     function mkG(t1,t2,w){return{t1,t2,p:wp(t1,t2),w};}
     function doSim(){
-      setSimRunning(true);setSimReveal(0);
-      const rgGames={};REGS.forEach(rg=>{rgGames[rg]=BRACKET.filter(g=>g.r===rg);});
+      setSimRunning(true);setSimReveal(0);setSimResult(null);
+      setTimeout(()=>{const rgGames={};REGS.forEach(rg=>{rgGames[rg]=BRACKET.filter(g=>g.r===rg);});
       // 10K sims for championship odds table
       const champCt={};
       for(let n=0;n<NSIM;n++){
@@ -836,7 +836,7 @@ function App(){
       setSimResult(res);
       [100,600,1100,1600,2100,2600].forEach((d,i)=>setTimeout(()=>setSimReveal(i+1),d));
       setTimeout(()=>setSimRunning(false),3000);
-    }
+      },50);}
     // Compact bracket game card
     const bc=(g)=>{
       if(!g)return null;
