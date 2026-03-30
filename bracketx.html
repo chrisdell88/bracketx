@@ -803,51 +803,36 @@ function App(){
     function wp(t1,t2){const x1=SIM_XS[t1]??0,x2=SIM_XS[t2]??0;return NC((x1-x2)*SF/11);}
     function sg(t1,t2){return Math.random()<wp(t1,t2)?t1:t2;}
     const NSIM=10000;
+    function mkG(t1,t2,w){return{t1,t2,p:wp(t1,t2),w};}
     function doSim(){
       setSimRunning(true);setSimReveal(0);
       const rgGames={};REGS.forEach(rg=>{rgGames[rg]=BRACKET.filter(g=>g.r===rg);});
-      // Accumulators: count wins per team per slot across NSIM runs
-      const slot64={},slot32={},slot16={},slot8={},slotF4=[{},{}],slotCh={};
-      REGS.forEach(rg=>{slot64[rg]=rgGames[rg].map(()=>({}));slot32[rg]=[{},{},{},{}];slot16[rg]=[{},{}];slot8[rg]={};});
+      // 10K sims for championship odds table
+      const champCt={};
       for(let n=0;n<NSIM;n++){
-        const r64w={};
-        REGS.forEach(rg=>{r64w[rg]=rgGames[rg].map((g,i)=>{const w=sg(g.h,g.a);slot64[rg][i][w]=(slot64[rg][i][w]||0)+1;return w;});});
-        const r32w={};
-        REGS.forEach(rg=>{const w=r64w[rg];r32w[rg]=[[0,7],[3,4],[2,5],[1,6]].map(([a,b],i)=>{const wn=sg(w[a],w[b]);slot32[rg][i][wn]=(slot32[rg][i][wn]||0)+1;return wn;});});
-        const s16w={};
-        REGS.forEach(rg=>{const w=r32w[rg];s16w[rg]=[[0,1],[2,3]].map(([a,b],i)=>{const wn=sg(w[a],w[b]);slot16[rg][i][wn]=(slot16[rg][i][wn]||0)+1;return wn;});});
-        const e8w={};
-        REGS.forEach(rg=>{const w=s16w[rg];const wn=sg(w[0],w[1]);slot8[rg][wn]=(slot8[rg][wn]||0)+1;e8w[rg]=wn;});
-        const f4w=[sg(e8w.East,e8w.South),sg(e8w.West,e8w.Midwest)];
-        slotF4[0][f4w[0]]=(slotF4[0][f4w[0]]||0)+1;
-        slotF4[1][f4w[1]]=(slotF4[1][f4w[1]]||0)+1;
-        const chw=sg(f4w[0],f4w[1]);
-        slotCh[chw]=(slotCh[chw]||0)+1;
+        const rw={};REGS.forEach(rg=>{rw[rg]=rgGames[rg].map(g=>sg(g.h,g.a));});
+        const r2={};REGS.forEach(rg=>{const w=rw[rg];r2[rg]=[[0,7],[3,4],[2,5],[1,6]].map(([a,b])=>sg(w[a],w[b]));});
+        const s={};REGS.forEach(rg=>{const w=r2[rg];s[rg]=[[0,1],[2,3]].map(([a,b])=>sg(w[a],w[b]));});
+        const ee={};REGS.forEach(rg=>{ee[rg]=sg(s[rg][0],s[rg][1]);});
+        const f=[sg(ee.East,ee.South),sg(ee.West,ee.Midwest)];
+        const ch=sg(f[0],f[1]);champCt[ch]=(champCt[ch]||0)+1;
       }
-      // Run ONE random bracket for the displayed outcome (gives variety each click)
-      const pick={r64:{},r32:{},s16:{},e8:{},f4:[],ch:null};
-      REGS.forEach(rg=>{pick.r64[rg]=rgGames[rg].map(g=>sg(g.h,g.a));});
-      REGS.forEach(rg=>{const w=pick.r64[rg];pick.r32[rg]=[[0,7],[3,4],[2,5],[1,6]].map(([a,b])=>sg(w[a],w[b]));});
-      REGS.forEach(rg=>{const w=pick.r32[rg];pick.s16[rg]=[[0,1],[2,3]].map(([a,b])=>sg(w[a],w[b]));});
-      REGS.forEach(rg=>{const w=pick.s16[rg];pick.e8[rg]=sg(w[0],w[1]);});
-      pick.f4=[sg(pick.e8.East,pick.e8.South),sg(pick.e8.West,pick.e8.Midwest)];
-      pick.ch=sg(pick.f4[0],pick.f4[1]);
-      // Build result: use random pick for winners, 10K stats for percentages
-      function mkG(t1,t2,w,ct){const p=ct[t1]?(ct[t1]/(ct[t1]+(ct[t2]||0))):wp(t1,t2);return{t1,t2,p,w};}
-      const res={r64:{},r32:{},s16:{},e8:{},f4:[],ch:null};
+      // ONE random bracket for displayed result — all teams flow correctly
+      const res={r64:{},r32:{},s16:{},e8:{},f4:[],ch:null,champCt};
       REGS.forEach(rg=>{
-        res.r64[rg]=rgGames[rg].map((g,i)=>mkG(g.h,g.a,pick.r64[rg][i],slot64[rg][i]));
-        res.r32[rg]=pick.r32[rg].map((w,i)=>{const ct=slot32[rg][i];const ks=Object.keys(ct).sort((a,b)=>ct[b]-ct[a]);const t1=ks[0],t2=ks[1]||ks[0];return mkG(t1,t2,w,ct);});
-        res.s16[rg]=pick.s16[rg].map((w,i)=>{const ct=slot16[rg][i];const ks=Object.keys(ct).sort((a,b)=>ct[b]-ct[a]);const t1=ks[0],t2=ks[1]||ks[0];return mkG(t1,t2,w,ct);});
-        const ct8=slot8[rg];const ks8=Object.keys(ct8).sort((a,b)=>ct8[b]-ct8[a]);
-        res.e8[rg]=mkG(ks8[0],ks8[1]||ks8[0],pick.e8[rg],ct8);
+        const r64w=rgGames[rg].map(g=>sg(g.h,g.a));
+        res.r64[rg]=rgGames[rg].map((g,i)=>mkG(g.h,g.a,r64w[i]));
+        const r32w=[[0,7],[3,4],[2,5],[1,6]].map(([a,b])=>{const t1=r64w[a],t2=r64w[b];return{t1,t2,w:sg(t1,t2)};});
+        res.r32[rg]=r32w.map(g=>mkG(g.t1,g.t2,g.w));
+        const s16w=[[0,1],[2,3]].map(([a,b])=>{const t1=r32w[a].w,t2=r32w[b].w;return{t1,t2,w:sg(t1,t2)};});
+        res.s16[rg]=s16w.map(g=>mkG(g.t1,g.t2,g.w));
+        const e8w=sg(s16w[0].w,s16w[1].w);
+        res.e8[rg]=mkG(s16w[0].w,s16w[1].w,e8w);
       });
-      const ks0=Object.keys(slotF4[0]).sort((a,b)=>slotF4[0][b]-slotF4[0][a]);
-      const ks1=Object.keys(slotF4[1]).sort((a,b)=>slotF4[1][b]-slotF4[1][a]);
-      res.f4[0]=mkG(ks0[0],ks0[1]||ks0[0],pick.f4[0],slotF4[0]);
-      res.f4[1]=mkG(ks1[0],ks1[1]||ks1[0],pick.f4[1],slotF4[1]);
-      const ksCh=Object.keys(slotCh).sort((a,b)=>slotCh[b]-slotCh[a]);
-      res.ch=mkG(ksCh[0],ksCh[1]||ksCh[0],pick.ch,slotCh);
+      const f0t1=res.e8.East.w,f0t2=res.e8.South.w,f0w=sg(f0t1,f0t2);
+      const f1t1=res.e8.West.w,f1t2=res.e8.Midwest.w,f1w=sg(f1t1,f1t2);
+      res.f4=[mkG(f0t1,f0t2,f0w),mkG(f1t1,f1t2,f1w)];
+      res.ch=mkG(f0w,f1w,sg(f0w,f1w));
       setSimResult(res);
       [100,600,1100,1600,2100,2600].forEach((d,i)=>setTimeout(()=>setSimReveal(i+1),d));
       setTimeout(()=>setSimRunning(false),3000);
@@ -906,7 +891,7 @@ function App(){
       e("div",{style:{display:"flex",alignItems:"center",gap:20,marginBottom:20,flexWrap:"wrap"}},
         e("div",null,
           e("div",{style:{fontFamily:"DM Mono",fontSize:13,fontWeight:700,color:"#fff",letterSpacing:1,marginBottom:4}},"BRACKET SIMULATOR"),
-          e("div",{style:{fontFamily:"DM Mono",fontSize:9,color:"#aab",lineHeight:1.8}},"Each click runs ",e("span",{style:{color:"#00d4ff",fontWeight:700}},"10,000")," full bracket simulations using pre-tournament X-Scores. Win percentages reflect how often each team won that specific matchup slot across all 10,000 runs. The displayed bracket shows the most likely outcome — every run is different.")),
+          e("div",{style:{fontFamily:"DM Mono",fontSize:9,color:"#aab",lineHeight:1.8}},"Each click simulates one full random bracket using pre-tournament X-Scores. Win percentages show each team's head-to-head probability based on X-Score differential. Championship odds below are powered by ",e("span",{style:{color:"#00d4ff",fontWeight:700}},"10,000")," Monte Carlo simulations.")),
         e("button",{onClick:doSim,disabled:simRunning,style:{fontFamily:"DM Mono",fontSize:11,fontWeight:700,letterSpacing:2,background:simRunning?"#1a2a3a":"#00d4ff",color:simRunning?"#445":"#000",border:"none",borderRadius:4,padding:"10px 28px",cursor:simRunning?"not-allowed":"pointer",transition:"all .2s"}},simRunning?"SIMULATING...":simResult?"↺ RE-SIMULATE":"▶ SIMULATE")),
       !simResult?e("div",{style:{fontFamily:"DM Mono",fontSize:11,color:"#334",padding:"60px 0",textAlign:"center"}},"Press SIMULATE to run the full 2026 NCAA Tournament from scratch."):
       e("div",{style:{overflowX:"auto",WebkitOverflowScrolling:"touch",padding:"10px 0"}},
@@ -930,7 +915,7 @@ function App(){
               e("div",{style:{marginTop:8,padding:"10px 14px",background:"linear-gradient(135deg,rgba(255,214,0,.07),rgba(255,214,0,.01))",border:"1px solid rgba(255,214,0,.2)",borderRadius:6,textAlign:"center"}},
                 e("div",{style:{fontFamily:"DM Mono",fontSize:7,color:"#ffd600",letterSpacing:3,marginBottom:4}},"CHAMPION"),
                 e("div",{style:{fontFamily:"Outfit",fontSize:18,fontWeight:900,color:"#fff"}},simResult.ch.w),
-                e("div",{style:{fontFamily:"DM Mono",fontSize:8,color:"#8899aa",marginTop:2}},"X# "+xrank(simResult.ch.w)+" · "+SIM_XS[simResult.ch.w]?.toFixed(4)))),
+                e("div",{style:{fontFamily:"DM Mono",fontSize:8,color:"#8899aa",marginTop:2}},"X# "+xrank(simResult.ch.w)+" · "+((simResult.champCt[simResult.ch.w]||0)/NSIM*100).toFixed(1)+"% title rate in 10K sims"))),
             e("div",{style:{opacity:simReveal>=5?1:0,transition:"opacity .5s",textAlign:"center"}},
               e("div",{style:{fontFamily:"DM Mono",fontSize:7,color:"#ffd600",letterSpacing:2,marginBottom:3}},"FINAL FOUR"),
               bcW(simResult.f4[1]))),
