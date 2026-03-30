@@ -66,6 +66,7 @@ const _CR_COOP=[1,2,3,6,5,4,8,18,7,10,9,15,12,11,13,17,19,14,20,24,16,22,29,27,2
 const RC={East:"#00d4ff",West:"#ff6b35",South:"#00e676",Midwest:"#ffd600"};
 const SF=12.07;
 const S16_TEAMS=new Set(["Duke","Arizona","Michigan","Houston","Iowa State","Purdue","UConn","Illinois","Michigan State","Alabama","Arkansas","Nebraska","St. John's","Tennessee","Iowa","Texas"]);
+const F4_TEAMS=new Set(["UConn","Illinois","Arizona","Michigan"]);
 const NC=x=>{const s=x>=0?1:-1,a=Math.abs(x),t=1/(1+.2316419*a),p=.3989423*Math.exp(-a*a/2)*t*(.3193815+t*(-.3565638+t*(1.781478+t*(-1.821256+t*1.330274))));return s>0?1-p:p;};
 const WK=SF/11;
 const KP={"Duke":[38.9,65.3],"Michigan":[37.59,70.9],"Arizona":[37.66,69.8],"Florida":[33.79,70.5],"Houston":[33.43,63.3],"Iowa State":[32.42,66.5],"Purdue":[31.2,64.4],"Illinois":[32.1,65.5],"Gonzaga":[28.1,68.6],"UConn":[27.87,64.4],"Michigan State":[28.31,66.0],"St. John's":[25.91,69.6],"Virginia":[26.71,65.7],"Vanderbilt":[27.51,68.8],"Arkansas":[26.05,71.0],"Nebraska":[26.16,66.7],"Tennessee":[26.02,65.0],"Louisville":[25.42,69.6],"North Carolina":[20.84,67.9],"Wisconsin":[23.39,68.7],"Alabama":[25.72,73.1],"Kentucky":[21.48,68.3],"Texas Tech":[25.22,66.2],"UCLA":[21.67,64.6],"Ohio State":[22.24,66.1],"BYU":[23.25,69.9],"Saint Mary's":[23.07,65.2],"Georgia":[20.48,71.4],"Clemson":[19.24,64.2],"Saint Louis":[18.32,71.0],"Villanova":[19.97,65.2],"Santa Clara":[19.4,69.2],"NC State":[19.6,69.1],"TCU":[17.59,67.7],"Texas A&M":[18.67,70.5],"VCU":[17.21,68.5],"South Florida":[16.39,71.5],"SMU":[18.09,68.5],"Texas":[19.03,66.9],"Missouri":[15.39,66.2],"UCF":[15.04,69.2],"Akron":[12.8,70.3],"McNeese":[12.48,66.2],"Northern Iowa":[11.81,62.3],"Miami OH":[8.26,69.9],"High Point":[8.4,69.9],"Hofstra":[9.49,64.7],"Cal Baptist":[5.99,65.8],"Hawaii":[5.97,69.7],"North Dakota State":[5.13,66.3],"Wright State":[2.04,67.2],"Troy":[1.72,64.9],"Kennesaw State":[0.57,71.2],"Penn":[1.47,69.0],"Idaho":[1.53,67.7],"Tennessee State":[-1.83,70.2],"Queens":[-1.44,69.6],"Furman":[-1.98,65.9],"UMBC":[-1.67,66.2],"Siena":[-2.1,64.6],"Howard":[-3.19,69.0],"LIU":[-3.95,67.8],"Lehigh":[-10.37,66.9],"Prairie View A&M":[-10.69,70.9],"Iowa":[22.44,63.0],"Utah State":[20.76,67.7],"Kansas":[24.44,67.6],"Miami FL":[20.68,67.6]};
@@ -78,7 +79,7 @@ const BPI_VAL={"Duke":25.24,"Michigan":24.15,"Arizona":23.85,"Florida":22.63,"Ho
 const emSpread=(a,b)=>{const ea=EM_BPR[a],eb=EM_BPR[b];if(ea==null||eb==null)return null;return+((ea-eb)*0.33).toFixed(1);};
 const coopSpread=(a,b)=>{const ca=COOP_NET[a],cb=COOP_NET[b];if(ca==null||cb==null)return null;return+((ca-cb)*0.42).toFixed(1);};
 const bpiSpread=(a,b)=>{const ba=BPI_VAL[a],bb=BPI_VAL[b];if(ba==null||bb==null)return null;return+((ba-bb)).toFixed(1);};
-const BS_BY_GAME={"Duke-Siena":28.5,"Michigan-Howard":35.0,"Houston-Idaho":21.5,"Michigan State-North Dakota State":15.5,"Illinois-Penn":22.5,"Gonzaga-Kennesaw State":19.5,"Nebraska-Troy":13.5,"Arkansas-Hawaii":15.5,"Wisconsin-High Point":11.5,"Vanderbilt-McNeese":10.5,"Louisville-South Florida":6.5,"North Carolina-VCU":2.5,"BYU-Texas":1.5,"Saint Mary's-Texas A&M":2.5,"Ohio State-TCU":2.5,"Georgia-Saint Louis":1.5,"Arizona-LIU":29.5,"Florida-Prairie View A&M":35.0,"Iowa State-Tennessee State":23.5,"Purdue-Queens":22.5,"UConn-Furman":19.5,"Virginia-Wright State":17.5,"Alabama-Hofstra":12.5,"Kansas-Cal Baptist":13.5,"Texas Tech-Akron":8.5,"St. John's-Northern Iowa":9.5,"Tennessee-Miami OH":12.0,"Kentucky-Santa Clara":2.5,"UCLA-UCF":6.5,"Miami FL-Missouri":2.5,"Villanova-Utah State":2.5,"Clemson-Iowa":1.5,"Duke-TCU":12.0,"Michigan-Saint Louis":12.5,"Houston-Texas A&M":10.5,"Michigan State-Louisville":4.5,"Illinois-VCU":11.5,"Gonzaga-Texas":6.5,"Vanderbilt-Nebraska":1.5,"Arkansas-High Point":11.5,"Iowa State-Kentucky":4.5,"Purdue-Miami FL":7.5,"UConn-UCLA":4.5,"Alabama-Texas Tech":1.5,"St. John's-Kansas":3.5,"Iowa-Florida":10.5,"Arizona-Utah State":11.5,"Tennessee-Virginia":1.5,"Duke-St. John's":6.5,"Arizona-Arkansas":8.0,"Purdue-Texas":6.5,"Houston-Illinois":3.0,"Nebraska-Iowa":1.5,"Michigan-Alabama":10.5,"Iowa State-Tennessee":4.5,"UConn-Michigan State":2.0,"Illinois-Iowa":7.5,"Arizona-Purdue":6.5,"Michigan-Tennessee":5.5,"Duke-UConn":4.5};
+const BS_BY_GAME={"Duke-Siena":28.5,"Michigan-Howard":35.0,"Houston-Idaho":21.5,"Michigan State-North Dakota State":15.5,"Illinois-Penn":22.5,"Gonzaga-Kennesaw State":19.5,"Nebraska-Troy":13.5,"Arkansas-Hawaii":15.5,"Wisconsin-High Point":11.5,"Vanderbilt-McNeese":10.5,"Louisville-South Florida":6.5,"North Carolina-VCU":2.5,"BYU-Texas":1.5,"Saint Mary's-Texas A&M":2.5,"Ohio State-TCU":2.5,"Georgia-Saint Louis":1.5,"Arizona-LIU":29.5,"Florida-Prairie View A&M":35.0,"Iowa State-Tennessee State":23.5,"Purdue-Queens":22.5,"UConn-Furman":19.5,"Virginia-Wright State":17.5,"Alabama-Hofstra":12.5,"Kansas-Cal Baptist":13.5,"Texas Tech-Akron":8.5,"St. John's-Northern Iowa":9.5,"Tennessee-Miami OH":12.0,"Kentucky-Santa Clara":2.5,"UCLA-UCF":6.5,"Miami FL-Missouri":2.5,"Villanova-Utah State":2.5,"Clemson-Iowa":1.5,"Duke-TCU":12.0,"Michigan-Saint Louis":12.5,"Houston-Texas A&M":10.5,"Michigan State-Louisville":4.5,"Illinois-VCU":11.5,"Gonzaga-Texas":6.5,"Vanderbilt-Nebraska":1.5,"Arkansas-High Point":11.5,"Iowa State-Kentucky":4.5,"Purdue-Miami FL":7.5,"UConn-UCLA":4.5,"Alabama-Texas Tech":1.5,"St. John's-Kansas":3.5,"Iowa-Florida":10.5,"Arizona-Utah State":11.5,"Tennessee-Virginia":1.5,"Duke-St. John's":6.5,"Arizona-Arkansas":8.0,"Purdue-Texas":6.5,"Houston-Illinois":3.0,"Nebraska-Iowa":1.5,"Michigan-Alabama":10.5,"Iowa State-Tennessee":4.5,"UConn-Michigan State":2.0,"Illinois-Iowa":7.5,"Arizona-Purdue":6.5,"Michigan-Tennessee":5.5,"Duke-UConn":4.5,"UConn-Illinois":2.5,"Arizona-Michigan":1.5};
 const BS={};
 const SC={1:"#ffd700",2:"#00d4ff",3:"#00e676",4:"#ff6b35",5:"#e040fb",6:"#ff4081",7:"#40c4ff",8:"#ffab40",9:"#26c6da",10:"#ab47bc",11:"#ef5350",12:"#d4a574",13:"#90b4c8",14:"#8ed44e",15:"#ec407a",16:"#7986cb"};
 const TC=i=>ST[i]>=3?"#00d4ff":"#8ab4d0";
@@ -107,7 +108,10 @@ const BRACKET_E8=[
 {r:"West",h:"Arizona",a:"Purdue",hs:1,as:2,d:"3/28",t:"8:49 PM",rd:"E8"},
 {r:"Midwest",h:"Michigan",a:"Tennessee",hs:1,as:6,d:"3/29",t:"2:15 PM",rd:"E8"},
 {r:"East",h:"Duke",a:"UConn",hs:1,as:2,d:"3/29",t:"5:05 PM",rd:"E8"}];
-const RESULTS={"Duke-Siena":"71-65","UConn-Furman":"82-71","Michigan State-North Dakota State":"92-67","Kansas-Cal Baptist":"68-60","St. John's-Northern Iowa":"79-53","Louisville-South Florida":"83-79","UCLA-UCF":"75-71","Ohio State-TCU":"64-66","Florida-Prairie View A&M":"114-55","Houston-Idaho":"78-47","Illinois-Penn":"105-70","Nebraska-Troy":"76-47","Vanderbilt-McNeese":"78-68","North Carolina-VCU":"78-82","Saint Mary's-Texas A&M":"50-63","Clemson-Iowa":"61-67","Arizona-LIU":"92-58","Purdue-Queens":"104-71","Gonzaga-Kennesaw State":"73-64","Arkansas-Hawaii":"97-78","Wisconsin-High Point":"82-83","BYU-Texas":"71-79","Miami FL-Missouri":"80-66","Villanova-Utah State":"76-86","Michigan-Howard":"101-80","Iowa State-Tennessee State":"108-74","Virginia-Wright State":"82-73","Alabama-Hofstra":"90-70","Texas Tech-Akron":"91-71","Tennessee-Miami OH":"78-56","Kentucky-Santa Clara":"89-84","Georgia-Saint Louis":"77-102","Duke-TCU":"81-58","Michigan State-Louisville":"77-69","St. John's-Kansas":"67-65","UConn-UCLA":"73-57","Houston-Texas A&M":"88-57","Illinois-VCU":"76-55","Nebraska-Vanderbilt":"74-72","Iowa-Florida":"73-72","Arizona-Utah State":"78-66","Purdue-Miami FL":"79-69","Arkansas-High Point":"94-88","Texas-Gonzaga":"74-68","Michigan-Saint Louis":"95-72","Iowa State-Kentucky":"82-63","Alabama-Texas Tech":"90-65","Tennessee-Virginia":"79-72"};
+const BRACKET_F4=[
+{r:"East/South",h:"UConn",a:"Illinois",hs:2,as:3,d:"4/4",t:"6:09 PM",rd:"F4"},
+{r:"West/Midwest",h:"Arizona",a:"Michigan",hs:1,as:1,d:"4/4",t:"8:49 PM",rd:"F4"}];
+const RESULTS={"Duke-Siena":"71-65","UConn-Furman":"82-71","Michigan State-North Dakota State":"92-67","Kansas-Cal Baptist":"68-60","St. John's-Northern Iowa":"79-53","Louisville-South Florida":"83-79","UCLA-UCF":"75-71","Ohio State-TCU":"64-66","Florida-Prairie View A&M":"114-55","Houston-Idaho":"78-47","Illinois-Penn":"105-70","Nebraska-Troy":"76-47","Vanderbilt-McNeese":"78-68","North Carolina-VCU":"78-82","Saint Mary's-Texas A&M":"50-63","Clemson-Iowa":"61-67","Arizona-LIU":"92-58","Purdue-Queens":"104-71","Gonzaga-Kennesaw State":"73-64","Arkansas-Hawaii":"97-78","Wisconsin-High Point":"82-83","BYU-Texas":"71-79","Miami FL-Missouri":"80-66","Villanova-Utah State":"76-86","Michigan-Howard":"101-80","Iowa State-Tennessee State":"108-74","Virginia-Wright State":"82-73","Alabama-Hofstra":"90-70","Texas Tech-Akron":"91-71","Tennessee-Miami OH":"78-56","Kentucky-Santa Clara":"89-84","Georgia-Saint Louis":"77-102","Duke-TCU":"81-58","Michigan State-Louisville":"77-69","St. John's-Kansas":"67-65","UConn-UCLA":"73-57","Houston-Texas A&M":"88-57","Illinois-VCU":"76-55","Nebraska-Vanderbilt":"74-72","Iowa-Florida":"73-72","Arizona-Utah State":"78-66","Purdue-Miami FL":"79-69","Arkansas-High Point":"94-88","Texas-Gonzaga":"74-68","Michigan-Saint Louis":"95-72","Iowa State-Kentucky":"82-63","Alabama-Texas Tech":"90-65","Tennessee-Virginia":"79-72","Illinois-Iowa":"71-59","Arizona-Purdue":"79-64","Michigan-Tennessee":"95-62","Duke-UConn":"72-73"};
 
 // Pre-tournament X-Scores (V5 — before Round of 64)
 const SIM_XS={"Duke":1.7722,"Michigan":1.675,"Arizona":1.6682,"Florida":1.2564,"Houston":1.2373,"Iowa State":1.1746,"Purdue":1.0778,"Illinois":1.0521,"Gonzaga":0.9531,"UConn":0.9114,"Michigan State":0.8652,"St. John's":0.8269,"Virginia":0.8164,"Vanderbilt":0.7849,"Arkansas":0.7633,"Nebraska":0.7001,"Alabama":0.6898,"Texas Tech":0.6421,"Tennessee":0.6341,"Louisville":0.6168,"Kansas":0.6056,"Wisconsin":0.5402,"Saint Mary's":0.4955,"BYU":0.4567,"North Carolina":0.4288,"Ohio State":0.4003,"Kentucky":0.3814,"UCLA":0.3556,"Utah State":0.3411,"Iowa":0.3123,"Georgia":0.2827,"Miami FL":0.2734,"Clemson":0.2279,"Saint Louis":0.2177,"Villanova":0.1891,"Santa Clara":0.1883,"NC State":0.1386,"TCU":0.1007,"Texas A&M":0.0899,"VCU":0.0631,"South Florida":0.034,"SMU":0.0332,"Texas":0.012,"Missouri":-0.1057,"UCF":-0.1376,"Akron":-0.2585,"McNeese":-0.3018,"Northern Iowa":-0.4088,"Miami OH":-0.4127,"High Point":-0.4431,"Hofstra":-0.663,"Cal Baptist":-0.787,"Hawaii":-0.9028,"North Dakota State":-0.9237,"Wright State":-1.0929,"Troy":-1.1348,"Kennesaw State":-1.1735,"Penn":-1.2331,"Idaho":-1.3409,"Tennessee State":-1.3531,"Queens":-1.4328,"Furman":-1.4486,"UMBC":-1.4514,"Siena":-1.472,"Howard":-1.6098,"LIU":-1.6625,"Lehigh":-2.1834,"Prairie View A&M":-2.3524};
@@ -120,7 +124,7 @@ function App(){
   const[sk,setSk]=useState("rk");
   const[sd,setSd]=useState(1);
   const[modal,setModal]=useState(null);
-  const[mRound,setMRound]=useState("E8");
+  const[mRound,setMRound]=useState("F4");
   const[showKey,setShowKey]=useState(false);
   const[picks,setPicks]=useState({});
   const[preview,setPreview]=useState(null);
@@ -149,7 +153,7 @@ function App(){
     });return f;
   },[teams,reg,sk,sd]);
 
-  const allBracket=useMemo(()=>[...BRACKET.map(m=>({...m,rd:"R64"})),...BRACKET_R32,...BRACKET_S16,...BRACKET_E8],[]);
+  const allBracket=useMemo(()=>[...BRACKET.map(m=>({...m,rd:"R64"})),...BRACKET_R32,...BRACKET_S16,...BRACKET_E8,...BRACKET_F4],[]);
   const matchups=useMemo(()=>allBracket.map(m=>{
     const h=tMap[m.h],a=tMap[m.a];if(!h||!a)return m;
     const xsp=+((h.xs-a.xs)*SF).toFixed(1);
@@ -327,7 +331,7 @@ function App(){
   // ════════ MATCHUPS TAB ════════
   const matchupsTab=()=>e("div",null,
     e("div",{style:{display:"flex",gap:6,marginBottom:8,justifyContent:"center"}},
-      ["E8","S16","R32","R64"].map(r=>e("button",{key:r,onClick:()=>setMRound(r),style:{padding:"5px 16px",borderRadius:16,fontFamily:"DM Mono",fontSize:10,fontWeight:mRound===r?700:400,letterSpacing:1,background:mRound===r?"rgba(0,212,255,.15)":"rgba(255,255,255,.02)",color:mRound===r?"#00d4ff":"#8899aa",border:"1px solid "+(mRound===r?"rgba(0,212,255,.3)":"rgba(255,255,255,.04)")}},r==="E8"?"ELITE 8":r==="S16"?"SWEET 16":r==="R32"?"ROUND OF 32":"ROUND OF 64"))),
+      ["F4","E8","S16","R32","R64"].map(r=>e("button",{key:r,onClick:()=>setMRound(r),style:{padding:"5px 16px",borderRadius:16,fontFamily:"DM Mono",fontSize:10,fontWeight:mRound===r?700:400,letterSpacing:1,background:mRound===r?"rgba(0,212,255,.15)":"rgba(255,255,255,.02)",color:mRound===r?"#00d4ff":"#8899aa",border:"1px solid "+(mRound===r?"rgba(0,212,255,.3)":"rgba(255,255,255,.04)")}},r==="F4"?"FINAL FOUR":r==="E8"?"ELITE 8":r==="S16"?"SWEET 16":r==="R32"?"ROUND OF 32":"ROUND OF 64"))),
     e("div",{style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:6,padding:"8px 12px",marginBottom:12,fontSize:10,color:"#aab",textAlign:"center",lineHeight:1.8}},
       e("div",null,e("strong",{style:{color:"#00d4ff"}},"X")," = X-Score",e("span",{style:{color:"#8899aa"}}," \u00B7 "),e("strong",{style:{color:"#ffd600"}},"BOOK")," = closing line"),
       e("div",null,e("strong",{style:{color:"#ff6b35"}},"KP")," = KenPom",e("span",{style:{color:"#8899aa"}}," \u00B7 "),e("strong",{style:{color:"#8ab4d0"}},"BT")," = BartTorvik",e("span",{style:{color:"#8899aa"}}," \u00B7 "),e("strong",{style:{color:"#e040fb"}},"EM")," = Evan Miya"),
@@ -452,10 +456,10 @@ function App(){
     const isField=reg==="Field";
     const activeProbs=isField?s16probs:probs;
     const fmt=v=>v>=.01?(v*100).toFixed(1)+"%":v>=.001?(v*100).toFixed(2)+"%":"<0.1%";
-    const cols=isField?["X#","SD","TEAM","CHAMP","FINALS","F4","E8"]:["X#","SD","TEAM","CHAMP","FINALS","F4","E8","S16"];
+    const cols=isField?["X#","SD","TEAM","CHAMP","FINALS"]:["X#","SD","TEAM","CHAMP","FINALS","F4","E8","S16"];
     const fSortKeys={"X#":"rk",SD:"sd",TEAM:"nm",CHAMP:"champ",FINALS:"title",F4:"f4",E8:"e8",S16:"s16"};
     const fColor=h=>h==="CHAMP"?"#ffd600":h==="FINALS"?"#ff6b35":h==="F4"?"#00d4ff":h==="E8"?"#00e676":h==="S16"?"#e040fb":"#8899aa";
-    const baseList=(isField?teams.filter(t=>S16_TEAMS.has(t.nm)):reg==="All"?teams:teams.filter(t=>t.rg===reg)).filter(t=>isField?true:probs[t.nm].s16>0.001);
+    const baseList=(isField?teams.filter(t=>F4_TEAMS.has(t.nm)):reg==="All"?teams:teams.filter(t=>t.rg===reg)).filter(t=>isField?true:probs[t.nm].s16>0.001);
     const sorted=baseList.slice().sort((a,b)=>{
       const pa=activeProbs[a.nm],pb=activeProbs[b.nm];if(!pa||!pb)return 0;
       if(sk==="rk")return sd*(a.rk-b.rk);if(sk==="sd")return sd*(a.s-b.s)||(a.rk-b.rk);
@@ -543,7 +547,11 @@ function App(){
 {rd:"S16",fav:"Duke",dog:"St. John's",fs:80,ds:75,cl:6.5,xs:6.2,kps:8.8,bts:8.4,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"L",btATS:"L"},
 {rd:"S16",fav:"Michigan",dog:"Alabama",fs:90,ds:77,cl:10.5,xs:7.4,kps:8.5,bts:8.1,xSU:"W",kpSU:"W",btSU:"W",xATS:"L",kpATS:"L",btATS:"L"},
 {rd:"S16",fav:"UConn",dog:"Michigan State",fs:67,ds:63,cl:2.0,xs:-0.0,kps:-0.3,bts:-0.3,xSU:"L",kpSU:"L",btSU:"L",xATS:"L",kpATS:"L",btATS:"L"},
-{rd:"S16",fav:"Iowa State",dog:"Tennessee",fs:62,ds:76,cl:4.5,xs:4.0,kps:4.2,bts:4.0,xSU:"L",kpSU:"L",btSU:"L",xATS:"W",kpATS:"W",btATS:"W"}];
+{rd:"S16",fav:"Iowa State",dog:"Tennessee",fs:62,ds:76,cl:4.5,xs:4.0,kps:4.2,bts:4.0,xSU:"L",kpSU:"L",btSU:"L",xATS:"W",kpATS:"W",btATS:"W"},
+{rd:"E8",fav:"Illinois",dog:"Iowa",fs:71,ds:59,cl:7.5,xs:7.7,kps:6.2,bts:7.6,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"L",btATS:"W"},
+{rd:"E8",fav:"Arizona",dog:"Purdue",fs:79,ds:64,cl:6.5,xs:1.7,kps:4.3,bts:1.7,xSU:"W",kpSU:"W",btSU:"W",xATS:"L",kpATS:"L",btATS:"L"},
+{rd:"E8",fav:"Michigan",dog:"Tennessee",fs:95,ds:62,cl:5.5,xs:8.7,kps:7.9,bts:7.3,xSU:"W",kpSU:"W",btSU:"W",xATS:"W",kpATS:"W",btATS:"W"},
+{rd:"E8",fav:"Duke",dog:"UConn",fs:72,ds:73,cl:4.5,xs:3.7,kps:7.2,bts:6.1,xSU:"L",kpSU:"L",btSU:"L",xATS:"W",kpATS:"L",btATS:"L"}];
 
   const[rRound,setRRound]=useState("ALL");
   const resultsTab=()=>{
@@ -1061,12 +1069,12 @@ function App(){
         e("div",{style:{fontSize:9,color:"#8899aa",letterSpacing:1,marginBottom:10,fontFamily:"DM Mono"}},"46 SYSTEMS \u00B7 86 METRICS \u00B7 68 TEAMS \u00B7 INJURY-ADJUSTED \u00B7 UPDATED DAILY"),
         e("div",{className:"ticker-wrap",style:{overflow:"hidden",overflowX:"auto",WebkitOverflowScrolling:"touch",marginBottom:10,borderTop:"1px solid #1a2a3a",borderBottom:"1px solid #1a2a3a",background:"#0a0e14"}},
           e("div",{style:{display:"flex",gap:0,animation:"scroll 18s linear infinite",whiteSpace:"nowrap"}},
-            [...BRACKET_E8,...BRACKET_E8].map((m,i)=>{
+            [...BRACKET_F4,...BRACKET_F4].map((m,i)=>{
               const h=tMap[m.h],a=tMap[m.a];
               const xsp=h&&a?+((h.xs-a.xs)*SF).toFixed(1):0;
               const favTeam=xsp>0?m.h:m.a;const favSpread=Math.abs(xsp);
               const bk=BS_BY_GAME[m.h+"-"+m.a]||BS_BY_GAME[m.a+"-"+m.h]||null;
-              return e("div",{key:i,style:{display:"inline-flex",alignItems:"center",gap:6,padding:"6px 16px",borderRight:"1px solid #1a2a3a",fontSize:10,flexShrink:0,cursor:"pointer"},onClick:()=>{setTab("matchups");setMRound("E8");}},
+              return e("div",{key:i,style:{display:"inline-flex",alignItems:"center",gap:6,padding:"6px 16px",borderRight:"1px solid #1a2a3a",fontSize:10,flexShrink:0,cursor:"pointer"},onClick:()=>{setTab("matchups");setMRound("F4");}},
                 LOGOS[m.h]?e("img",{src:"https://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/"+LOGOS[m.h]+".png&h=16&w=16",style:{width:16,height:16,borderRadius:2}}):null,
                 e("span",{style:{color:"#fff",fontWeight:700,fontSize:10}},m.h),
                 e("span",{style:{color:"#556"}},"vs"),
@@ -1082,7 +1090,7 @@ function App(){
     e("div",{style:{maxWidth:1600,margin:"0 auto",padding:"12px 16px 50px",background:"#0d1117"}},
       tab!=="methodology"&&tab!=="simulate"?e("div",{style:{display:"flex",gap:6,marginBottom:8,flexWrap:"wrap",alignItems:"center"}},
         (tab==="futures"?["Field","All","East","South","West","Midwest"]:["All","East","South","West","Midwest"]).map(r=>
-          e("button",{key:r,onClick:()=>setReg(r),style:{padding:"4px 14px",borderRadius:16,fontFamily:"DM Mono",fontSize:10,fontWeight:reg===r?700:400,letterSpacing:1,background:reg===r?(r==="Field"?"rgba(0,212,255,.15)":r==="All"?"rgba(255,255,255,.1)":(RC[r]+"18")):"rgba(255,255,255,.02)",color:reg===r?(r==="Field"?"#00d4ff":r==="All"?"#fff":RC[r]):"#8899aa",border:"1px solid "+(reg===r?(r==="Field"?"rgba(0,212,255,.3)":r==="All"?"rgba(255,255,255,.2)":(RC[r]+"33")):"rgba(255,255,255,.04)"),textTransform:"uppercase"}},r==="Field"?"SWEET 16":r))):null,
+          e("button",{key:r,onClick:()=>setReg(r),style:{padding:"4px 14px",borderRadius:16,fontFamily:"DM Mono",fontSize:10,fontWeight:reg===r?700:400,letterSpacing:1,background:reg===r?(r==="Field"?"rgba(0,212,255,.15)":r==="All"?"rgba(255,255,255,.1)":(RC[r]+"18")):"rgba(255,255,255,.02)",color:reg===r?(r==="Field"?"#00d4ff":r==="All"?"#fff":RC[r]):"#8899aa",border:"1px solid "+(reg===r?(r==="Field"?"rgba(0,212,255,.3)":r==="All"?"rgba(255,255,255,.2)":(RC[r]+"33")):"rgba(255,255,255,.04)"),textTransform:"uppercase"}},r==="Field"?"FINAL FOUR":r))):null,
       tab==="rankings"?e("div",{style:{marginBottom:0}},
         e("div",{style:{padding:"5px 12px",background:"#0e1218",borderRadius:6,border:"1px solid #1a2a3a",fontSize:9,color:"#8899aa",lineHeight:1.6,marginBottom:3}},
           e("span",{style:{color:"#00d4ff",fontWeight:700}},"X-Score")," = Composite Power Rating from 36 efficiency models. ",
