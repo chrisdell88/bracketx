@@ -1006,7 +1006,7 @@ function App(){
         e("div",{style:{fontSize:9,color:"#8899aa",letterSpacing:1,marginBottom:10,fontFamily:"DM Mono"}},"46 SYSTEMS \u00B7 86 METRICS \u00B7 68 TEAMS \u00B7 INJURY-ADJUSTED \u00B7 UPDATED DAILY"),
         e("div",{className:"ticker-wrap",style:{overflow:"hidden",overflowX:"auto",WebkitOverflowScrolling:"touch",marginBottom:10,borderTop:"1px solid #1a2a3a",borderBottom:"1px solid #1a2a3a",background:"#0a0e14"}},
           e("div",{style:{display:"flex",gap:0,animation:"scroll 18s linear infinite",whiteSpace:"nowrap"}},
-            [...BRACKET_E8,...BRACKET_E8,...BRACKET_E8].map((m,i)=>{
+            [...BRACKET_E8,...BRACKET_E8].map((m,i)=>{
               const h=tMap[m.h],a=tMap[m.a];
               const xsp=h&&a?+((h.xs-a.xs)*SF).toFixed(1):0;
               const favTeam=xsp>0?m.h:m.a;const favSpread=Math.abs(xsp);
