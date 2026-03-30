@@ -128,6 +128,7 @@ function App(){
   const[simResult,setSimResult]=useState(null);
   const[simReveal,setSimReveal]=useState(0);
   const[simRunning,setSimRunning]=useState(false);
+  const[simKey,setSimKey]=useState(0);
 
   const teams=useMemo(()=>R.map((t,i)=>({nm:t[0],s:t[1],rg:t[2],cf:t[3],rec:t[4],xs:t[5],med:t[6],best:Math.min(...SR[i]),worst:Math.max(...SR[i]),ns:SR[i].length,kp:t[10],rk:i+1,sr:SR[i],cr:CR[i],inj:t[11]||0})),[]);
   const tMap=useMemo(()=>{const m={};teams.forEach(t=>m[t.nm]=t);return m;},[teams]);
@@ -805,7 +806,7 @@ function App(){
     const NSIM=10000;
     function mkG(t1,t2,w){return{t1,t2,p:wp(t1,t2),w};}
     function doSim(){
-      setSimRunning(true);setSimReveal(0);setSimResult(null);
+      setSimRunning(true);setSimReveal(0);setSimKey(k=>k+1);
       setTimeout(()=>{const rgGames={};REGS.forEach(rg=>{rgGames[rg]=BRACKET.filter(g=>g.r===rg);});
       // 10K sims for championship odds table
       const champCt={};
@@ -894,7 +895,7 @@ function App(){
           e("div",{style:{fontFamily:"DM Mono",fontSize:9,color:"#aab",lineHeight:1.8}},"Each click simulates one full random bracket using pre-tournament X-Scores. Win percentages show each team's head-to-head probability based on X-Score differential. Championship odds below are powered by ",e("span",{style:{color:"#00d4ff",fontWeight:700}},"10,000")," Monte Carlo simulations.")),
         e("button",{onClick:doSim,disabled:simRunning,style:{fontFamily:"DM Mono",fontSize:11,fontWeight:700,letterSpacing:2,background:simRunning?"#1a2a3a":"#00d4ff",color:simRunning?"#445":"#000",border:"none",borderRadius:4,padding:"10px 28px",cursor:simRunning?"not-allowed":"pointer",transition:"all .2s"}},simRunning?"SIMULATING...":simResult?"↺ RE-SIMULATE":"▶ SIMULATE")),
       !simResult?e("div",{style:{fontFamily:"DM Mono",fontSize:11,color:"#334",padding:"60px 0",textAlign:"center"}},"Press SIMULATE to run the full 2026 NCAA Tournament from scratch."):
-      e("div",{style:{overflowX:"auto",WebkitOverflowScrolling:"touch",padding:"10px 0"}},
+      e("div",{key:simKey,style:{overflowX:"auto",WebkitOverflowScrolling:"touch",padding:"10px 0"}},
         e("div",{style:{display:"flex",justifyContent:"center",alignItems:"stretch",minWidth:1180}},
           // Left side: East (top) + South (bottom)
           e("div",{style:{display:"flex",flexDirection:"column",gap:12}},
