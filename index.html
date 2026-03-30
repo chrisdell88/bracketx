@@ -805,14 +805,10 @@ function App(){
     const NSIM=10000;
     function doSim(){
       setSimRunning(true);setSimReveal(0);
-      // Run NSIM full bracket simulations and tally wins per slot
       const rgGames={};REGS.forEach(rg=>{rgGames[rg]=BRACKET.filter(g=>g.r===rg);});
-      // Accumulators: count how many times team1 (higher seed) wins each slot
-      const w64={},w32={},w16={},w8={},wf4=[0,0],wch=0;
-      // Track which teams appear in each slot and their win counts
-      const slot64={},slot32={},slot16={},slot8={},slotF4=[[],[]],slotCh=[];
+      // Accumulators: count wins per team per slot across NSIM runs
+      const slot64={},slot32={},slot16={},slot8={},slotF4=[{},{}],slotCh={};
       REGS.forEach(rg=>{slot64[rg]=rgGames[rg].map(()=>({}));slot32[rg]=[{},{},{},{}];slot16[rg]=[{},{}];slot8[rg]={};});
-      const champCt={};
       for(let n=0;n<NSIM;n++){
         const r64w={};
         REGS.forEach(rg=>{r64w[rg]=rgGames[rg].map((g,i)=>{const w=sg(g.h,g.a);slot64[rg][i][w]=(slot64[rg][i][w]||0)+1;return w;});});
@@ -827,30 +823,31 @@ function App(){
         slotF4[1][f4w[1]]=(slotF4[1][f4w[1]]||0)+1;
         const chw=sg(f4w[0],f4w[1]);
         slotCh[chw]=(slotCh[chw]||0)+1;
-        champCt[chw]=(champCt[chw]||0)+1;
       }
-      // Build result: pick the most frequent winner per slot, with simulated win %
-      function best(ct){const entries=Object.entries(ct);entries.sort((a,b)=>b[1]-a[1]);return entries[0];}
-      function mkGame(ct,t1,t2){
-        const b=best(ct);const w=b[0];const p=ct[w]/NSIM;
-        const isT1=w===t1;
-        return{t1:t1||Object.keys(ct).sort((a,b)=>ct[b]-ct[a])[0],t2:t2||Object.keys(ct).sort((a,b)=>ct[b]-ct[a])[1]||"",p:isT1?p:1-p,w,pct:Math.round(p*100)};
-      }
+      // Run ONE random bracket for the displayed outcome (gives variety each click)
+      const pick={r64:{},r32:{},s16:{},e8:{},f4:[],ch:null};
+      REGS.forEach(rg=>{pick.r64[rg]=rgGames[rg].map(g=>sg(g.h,g.a));});
+      REGS.forEach(rg=>{const w=pick.r64[rg];pick.r32[rg]=[[0,7],[3,4],[2,5],[1,6]].map(([a,b])=>sg(w[a],w[b]));});
+      REGS.forEach(rg=>{const w=pick.r32[rg];pick.s16[rg]=[[0,1],[2,3]].map(([a,b])=>sg(w[a],w[b]));});
+      REGS.forEach(rg=>{const w=pick.s16[rg];pick.e8[rg]=sg(w[0],w[1]);});
+      pick.f4=[sg(pick.e8.East,pick.e8.South),sg(pick.e8.West,pick.e8.Midwest)];
+      pick.ch=sg(pick.f4[0],pick.f4[1]);
+      // Build result: use random pick for winners, 10K stats for percentages
+      function mkG(t1,t2,w,ct){const p=ct[t1]?(ct[t1]/(ct[t1]+(ct[t2]||0))):wp(t1,t2);return{t1,t2,p,w};}
       const res={r64:{},r32:{},s16:{},e8:{},f4:[],ch:null};
       REGS.forEach(rg=>{
-        res.r64[rg]=rgGames[rg].map((g,i)=>mkGame(slot64[rg][i],g.h,g.a));
-        res.r32[rg]=slot32[rg].map(ct=>{const ks=Object.keys(ct).sort((a,b)=>ct[b]-ct[a]);return mkGame(ct,ks[0],ks[1]||ks[0]);});
-        res.s16[rg]=slot16[rg].map(ct=>{const ks=Object.keys(ct).sort((a,b)=>ct[b]-ct[a]);return mkGame(ct,ks[0],ks[1]||ks[0]);});
-        const ks8=Object.keys(slot8[rg]).sort((a,b)=>slot8[rg][b]-slot8[rg][a]);
-        res.e8[rg]=mkGame(slot8[rg],ks8[0],ks8[1]||ks8[0]);
+        res.r64[rg]=rgGames[rg].map((g,i)=>mkG(g.h,g.a,pick.r64[rg][i],slot64[rg][i]));
+        res.r32[rg]=pick.r32[rg].map((w,i)=>{const ct=slot32[rg][i];const ks=Object.keys(ct).sort((a,b)=>ct[b]-ct[a]);const t1=ks[0],t2=ks[1]||ks[0];return mkG(t1,t2,w,ct);});
+        res.s16[rg]=pick.s16[rg].map((w,i)=>{const ct=slot16[rg][i];const ks=Object.keys(ct).sort((a,b)=>ct[b]-ct[a]);const t1=ks[0],t2=ks[1]||ks[0];return mkG(t1,t2,w,ct);});
+        const ct8=slot8[rg];const ks8=Object.keys(ct8).sort((a,b)=>ct8[b]-ct8[a]);
+        res.e8[rg]=mkG(ks8[0],ks8[1]||ks8[0],pick.e8[rg],ct8);
       });
-      const f4ks0=Object.keys(slotF4[0]).sort((a,b)=>slotF4[0][b]-slotF4[0][a]);
-      const f4ks1=Object.keys(slotF4[1]).sort((a,b)=>slotF4[1][b]-slotF4[1][a]);
-      res.f4[0]=mkGame(slotF4[0],f4ks0[0],f4ks0[1]||f4ks0[0]);
-      res.f4[1]=mkGame(slotF4[1],f4ks1[0],f4ks1[1]||f4ks1[0]);
-      const chks=Object.keys(slotCh).sort((a,b)=>slotCh[b]-slotCh[a]);
-      res.ch=mkGame(slotCh,chks[0],chks[1]||chks[0]);
-      res.champCt=champCt;
+      const ks0=Object.keys(slotF4[0]).sort((a,b)=>slotF4[0][b]-slotF4[0][a]);
+      const ks1=Object.keys(slotF4[1]).sort((a,b)=>slotF4[1][b]-slotF4[1][a]);
+      res.f4[0]=mkG(ks0[0],ks0[1]||ks0[0],pick.f4[0],slotF4[0]);
+      res.f4[1]=mkG(ks1[0],ks1[1]||ks1[0],pick.f4[1],slotF4[1]);
+      const ksCh=Object.keys(slotCh).sort((a,b)=>slotCh[b]-slotCh[a]);
+      res.ch=mkG(ksCh[0],ksCh[1]||ksCh[0],pick.ch,slotCh);
       setSimResult(res);
       [100,600,1100,1600,2100,2600].forEach((d,i)=>setTimeout(()=>setSimReveal(i+1),d));
       setTimeout(()=>setSimRunning(false),3000);
