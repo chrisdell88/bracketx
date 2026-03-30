@@ -824,55 +824,96 @@ function App(){
       [100,600,1100,1600,2100,2600].forEach((d,i)=>setTimeout(()=>setSimReveal(i+1),d));
       setTimeout(()=>setSimRunning(false),3000);
     }
-    function gc(g,rc){
+    // Compact bracket game card
+    const bc=(g)=>{
+      if(!g)return null;
       const t1w=g.w===g.t1,p1=(g.p*100).toFixed(0),p2=(100-g.p*100).toFixed(0);
-      return e("div",{style:{background:"#0e1420",border:"1px solid #1a2a3a",borderRadius:6,padding:"8px 10px",marginBottom:5}},
-        e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:3}},
-          e("span",{style:{fontFamily:"DM Mono",fontSize:11,fontWeight:t1w?700:400,color:t1w?"#fff":"#556"}},(SIM_XS[g.t1]!==undefined?`${Object.keys(SIM_XS).sort((a,b)=>SIM_XS[b]-SIM_XS[a]).indexOf(g.t1)+1}. `:"")+g.t1),
-          e("span",{style:{fontFamily:"DM Mono",fontSize:9,color:t1w?"#00d4ff":"#445"}},p1+"%")),
-        e("div",{style:{fontFamily:"DM Mono",fontSize:8,color:"#2a3a4a",margin:"0 0 3px",letterSpacing:2}},"— VS —"),
-        e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:t1w?0:5}},
-          e("span",{style:{fontFamily:"DM Mono",fontSize:11,fontWeight:!t1w?700:400,color:!t1w?"#fff":"#556"}},(SIM_XS[g.t2]!==undefined?`${Object.keys(SIM_XS).sort((a,b)=>SIM_XS[b]-SIM_XS[a]).indexOf(g.t2)+1}. `:"")+g.t2),
-          e("span",{style:{fontFamily:"DM Mono",fontSize:9,color:!t1w?"#00d4ff":"#445"}},p2+"%")),
-        e("div",{style:{marginTop:6,paddingTop:6,borderTop:"1px solid #1a2a3a",fontFamily:"DM Mono",fontSize:10,fontWeight:700,color:rc||"#00d4ff"}},"→ "+g.w));
-    }
+      return e("div",{style:{width:120,background:"#0e1420",border:"1px solid #1a2a3a",borderRadius:3,overflow:"hidden",flexShrink:0}},
+        e("div",{style:{display:"flex",justifyContent:"space-between",padding:"2px 5px",fontSize:8,fontFamily:"DM Mono",fontWeight:t1w?700:400,color:t1w?"#fff":"#556",background:t1w?"rgba(0,212,255,.08)":"transparent"}},
+          e("span",null,g.t1),e("span",{style:{color:t1w?"#00d4ff":"#334",marginLeft:4}},p1+"%")),
+        e("div",{style:{display:"flex",justifyContent:"space-between",padding:"2px 5px",fontSize:8,fontFamily:"DM Mono",fontWeight:!t1w?700:400,color:!t1w?"#fff":"#556",borderTop:"1px solid #1a2a3a",background:!t1w?"rgba(0,212,255,.08)":"transparent"}},
+          e("span",null,g.t2),e("span",{style:{color:!t1w?"#00d4ff":"#334",marginLeft:4}},p2+"%")));
+    };
+    // Wider card for F4/Championship
+    const bcW=(g)=>{
+      if(!g)return null;
+      const t1w=g.w===g.t1,p1=(g.p*100).toFixed(0),p2=(100-g.p*100).toFixed(0);
+      return e("div",{style:{width:140,background:"#0e1420",border:"1px solid rgba(255,214,0,.25)",borderRadius:4,overflow:"hidden",flexShrink:0}},
+        e("div",{style:{display:"flex",justifyContent:"space-between",padding:"3px 6px",fontSize:9,fontFamily:"DM Mono",fontWeight:t1w?700:400,color:t1w?"#fff":"#556",background:t1w?"rgba(255,214,0,.06)":"transparent"}},
+          e("span",null,g.t1),e("span",{style:{color:t1w?"#ffd600":"#334",marginLeft:4}},p1+"%")),
+        e("div",{style:{display:"flex",justifyContent:"space-between",padding:"3px 6px",fontSize:9,fontFamily:"DM Mono",fontWeight:!t1w?700:400,color:!t1w?"#fff":"#556",borderTop:"1px solid #1a2a3a",background:!t1w?"rgba(255,214,0,.06)":"transparent"}},
+          e("span",null,g.t2),e("span",{style:{color:!t1w?"#ffd600":"#334",marginLeft:4}},p2+"%")));
+    };
+    // Game column with vertical flex spacing
+    const gCol=(games,H,rev)=>e("div",{style:{display:"flex",flexDirection:"column",justifyContent:"space-around",height:H,opacity:rev?1:0,transition:"opacity .5s"}},
+      games.map((g,i)=>e("div",{key:i},bc(g))));
+    // Bracket connector lines (left-to-right)
+    const cCol=(pairs,H,rev)=>e("div",{style:{display:"flex",flexDirection:"column",width:14,height:H,opacity:rev?1:0,transition:"opacity .5s"}},
+      Array.from({length:pairs},(_,i)=>
+        e("div",{key:i,style:{flex:1,display:"flex",flexDirection:"column"}},
+          e("div",{style:{flex:1,borderBottom:"1px solid #2a4a6a",borderRight:"1px solid #2a4a6a"}}),
+          e("div",{style:{flex:1,borderTop:"1px solid #2a4a6a",borderRight:"1px solid #2a4a6a"}}))));
+    // Mirrored connector lines (right-to-left)
+    const cColM=(pairs,H,rev)=>e("div",{style:{display:"flex",flexDirection:"column",width:14,height:H,opacity:rev?1:0,transition:"opacity .5s"}},
+      Array.from({length:pairs},(_,i)=>
+        e("div",{key:i,style:{flex:1,display:"flex",flexDirection:"column"}},
+          e("div",{style:{flex:1,borderBottom:"1px solid #2a4a6a",borderLeft:"1px solid #2a4a6a"}}),
+          e("div",{style:{flex:1,borderTop:"1px solid #2a4a6a",borderLeft:"1px solid #2a4a6a"}}))));
+    // Region bracket flowing left-to-right
+    const RH=340;
+    const regL=(rg,res)=>e("div",{style:{display:"flex",alignItems:"stretch"}},
+      gCol(res.r64[rg],RH,simReveal>=1),cCol(4,RH,simReveal>=2),
+      gCol(res.r32[rg],RH,simReveal>=2),cCol(2,RH,simReveal>=3),
+      gCol(res.s16[rg],RH,simReveal>=3),cCol(1,RH,simReveal>=4),
+      gCol([res.e8[rg]],RH,simReveal>=4));
+    // Region bracket flowing right-to-left (mirrored)
+    const regR=(rg,res)=>e("div",{style:{display:"flex",alignItems:"stretch"}},
+      gCol([res.e8[rg]],RH,simReveal>=4),cColM(1,RH,simReveal>=4),
+      gCol(res.s16[rg],RH,simReveal>=3),cColM(2,RH,simReveal>=3),
+      gCol(res.r32[rg],RH,simReveal>=2),cColM(4,RH,simReveal>=2),
+      gCol(res.r64[rg],RH,simReveal>=1));
     const sorted=Object.entries(SIM_XS).sort((a,b)=>b[1]-a[1]);
     const xrank=t=>sorted.findIndex(([k])=>k===t)+1;
-    return e("div",{style:{maxWidth:1400}},
-      e("div",{style:{display:"flex",alignItems:"center",gap:20,marginBottom:24,flexWrap:"wrap"}},
+    return e("div",{style:{maxWidth:1440}},
+      e("div",{style:{display:"flex",alignItems:"center",gap:20,marginBottom:20,flexWrap:"wrap"}},
         e("div",null,
           e("div",{style:{fontFamily:"DM Mono",fontSize:13,fontWeight:700,color:"#fff",letterSpacing:1,marginBottom:4}},"BRACKET SIMULATOR"),
           e("div",{style:{fontFamily:"DM Mono",fontSize:9,color:"#556",lineHeight:1.6}},"Probabilistic simulation · Pre-tournament X-Scores · Every run is different")),
         e("button",{onClick:doSim,disabled:simRunning,style:{fontFamily:"DM Mono",fontSize:11,fontWeight:700,letterSpacing:2,background:simRunning?"#1a2a3a":"#00d4ff",color:simRunning?"#445":"#000",border:"none",borderRadius:4,padding:"10px 28px",cursor:simRunning?"not-allowed":"pointer",transition:"all .2s"}},simRunning?"SIMULATING...":simResult?"↺ RE-SIMULATE":"▶ SIMULATE")),
       !simResult?e("div",{style:{fontFamily:"DM Mono",fontSize:11,color:"#334",padding:"60px 0",textAlign:"center"}},"Press SIMULATE to run the full 2026 NCAA Tournament from scratch."):
-      e("div",null,
-        ...[
-          {label:"ROUND OF 64",key:"r64",reveal:1,isObj:false},
-          {label:"ROUND OF 32",key:"r32",reveal:2,isObj:false},
-          {label:"SWEET 16",key:"s16",reveal:3,isObj:false},
-          {label:"ELITE 8",key:"e8",reveal:4,isObj:true},
-        ].map(({label,key,reveal,isObj})=>simReveal>=reveal?
-          e("div",{key:label,style:{marginBottom:28}},
-            e("div",{style:{fontFamily:"DM Mono",fontSize:9,color:"#ffd600",letterSpacing:4,marginBottom:10}},label),
-            e("div",{style:{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10}},
-              REGS.map(rg=>e("div",{key:rg},
-                e("div",{style:{fontFamily:"DM Mono",fontSize:8,color:RC[rg],letterSpacing:3,marginBottom:6}},rg.toUpperCase()),
-                (isObj?[simResult[key][rg]]:simResult[key][rg]).map((g,i)=>e("div",{key:i},gc(g,RC[rg])))))))
-        :null),
-        simReveal>=5?e("div",{style:{marginBottom:28}},
-          e("div",{style:{fontFamily:"DM Mono",fontSize:9,color:"#ffd600",letterSpacing:4,marginBottom:10}},"FINAL FOUR"),
-          e("div",{style:{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:10,maxWidth:640}},
-            e("div",null,e("div",{style:{fontFamily:"DM Mono",fontSize:8,color:"#4488ff",letterSpacing:3,marginBottom:6}},"EAST · SOUTH"),gc(simResult.f4[0],"#ffd600")),
-            e("div",null,e("div",{style:{fontFamily:"DM Mono",fontSize:8,color:"#00d4ff",letterSpacing:3,marginBottom:6}},"WEST · MIDWEST"),gc(simResult.f4[1],"#ffd600")))):null,
-        simReveal>=6?e("div",{style:{marginBottom:28}},
-          e("div",{style:{fontFamily:"DM Mono",fontSize:9,color:"#ffd600",letterSpacing:4,marginBottom:10}},"CHAMPIONSHIP"),
-          e("div",{style:{display:"grid",gridTemplateColumns:"300px 1fr",gap:24,alignItems:"start"}},
-            gc(simResult.ch,"#ffd600"),
-            e("div",{style:{padding:"20px 24px",background:"linear-gradient(135deg,rgba(255,214,0,.07),rgba(255,214,0,.01))",border:"1px solid rgba(255,214,0,.2)",borderRadius:8}},
-              e("div",{style:{fontFamily:"DM Mono",fontSize:8,color:"#ffd600",letterSpacing:4,marginBottom:10}},"SIMULATED CHAMPION"),
-              e("div",{style:{fontFamily:"Outfit",fontSize:28,fontWeight:900,color:"#fff",marginBottom:6}},simResult.ch.w),
-              e("div",{style:{fontFamily:"DM Mono",fontSize:10,color:"#8899aa",marginBottom:4}},`Pre-tournament X# ${xrank(simResult.ch.w)} overall`),
-              e("div",{style:{fontFamily:"DM Mono",fontSize:10,color:"#8899aa"}},`Pre-tournament X-Score: ${SIM_XS[simResult.ch.w]?.toFixed(4)}`)))):null));
+      e("div",{style:{overflowX:"auto",WebkitOverflowScrolling:"touch",padding:"10px 0"}},
+        e("div",{style:{display:"flex",justifyContent:"center",alignItems:"stretch",minWidth:1180}},
+          // Left side: East (top) + South (bottom)
+          e("div",{style:{display:"flex",flexDirection:"column",gap:12}},
+            e("div",null,
+              e("div",{style:{fontFamily:"DM Mono",fontSize:8,color:RC.East,letterSpacing:3,marginBottom:4}},"EAST"),
+              regL("East",simResult)),
+            e("div",null,
+              e("div",{style:{fontFamily:"DM Mono",fontSize:8,color:RC.South,letterSpacing:3,marginBottom:4}},"SOUTH"),
+              regL("South",simResult))),
+          // Center: F4 + Championship
+          e("div",{style:{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",padding:"0 10px",gap:12,minWidth:156}},
+            e("div",{style:{opacity:simReveal>=5?1:0,transition:"opacity .5s",textAlign:"center"}},
+              e("div",{style:{fontFamily:"DM Mono",fontSize:7,color:"#ffd600",letterSpacing:2,marginBottom:3}},"FINAL FOUR"),
+              bcW(simResult.f4[0])),
+            e("div",{style:{opacity:simReveal>=6?1:0,transition:"opacity .5s",textAlign:"center"}},
+              e("div",{style:{fontFamily:"DM Mono",fontSize:7,color:"#ffd600",letterSpacing:2,marginBottom:3}},"CHAMPIONSHIP"),
+              bcW(simResult.ch),
+              e("div",{style:{marginTop:8,padding:"10px 14px",background:"linear-gradient(135deg,rgba(255,214,0,.07),rgba(255,214,0,.01))",border:"1px solid rgba(255,214,0,.2)",borderRadius:6,textAlign:"center"}},
+                e("div",{style:{fontFamily:"DM Mono",fontSize:7,color:"#ffd600",letterSpacing:3,marginBottom:4}},"CHAMPION"),
+                e("div",{style:{fontFamily:"Outfit",fontSize:18,fontWeight:900,color:"#fff"}},simResult.ch.w),
+                e("div",{style:{fontFamily:"DM Mono",fontSize:8,color:"#8899aa",marginTop:2}},"X# "+xrank(simResult.ch.w)+" · "+SIM_XS[simResult.ch.w]?.toFixed(4)))),
+            e("div",{style:{opacity:simReveal>=5?1:0,transition:"opacity .5s",textAlign:"center"}},
+              e("div",{style:{fontFamily:"DM Mono",fontSize:7,color:"#ffd600",letterSpacing:2,marginBottom:3}},"FINAL FOUR"),
+              bcW(simResult.f4[1]))),
+          // Right side: West (top) + Midwest (bottom) — mirrored
+          e("div",{style:{display:"flex",flexDirection:"column",gap:12}},
+            e("div",null,
+              e("div",{style:{fontFamily:"DM Mono",fontSize:8,color:RC.West,letterSpacing:3,marginBottom:4,textAlign:"right"}},"WEST"),
+              regR("West",simResult)),
+            e("div",null,
+              e("div",{style:{fontFamily:"DM Mono",fontSize:8,color:RC.Midwest,letterSpacing:3,marginBottom:4,textAlign:"right"}},"MIDWEST"),
+              regR("Midwest",simResult))))));
   };
 
   // ════════ RATINGS KEY MODAL ════════
