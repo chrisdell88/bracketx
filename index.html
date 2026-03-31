@@ -20,8 +20,16 @@
 *{box-sizing:border-box;margin:0;padding:0}
 @keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 .ticker-wrap::-webkit-scrollbar{display:none}.ticker-wrap{-ms-overflow-style:none;scrollbar-width:none}
-@media(pointer:coarse){.ticker-wrap>div{animation-play-state:paused!important}}
+@media(pointer:coarse){.ticker-wrap>div{animation-play-state:running!important;-webkit-overflow-scrolling:touch}}
 html,body,#root,#root>div{background:#0d1117!important;color:#c8d0d8;font-family:'DM Mono',monospace;min-height:100vh}
+@media(max-width:768px){
+.sim-header{font-size:16px!important}
+.sim-desc{font-size:10px!important}
+.method-section{padding:10px 12px!important}
+.method-section p,.method-section li{font-size:10px!important;word-wrap:break-word}
+.results-grid{grid-template-columns:1fr!important}
+.results-box-inner{grid-template-columns:1fr!important;gap:6px!important}
+}
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-track{background:#0d1117}
 ::-webkit-scrollbar-thumb{background:#1a2a3a;border-radius:2px}
@@ -570,14 +578,15 @@ function App(){
     const wc=v=>v==="W"?"#00e676":v==="L"?"#ff4444":"#8899aa";
     return e("div",{style:{maxWidth:900}},
       e("h2",{style:{fontFamily:"Outfit",fontSize:22,fontWeight:900,color:"#fff",marginBottom:6}},"Results Tracker"),
-      e("p",{style:{fontSize:10,color:"#aab",marginBottom:12}},"Game-by-game predictions vs. actual results \u2014 X-Score, KenPom, BartTorvik"),
-      e("div",{style:{display:"flex",gap:6,marginBottom:12}},
+      e("p",{style:{fontSize:10,color:"#aab",marginBottom:4}},"Game-by-game predictions vs. actual results:"),
+      e("p",{style:{fontSize:10,color:"#aab",marginBottom:12,paddingLeft:12}},"X-Score, KenPom, BartTorvik"),
+      e("div",{style:{display:"flex",gap:6,marginBottom:12,flexWrap:"wrap"}},
         ["ALL","PI","R64","R32","S16","E8"].map(r=>e("button",{key:r,onClick:()=>setRRound(r),style:{padding:"5px 16px",borderRadius:16,fontFamily:"DM Mono",fontSize:10,fontWeight:rRound===r?700:400,background:rRound===r?"rgba(0,212,255,.15)":"rgba(255,255,255,.02)",color:rRound===r?"#00d4ff":"#8899aa",border:"1px solid "+(rRound===r?"rgba(0,212,255,.3)":"rgba(255,255,255,.04)")}},r==="ALL"?"ALL (64)":r==="PI"?"FIRST FOUR (4)":r==="R64"?"ROUND OF 64 (32)":r==="R32"?"ROUND OF 32 (16)":r==="S16"?"SWEET 16 (8)":"ELITE 8 (4)"))),
-      e("div",{style:{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:16}},
+      e("div",{className:"results-grid",style:{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:16}},
         [["X-SCORE","x","#00d4ff"],["KENPOM","kp","#ff6b35"],["BARTTORVIK","bt","#8ab4d0"]].map(([label,k,color])=>{
           const s=stats[k];return e("div",{key:k,style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:8,padding:10,borderTop:"3px solid "+color}},
             e("div",{style:{fontSize:10,fontWeight:700,color,letterSpacing:1,marginBottom:8}},label),
-            e("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:4,fontSize:10}},
+            e("div",{className:"results-box-inner",style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:4,fontSize:10}},
               e("div",null,e("span",{style:{color:"#889"}},"SU: "),e("span",{style:{color:"#fff",fontWeight:700}},s.suW+"-"+(s.suN-s.suW)+" ("+Math.round(s.suW/s.suN*100)+"%)")),
               e("div",null,e("span",{style:{color:"#889"}},"ATS: "),e("span",{style:{color:s.atsW/s.atsN>.52?"#00e676":"#ff4444",fontWeight:700}},s.atsW+"-"+(s.atsN-s.atsW)+" ("+Math.round(s.atsW/s.atsN*100)+"%)")),
               e("div",null,e("span",{style:{color:"#889"}},"MAE: "),e("span",{style:{color:"#fff",fontWeight:700}},s.mae)),
@@ -615,10 +624,10 @@ function App(){
     e("h2",{style:{fontFamily:"Outfit",fontSize:22,fontWeight:900,color:"#fff",marginBottom:6}},"Methodology"),
     e("p",{style:{fontSize:10,color:"#aab",marginBottom:18}},"BracketX Composite Power Index \u2014 March 2026"),
     e("div",{style:{fontSize:11,color:"#aab",lineHeight:1.9}},
-      e("div",{style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:8,padding:14,marginBottom:16}},
+      e("div",{className:"method-section",style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:8,padding:14,marginBottom:16}},
         e("h3",{style:{fontFamily:"Outfit",fontSize:14,fontWeight:800,color:"#00d4ff",marginBottom:8}},"01 \u2014 WHAT IS X-SCORE?"),
         e("p",null,"The X-Score is a ",e("strong",{style:{color:"#fff"}},"composite power rating")," that aggregates ",e("strong",{style:{color:"#fff"}},"46 independent ranking systems")," across 68 tournament teams. Think of it as a meta-model: instead of relying on any single analyst or algorithm, X-Score combines the raw efficiency values from every major rating system into one consensus number. Each system\u2019s actual rating values (not just rankings) are standardized across the field, then combined using proprietary tier-weighted averaging. Systems that account for player injuries receive premium weighting. The result is a single number representing each team\u2019s true strength relative to the entire tournament field.")),
-      e("div",{style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:8,padding:14,marginBottom:16}},
+      e("div",{className:"method-section",style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:8,padding:14,marginBottom:16}},
         e("h3",{style:{fontFamily:"Outfit",fontSize:14,fontWeight:800,color:"#00d4ff",marginBottom:8}},"02 \u2014 TIER STRUCTURE & WEIGHTS"),
         e("div",{style:{marginBottom:10}},
           e("div",{style:{color:"#00d4ff",fontWeight:700,fontSize:12,marginBottom:4}},"TIER 1 \u2014 Efficiency Models (Premium Weight)"),
@@ -631,7 +640,7 @@ function App(){
         e("div",null,
           e("div",{style:{color:"#ffd600",fontWeight:700,fontSize:12,marginBottom:4}},"INJURY PREMIUM"),
           e("p",null,"Systems that account for player injuries (Evan Miya, BPI, COOPER) receive higher weights because injury data is ",e("strong",{style:{color:"#fff"}},"not captured")," by most rating systems, including KenPom and BartTorvik. The INJ column on the Rankings page shows each team\u2019s injury impact factor."))),
-      e("div",{style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:8,padding:14,marginBottom:16}},
+      e("div",{className:"method-section",style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:8,padding:14,marginBottom:16}},
         e("h3",{style:{fontFamily:"Outfit",fontSize:14,fontWeight:800,color:"#00d4ff",marginBottom:8}},"03 \u2014 X-SPREAD FORMULA"),
         e("div",{style:{background:"#161b22",borderRadius:6,padding:10,fontFamily:"DM Mono",fontSize:12,color:"#00d4ff",marginBottom:8,textAlign:"center"}},"X-Spread = Team A\u2019s X-Score \u2212 Team B\u2019s X-Score"),
         e("p",{style:{marginBottom:6}},"The X-Spread is a projected point spread for any matchup. A proprietary scaling factor, calibrated against KenPom, BartTorvik, and sportsbook closing lines, converts the raw X-Score differential into points."),
@@ -639,7 +648,7 @@ function App(){
         e("p",{style:{marginBottom:6}},"The scaling factor is recalibrated each round of the tournament as new game data becomes available."),
         e("p",{style:{marginBottom:6,color:"#ffd600"}},"Sportsbook Data Sources:"),
         e("p",null,"Closing line spreads are sourced from the-odds-api.com, which aggregates lines from FanDuel, DraftKings, BetOnline, MyBookie, LowVig, and other major US sportsbooks. The consensus closing line (median across books) is used for ATS comparisons.")),
-      e("div",{style:{background:"#0e1218",border:"1px solid #00d4ff44",borderRadius:8,padding:14,marginBottom:16}},
+      e("div",{className:"method-section",style:{background:"#0e1218",border:"1px solid #00d4ff44",borderRadius:8,padding:14,marginBottom:16}},
         e("h3",{style:{fontFamily:"Outfit",fontSize:14,fontWeight:800,color:"#00d4ff",marginBottom:10}},"04 \u2014 2026 TOURNAMENT RESULTS"),
         e("p",{style:{marginBottom:6,color:"#fff"}},"48 games with closing lines \u2014 Round of 64 + Round of 32 (March 19\u201323, 2026)"),
         e("p",{style:{marginBottom:10,color:"#8899aa",fontSize:10}},"MAE = Mean Absolute Error (average points off from the actual result \u2014 lower is better). ATS = Against The Spread (picks vs. sportsbook closing lines \u2014 above 52.4% is profitable at standard odds)."),
@@ -681,12 +690,12 @@ function App(){
               e("div",{style:{color:"#fff",fontWeight:700,marginBottom:2}},"(9) Iowa 73, (1) Florida 72 \u2014 BIGGEST UPSET OF 2026"),
               e("div",null,"X-Score: ",e("strong",{style:{color:"#00d4ff"}},"Florida -6.9"),"  |  KenPom: -7.6  |  BartTorvik: -7.9  |  Silver: -10.6"),
               e("div",{style:{color:"#889",marginTop:2}},"X-Score had the closest spread to the actual result (Iowa +1). Silver had Florida as a 10.6-point favorite. X-Score\u2019s composite better captured how vulnerable the defending champs were."))))),
-      e("div",{style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:8,padding:14,marginBottom:16}},
+      e("div",{className:"method-section",style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:8,padding:14,marginBottom:16}},
         e("h3",{style:{fontFamily:"Outfit",fontSize:14,fontWeight:800,color:"#00d4ff",marginBottom:8}},"05 \u2014 WHY COMPOSITE BEATS INDIVIDUAL"),
         e("p",{style:{marginBottom:8}},"KenPom is one model with one set of assumptions. BartTorvik is another. COOPER is a third. Each has blind spots. The X-Score aggregates ",e("strong",{style:{color:"#fff"}},"46 independent perspectives"),", canceling out idiosyncratic errors through the wisdom of crowds."),
         e("p",{style:{marginBottom:8}},"PCA analysis shows ",e("strong",{style:{color:"#fff"}},"93.8% of variance")," across all 46 systems is explained by a single factor \u2014 they largely agree on team quality. The remaining 6.2% of disagreement is where the composite adds value: averaging out noise and surfacing the true signal."),
         e("p",null,"This means that while individual systems largely agree on team quality, the remaining disagreement is precisely where the composite adds value \u2014 averaging out noise and surfacing the true signal. The net result: X-Score\u2019s prediction error is measurably lower than any single system\u2019s.")),
-      e("div",{style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:8,padding:14,marginBottom:16}},
+      e("div",{className:"method-section",style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:8,padding:14,marginBottom:16}},
         e("h3",{style:{fontFamily:"Outfit",fontSize:14,fontWeight:800,color:"#00d4ff",marginBottom:10}},"06 \u2014 HOW X-SCORE DIFFERS FROM THE BEST"),
         e("div",{style:{display:"grid",gridTemplateColumns:"1fr",gap:12}},
           e("div",{style:{background:"#161b22",borderRadius:6,padding:12,borderLeft:"3px solid #00d4ff"}},
@@ -725,7 +734,7 @@ function App(){
               e("div",{style:{fontSize:9,color:"#889"}},s[1])))),
         e("p",{style:{marginBottom:8}},"The remaining five T1 systems (KenPom, BartTorvik, SwishStats, Haslametrics, INCC) do ",e("strong",{style:{color:"#ff4444"}},"not adjust for injuries"),". By giving premium weights to injury-aware systems, X-Score captures real-time roster strength that most models miss."),
         e("p",null,"The ",e("strong",{style:{color:"#fff"}},"INJ column")," on the Rankings page shows each team\u2019s injury factor: the gap between injury-adjusted and non-adjusted systems. A large negative value flags teams where injuries are dragging down their true strength.")),
-      e("div",{style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:8,padding:14,marginBottom:16}},
+      e("div",{className:"method-section",style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:8,padding:14,marginBottom:16}},
         e("h3",{style:{fontFamily:"Outfit",fontSize:14,fontWeight:800,color:"#00d4ff",marginBottom:10}},"08 \u2014 DATA SOURCES"),
         e("p",{style:{marginBottom:10}},"All 58 systems used to compute or contextualize the X-Score, organized by tier."),
         (function(){
@@ -899,10 +908,10 @@ function App(){
     return e("div",{style:{maxWidth:1440}},
       e("div",{style:{display:"flex",alignItems:"center",gap:20,marginBottom:20,flexWrap:"wrap"}},
         e("div",null,
-          e("div",{style:{fontFamily:"DM Mono",fontSize:13,fontWeight:700,color:"#fff",letterSpacing:1,marginBottom:4}},"BRACKET SIMULATOR"),
-          e("div",{style:{fontFamily:"DM Mono",fontSize:9,color:"#aab",lineHeight:1.8}},"Each click simulates one full random bracket using pre-tournament X-Scores. Win percentages show each team's head-to-head probability based on X-Score differential. Championship odds below are powered by ",e("span",{style:{color:"#00d4ff",fontWeight:700}},"10,000")," Monte Carlo simulations.")),
+          e("div",{className:"sim-header",style:{fontFamily:"DM Mono",fontSize:13,fontWeight:700,color:"#fff",letterSpacing:1,marginBottom:4}},"BRACKET SIMULATOR"),
+          e("div",{className:"sim-desc",style:{fontFamily:"DM Mono",fontSize:9,color:"#aab",lineHeight:1.8}},"Each click simulates one full random bracket using pre-tournament X-Scores. Win percentages show each team's head-to-head probability based on X-Score differential. Championship odds below are powered by ",e("span",{style:{color:"#00d4ff",fontWeight:700}},"10,000")," Monte Carlo simulations.")),
         e("button",{onClick:doSim,disabled:simRunning,style:{fontFamily:"DM Mono",fontSize:11,fontWeight:700,letterSpacing:2,background:simRunning?"#1a2a3a":"#00d4ff",color:simRunning?"#445":"#000",border:"none",borderRadius:4,padding:"10px 28px",cursor:simRunning?"not-allowed":"pointer",transition:"all .2s"}},simRunning?"SIMULATING...":simResult?"↺ RE-SIMULATE":"▶ SIMULATE")),
-      !simResult?e("div",{style:{fontFamily:"DM Mono",fontSize:11,color:"#334",padding:"60px 0",textAlign:"center"}},"Press SIMULATE to run the full 2026 NCAA Tournament from scratch."):
+      !simResult?e("div",{style:{fontFamily:"DM Mono",fontSize:11,color:"#8899aa",padding:"60px 0",textAlign:"center"}},"Press SIMULATE to run the full 2026 NCAA Tournament from scratch."):
       e("div",{key:simKey,style:{overflowX:"auto",WebkitOverflowScrolling:"touch",padding:"10px 0"}},
         e("div",{style:{display:"flex",justifyContent:"center",alignItems:"stretch",minWidth:1180}},
           // Left side: East (top) + South (bottom)
@@ -1066,27 +1075,31 @@ function App(){
         e("div",{style:{display:"flex",alignItems:"baseline",gap:10,marginBottom:8}},
           e("span",{onClick:()=>{setTab("rankings");setReg("All");},style:{fontFamily:"Outfit",fontSize:30,fontWeight:900,color:"#fff",letterSpacing:-1,cursor:"pointer"}},"BRACKET",e("span",{style:{color:"#00d4ff"}},"X")),
           e("span",{style:{fontFamily:"DM Mono",fontSize:13,fontWeight:500,color:"#ffd600",letterSpacing:2}},"COMPOSITE POWER INDEX")),
-        e("div",{style:{fontSize:9,color:"#8899aa",letterSpacing:1,marginBottom:10,fontFamily:"DM Mono"}},"46 SYSTEMS \u00B7 86 METRICS \u00B7 68 TEAMS \u00B7 INJURY-ADJUSTED \u00B7 UPDATED DAILY"),
+        e("div",{style:{fontSize:9,color:"#8899aa",letterSpacing:1,marginBottom:10,fontFamily:"DM Mono"}},"58 SYSTEMS \u00B7 68 TEAMS \u00B7 INJURY-ADJUSTED \u00B7 UPDATED DAILY"),
         e("div",{className:"ticker-wrap",style:{overflow:"hidden",overflowX:"auto",WebkitOverflowScrolling:"touch",marginBottom:10,borderTop:"1px solid #1a2a3a",borderBottom:"1px solid #1a2a3a",background:"#0a0e14"}},
           e("div",{style:{display:"flex",gap:0,animation:"scroll 18s linear infinite",whiteSpace:"nowrap"}},
-            [...BRACKET_F4,...BRACKET_F4].map((m,i)=>{
+            [...BRACKET_E8,...BRACKET_F4,...BRACKET_E8,...BRACKET_F4].map((m,i)=>{
               const h=tMap[m.h],a=tMap[m.a];
               const xsp=h&&a?+((h.xs-a.xs)*SF).toFixed(1):0;
               const favTeam=xsp>0?m.h:m.a;const favSpread=Math.abs(xsp);
               const bk=BS_BY_GAME[m.h+"-"+m.a]||BS_BY_GAME[m.a+"-"+m.h]||null;
-              return e("div",{key:i,style:{display:"inline-flex",alignItems:"center",gap:6,padding:"6px 16px",borderRight:"1px solid #1a2a3a",fontSize:10,flexShrink:0,cursor:"pointer"},onClick:()=>{setTab("matchups");setMRound("F4");}},
+              const res=RESULTS[m.h+"-"+m.a]||RESULTS[m.a+"-"+m.h]||null;
+              const isF4=m.rd==="F4";
+              return e("div",{key:i,style:{display:"inline-flex",alignItems:"center",gap:6,padding:"6px 16px",borderRight:"1px solid #1a2a3a",fontSize:10,flexShrink:0,cursor:"pointer"},onClick:()=>{setTab("matchups");setMRound(isF4?"F4":"E8");}},
+                e("span",{style:{color:isF4?"#ffd600":"#556",fontSize:7,fontWeight:700,fontFamily:"DM Mono",letterSpacing:1}},isF4?"F4":"E8"),
                 LOGOS[m.h]?e("img",{src:"https://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/"+LOGOS[m.h]+".png&h=16&w=16",style:{width:16,height:16,borderRadius:2}}):null,
                 e("span",{style:{color:"#fff",fontWeight:700,fontSize:10}},m.h),
                 e("span",{style:{color:"#556"}},"vs"),
                 LOGOS[m.a]?e("img",{src:"https://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/"+LOGOS[m.a]+".png&h=16&w=16",style:{width:16,height:16,borderRadius:2}}):null,
                 e("span",{style:{color:"#aab",fontWeight:600,fontSize:10}},m.a),
-                e("span",{style:{color:"#00d4ff",fontWeight:700,fontFamily:"DM Mono",fontSize:9}},"X: "+favTeam+" -"+favSpread),
-                bk?e("span",{style:{color:"#ffd600",fontSize:8,fontFamily:"DM Mono"}},"BOOK: -"+bk):null,
-                bk?e("span",{style:{color:"#00e676",fontSize:8,fontWeight:700,fontFamily:"DM Mono"}},"EDGE: "+Math.abs(favSpread-bk).toFixed(1)):null,
-                e("span",{style:{color:"#556",fontSize:8}},m.d+" "+m.t));}))),
-        e("div",{style:{display:"flex",gap:0}},
+                res?e("span",{style:{color:"#00e676",fontWeight:700,fontFamily:"DM Mono",fontSize:9}},res):
+                  e("span",{style:{color:"#00d4ff",fontWeight:700,fontFamily:"DM Mono",fontSize:9}},"X: "+favTeam+" -"+favSpread),
+                !res&&bk?e("span",{style:{color:"#ffd600",fontSize:8,fontFamily:"DM Mono"}},"BOOK: -"+bk):null,
+                !res&&bk?e("span",{style:{color:"#00e676",fontSize:8,fontWeight:700,fontFamily:"DM Mono"}},"EDGE: "+Math.abs(favSpread-bk).toFixed(1)):null,
+                e("span",{style:{color:"#8899aa",fontSize:8}},m.d+" "+m.t));}))),
+        e("div",{style:{display:"flex",gap:0,flexWrap:"wrap",overflowX:"auto"}},
           ["rankings","matchups","futures","results","simulate","methodology"].map(v=>
-            e("button",{key:v,onClick:()=>{setTab(v);if(v==="futures")setReg("Field");else if(v!=="futures"&&reg==="Field")setReg("All");},style:{padding:"7px 16px",fontFamily:"DM Mono",fontSize:11,fontWeight:tab===v?700:400,letterSpacing:1,color:tab===v?"#fff":"#8899aa",borderBottom:tab===v?"2px solid #00d4ff":"2px solid transparent",textTransform:"uppercase"}},v))))),
+            e("button",{key:v,onClick:()=>{setTab(v);if(v==="futures")setReg("Field");else if(v!=="futures"&&reg==="Field")setReg("All");},style:{padding:"7px 12px",fontFamily:"DM Mono",fontSize:11,fontWeight:tab===v?700:400,letterSpacing:1,color:tab===v?"#fff":"#8899aa",borderBottom:tab===v?"2px solid #00d4ff":"2px solid transparent",textTransform:"uppercase",flexShrink:0}},v))))),
     e("div",{style:{maxWidth:1600,margin:"0 auto",padding:"12px 16px 50px",background:"#0d1117"}},
       tab!=="methodology"&&tab!=="simulate"?e("div",{style:{display:"flex",gap:6,marginBottom:8,flexWrap:"wrap",alignItems:"center"}},
         (tab==="futures"?["Field","All","East","South","West","Midwest"]:["All","East","South","West","Midwest"]).map(r=>
