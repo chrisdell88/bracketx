@@ -421,16 +421,21 @@ def s_dratings():
 def s_versus():
     d = fetch("https://www.versussportssimulator.com/CBB/rankings")
     result = {}
-    # Table rows: cell[0]=rank, cell[1]="TeamNameConf Team Record..."
+    # Table structure: cells[0]=rating value (NOT rank), cells[1]=team+conf+record,
+    # cells[-1]=actual sequential rank (1,2,3,...). Verified 2026-04-04.
     for row in re.findall(r'<tr[^>]*>(.*?)</tr>', d, re.DOTALL|re.IGNORECASE):
         cells = re.findall(r'<td[^>]*>(.*?)</td>', row, re.DOTALL|re.IGNORECASE)
-        if len(cells) < 2: continue
-        rank_str = re.sub(r'<[^>]+>','',cells[0]).strip()
-        try: rk = int(rank_str)
+        if len(cells) < 4: continue
+        # Rank is in cells[5] (overall rank, 1-indexed sequential). Verified 2026-04-04.
+        # cells[0]=rating pts, cells[1]=team+data, cells[2]=avg rating,
+        # cells[3]=wins, cells[4]=losses, cells[5]=OVERALL RANK, cells[7]=pwr, cells[8]=off, cells[9]=def
+        rank_str = re.sub(r'<[^>]+>','',cells[5]).strip()
+        try:
+            rk = int(rank_str)
+            if rk > 400: continue
         except: continue
         raw = re.sub(r'<[^>]+>','',cells[1]).strip()
         # Team name is before conference: "ArizonaBig 12..." or "Iowa StateBig 12..."
-        # Try progressively shorter prefixes (go down to 3 for TCU, BYU, VCU, SMU, UCF)
         for length in range(min(30, len(raw)), 2, -1):
             team = norm(raw[:length])
             if team and team not in result:
