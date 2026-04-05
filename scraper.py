@@ -606,9 +606,9 @@ def s_bihl():
 def s_srat():
     d = fetch("https://www.sports-ratings.com/p/power-rating-overall.html")
     result = {}
-    txt = re.sub(r'<[^>]+>','',d)
+    txt = html.unescape(re.sub(r'<[^>]+>','',d))
     # Format: "1.  Arizona  34-2  136.23"
-    for m in re.finditer(r'(\d+)\.\s+([A-Za-z][A-Za-z \'\.&]+?)\s+\d+-\d+\s+([\d.]+)', txt):
+    for m in re.finditer(r'(\d+)\.\s+([A-Za-z][A-Za-z \'\.&]+?)\s+\d+-\d+\s+(-?[\d.]+)', txt):
         rk = int(m.group(1))
         team = norm(m.group(2).strip())
         if team and team not in result:
