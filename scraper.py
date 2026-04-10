@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 """BracketX scraper — all 49 scrapeable systems."""
 
-import urllib.request, re, json, csv, io, html
+import urllib.request, re, json, csv, io, html, base64
+try:
+    import cloudscraper as _cloudscraper
+except ImportError:
+    _cloudscraper = None
 
 H = {"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
      "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
@@ -66,14 +70,15 @@ ALIASES = {
     "north carolina tar heels":"North Carolina","north carolina":"North Carolina",
     "unc":"North Carolina","unc tar heels":"North Carolina","unc chapel hill":"North Carolina",
     "miami hurricanes":"Miami FL","miami (fl)":"Miami FL","miami fl":"Miami FL",
-    "miami florida":"Miami FL","miami":"Miami FL","miami(fl)":"Miami FL",
+    "miami florida":"Miami FL","miami":"Miami FL","miami(fl)":"Miami FL","u miami (fl)":"Miami FL",
+    "miami university (oh)":"Miami OH",
     "miami (oh)":"Miami OH","miami(oh)":"Miami OH","miami oh":"Miami OH","miami ohio":"Miami OH","miami-ohio":"Miami OH","miami-oh":"Miami OH","miami redhawks":"Miami OH",
     "saint louis billikens":"Saint Louis","saint louis":"Saint Louis",
     "st. louis":"Saint Louis","st louis":"Saint Louis",
     "clemson tigers":"Clemson","clemson":"Clemson",
     "villanova wildcats":"Villanova","villanova":"Villanova",
     "nc state wolfpack":"NC State","nc state":"NC State",
-    "north carolina state":"NC State","n.c. state":"NC State","n. c. state":"NC State",
+    "north carolina state":"NC State","north carolina state wolfpack":"NC State","n.c. state":"NC State","n. c. state":"NC State",
     "nc state wolfpack":"NC State","n. carolina state":"NC State",
     "north carolina st":"NC State",
     "santa clara broncos":"Santa Clara","santa clara":"Santa Clara",
@@ -103,7 +108,7 @@ ALIASES = {
     "n iowa":"Northern Iowa","n. iowa":"Northern Iowa","n. iowa panthers":"Northern Iowa",
     "uni panthers":"Northern Iowa","north. iowa":"Northern Iowa",
     "hofstra pride":"Hofstra","hofstra":"Hofstra",
-    "cal baptist lancers":"Cal Baptist","california baptist":"Cal Baptist","cal baptist":"Cal Baptist",
+    "cal baptist lancers":"Cal Baptist","california baptist":"Cal Baptist","cal baptist":"Cal Baptist","ca baptist":"Cal Baptist",
     "cbu":"Cal Baptist","cal baptist u.":"Cal Baptist","calif baptist":"Cal Baptist","calif. baptist":"Cal Baptist",
     "california baptist lancers":"Cal Baptist","california baptist u.":"Cal Baptist",
     "cal. baptist lancers":"Cal Baptist","cal. baptist":"Cal Baptist",
@@ -692,45 +697,52 @@ def s_dci():
                 result[team] = rk
     return result
 
+def _massey_decstr(encoded, seed=0x7e5):
+    """Decode Massey's obfuscated stamp.jsonURL into the real JSON endpoint."""
+    encoded = encoded.replace('-', '+').replace('_', '/').replace('.', '=')
+    raw = base64.b64decode(encoded)
+    result = ''
+    s = seed
+    for i in range(len(raw)):
+        s = (0x1fb9 * s + 0x4d2) % 0x100
+        result += chr((raw[i] - s + 0x100) % 0x100)
+    return result
+
 def s_massey():
-    # Try Massey composite ratings page for NCAA D1 basketball
+    # Massey is behind Cloudflare; needs cloudscraper to bypass JS challenge.
+    # The page loads data via an obfuscated JSON endpoint (stamp.js system).
+    # We: 1) fetch the HTML shell, 2) extract stamp.jsonURL, 3) decode it,
+    #     4) fetch the real JSON, 5) extract team names + ranks.
     result = {}
-    # Primary URL: massey ratings composite page
-    for url in [
-        "https://masseyratings.com/cb/ncaa-d1/ratings",
-        "https://masseyratings.com/ranks",
-        "https://masseyratings.com/cb/compare.htm",
-    ]:
-        d = fetch(url)
-        if not d:
-            continue
-        # Massey uses HTML tables; team name in one column, rank/rating in another
-        rows = parse_html_table(d, 0)
-        rank = 1
-        for row in rows[1:]:
-            for col in row:
-                team = norm(col)
-                if team and team not in result:
-                    try:
-                        result[team] = int(re.sub(r'[^\d]', '', row[0])) if re.sub(r'[^\d]', '', row[0]) else rank
-                    except:
-                        result[team] = rank
-                    rank += 1
-                    break
-        if result:
+    if _cloudscraper is None:
+        return result  # cloudscraper not installed
+    try:
+        scraper = _cloudscraper.create_scraper()
+        resp = scraper.get("https://masseyratings.com/cb/ncaa-d1/ratings", timeout=25)
+        if resp.status_code != 200:
             return result
-        # Fallback: strip HTML and look for numbered entries
-        txt = re.sub(r'<[^>]+>', '', d)
-        txt = re.sub(r'\s+', ' ', txt)
-        for m in re.finditer(r'(\d+)\s+([A-Za-z][A-Za-z \'\.&]{3,30}?)\s+(?:\d+-\d+|[\d.]{4,})', txt):
-            rk = int(m.group(1))
-            if rk > 400:
-                continue
-            team = norm(m.group(2).strip())
+        d = resp.text
+        m = re.search(r'stamp\.jsonURL\s*=\s*"([^"]+)"', d)
+        if not m:
+            return result
+        json_path = _massey_decstr(m.group(1))
+        if not json_path:
+            return result
+        url = json_path if json_path.startswith("http") else "https://masseyratings.com" + json_path
+        resp2 = scraper.get(url, timeout=25)
+        if resp2.status_code != 200:
+            return result
+        data = resp2.json()
+        di = data.get("DI", [])
+        for rank_idx, row in enumerate(di):
+            # row[0] is [teamName, extra, link] or a plain string
+            cell = row[0]
+            name = cell[0] if isinstance(cell, list) else str(cell)
+            team = norm(name)
             if team and team not in result:
-                result[team] = rk
-        if result:
-            return result
+                result[team] = rank_idx + 1  # national rank (1-365)
+    except Exception:
+        pass
     return result
 
 def s_oosh():
@@ -908,44 +920,31 @@ def s_generic(url, tidx=0):
 
 def s_dunk():
     result = {}
-    # Try multiple URL formats for Dunkel Index
-    urls = [
-        "https://www.dunkelindex.com/ranking/ncaa-basketball/2026",
-        "https://www.dunkelindex.com/ranking/ncaa-basketball",
-        "https://www.dunkelindex.com/",
-    ]
-    for url in urls:
-        d = fetch(url)
-        if not d:
-            continue
-        # Dunkel uses HTML tables
-        rows = parse_html_table(d, 0)
-        rank = 1
-        for row in rows[1:]:
-            for col in row:
-                team = norm(col)
-                if team and team not in result:
-                    try:
-                        result[team] = int(re.sub(r'[^\d]', '', row[0])) if re.sub(r'[^\d]', '', row[0]) else rank
-                    except:
-                        result[team] = rank
-                    rank += 1
-                    break
-        if result:
-            return result
-        # Fallback: strip HTML and scan for rank patterns
-        txt = re.sub(r'<[^>]+>', '', d)
-        txt = re.sub(r'&amp;', '&', txt)
-        txt = re.sub(r'\s+', ' ', txt)
-        for m in re.finditer(r'(\d+)\s+([A-Za-z][A-Za-z \'\.&]{3,30}?)(?:\s+[\d.]+|\s+\d+-\d+)', txt):
-            rk = int(m.group(1))
-            if rk > 400:
-                continue
-            team = norm(m.group(2).strip())
-            if team and team not in result:
-                result[team] = rk
-        if result:
-            return result
+    # Dunkel Index loads rankings via AJAX JSON API, not static HTML tables.
+    # League ID 6 = NCAA Basketball. The API returns all ~1350 D-I teams
+    # ordered by rank; the array index + 1 IS the national rank.
+    api_url = "https://www.dunkelindex.com/ranking/get/6?season=2026&tz=-04:00"
+    try:
+        req = urllib.request.Request(api_url, headers={
+            **H,
+            "X-Requested-With": "XMLHttpRequest",
+            "Accept": "application/json, text/javascript, */*; q=0.01",
+            "Referer": "https://www.dunkelindex.com/ranking/ncaa-basketball/2026",
+        })
+        raw = urllib.request.urlopen(req, timeout=60).read().decode('utf-8', 'replace')
+        data = json.loads(raw)
+    except Exception as e:
+        print(f"  [DUNK] API fetch failed: {e}")
+        return result
+    # Use "Regular Season" rankings (full-season ratings, not postseason-only)
+    season_types = data.get("season_types", {})
+    teams_list = season_types.get("Regular Season", season_types.get(list(season_types.keys())[0], [])) if season_types else []
+    for i, t in enumerate(teams_list):
+        name = t.get("name", "")
+        rank = i + 1
+        team = norm(name)
+        if team and team not in result:
+            result[team] = rank
     return result
 
 
@@ -1107,7 +1106,7 @@ SCRAPERS = [
     ("RAMS",   s_rams,   "T2"),
     ("ENTROPY",s_entropy,"T2"),
     ("DCI",    s_dci,    "T2"),
-    ("MASSEY", s_massey, "T2"),   # blocked → manual
+    ("MASSEY", s_massey, "T2"),   # cloudscraper bypass for Cloudflare
     ("OOSH",   s_oosh,   "T2"),   # Wix → try
     ("STAT",   s_stat,   "T2"),
     ("JTHOM",  s_jthom,  "T2"),
