@@ -476,9 +476,20 @@ function App(){
       if(sk==="f4")return sd*((pb.f4||0)-(pa.f4||0));if(sk==="e8")return sd*((pb.e8||0)-(pa.e8||0));
       if(sk==="s16")return sd*((pb.s16||0)-(pa.s16||0));return a.rk-b.rk;
     });
+    // Actual tournament results for retrospective
+    const ACTUAL_RESULTS={
+      s16:new Set(["Duke","UConn","Michigan State","St. John's","Houston","Illinois","Nebraska","Iowa","Arizona","Purdue","Arkansas","Texas","Michigan","Alabama","Iowa State","Tennessee"]),
+      e8:new Set(["Duke","UConn","Illinois","Iowa","Arizona","Purdue","Michigan","Tennessee"]),
+      f4:new Set(["UConn","Illinois","Arizona","Michigan"]),
+      title:new Set(["UConn","Michigan"]),
+      champ:new Set(["Michigan"])
+    };
+    const actualCheck=(nm,round)=>ACTUAL_RESULTS[round]&&ACTUAL_RESULTS[round].has(nm);
+    const ck=(hit)=>hit?"\u2705":"\u274c";
+
     return e("div",null,
       e("div",{style:{background:"#0e1218",border:"1px solid #1a2a3a",borderRadius:6,padding:"7px 12px",marginBottom:12,fontSize:10,color:"#aab"}},
-        e("strong",{style:{color:"#ffd600"}},"FUTURES:")," ",isField?"Updated implied probabilities for the 16 remaining teams, starting from known Sweet 16 matchups.":"Pre-tournament implied probability to reach each round based on full bracket-path simulation using X-Scores."),
+        e("strong",{style:{color:"#ffd600"}},"FUTURES:")," ",isField?"Final Four implied probabilities from known Sweet 16 matchups.":"Pre-tournament implied probability to reach each round vs. actual results. Based on bracket-path simulation using pre-tournament X-Scores."),
       e("div",{style:{overflowX:"auto",background:"#0d1117"}},
         e("table",{style:{width:"100%",borderCollapse:"collapse",fontSize:11,background:"#0d1117"}},
           e("thead",null,e("tr",{style:{borderBottom:"1px solid #1a2a3a"}},
@@ -487,11 +498,11 @@ function App(){
             e("td",{style:{padding:"4px 8px",fontWeight:700,color:"#00d4ff",textAlign:"center"}},t.rk),
             e("td",{style:{padding:"4px 8px",color:RC[t.rg],textAlign:"center"}},t.s),
             e("td",{style:{padding:"4px 8px",fontFamily:"Outfit",fontWeight:600,color:"#fff",display:"flex",alignItems:"center",gap:6}},LOGOS[t.nm]?e("img",{src:"https://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/"+LOGOS[t.nm]+".png&h=20&w=20",style:{width:20,height:20,borderRadius:3,background:"transparent"}}):null,e("span",null,t.nm,e("span",{style:{fontSize:8,color:"#8899aa",marginLeft:6}},t.cf+" \u00B7 "+t.rec))),
-            e("td",{style:{padding:"4px 8px",textAlign:"center",fontWeight:700,color:(p.champ||0)>=.1?"#ffd600":(p.champ||0)>=.01?"#d4a020":"#667"}},fmt(p.champ||0)),
-            e("td",{style:{padding:"4px 8px",textAlign:"center",fontWeight:600,color:(p.title||0)>=.1?"#ff6b35":"#778"}},fmt(p.title||0)),
-            e("td",{style:{padding:"4px 8px",textAlign:"center",fontWeight:600,color:(p.f4||0)>=.1?"#00d4ff":"#778"}},fmt(p.f4||0)),
-            e("td",{style:{padding:"4px 8px",textAlign:"center",color:(p.e8||0)>=.2?"#00e676":"#778"}},fmt(p.e8||0)),
-            !isField?e("td",{style:{padding:"4px 8px",textAlign:"center",color:(p.s16||0)>=.5?"#e040fb":"#aab"}},fmt(p.s16||0)):null);})))));
+            e("td",{style:{padding:"4px 8px",textAlign:"center",fontWeight:700,color:(p.champ||0)>=.1?"#ffd600":(p.champ||0)>=.01?"#d4a020":"#667"}},fmt(p.champ||0)," ",!isField?ck(actualCheck(t.nm,"champ")):null),
+            e("td",{style:{padding:"4px 8px",textAlign:"center",fontWeight:600,color:(p.title||0)>=.1?"#ff6b35":"#778"}},fmt(p.title||0)," ",!isField?ck(actualCheck(t.nm,"title")):null),
+            e("td",{style:{padding:"4px 8px",textAlign:"center",fontWeight:600,color:(p.f4||0)>=.1?"#00d4ff":"#778"}},fmt(p.f4||0)," ",!isField?ck(actualCheck(t.nm,"f4")):null),
+            e("td",{style:{padding:"4px 8px",textAlign:"center",color:(p.e8||0)>=.2?"#00e676":"#778"}},fmt(p.e8||0)," ",!isField?ck(actualCheck(t.nm,"e8")):null),
+            !isField?e("td",{style:{padding:"4px 8px",textAlign:"center",color:(p.s16||0)>=.5?"#e040fb":"#aab"}},fmt(p.s16||0)," ",ck(actualCheck(t.nm,"s16"))):null);})))));
   };
 
   // ════════ RESULTS TRACKER TAB ════════
@@ -951,18 +962,18 @@ function App(){
 
   // ════════ RATINGS KEY MODAL ════════
   const _rkSys=[
-    {tier:"T1 \u2014 Efficiency Models (10 systems)",color:"#00d4ff",systems:[
-      {abbr:"KP",name:"KenPom Efficiency Ratings",url:"https://kenpom.com",upd:"3/23"},
-      {abbr:"BT",name:"BartTorvik T-Rank",url:"https://barttorvik.com",upd:"3/23"},
-      {abbr:"EM",name:"Evan Miya BPR",url:"https://evanmiya.com",upd:"3/23"},
-      {abbr:"COOP",name:"COOPER Bayesian Elo (Nate Silver)",url:"https://natesilver.net",upd:"3/23"},
-      {abbr:"SW",name:"SwishStats Team Ratings",url:"https://swishstats.org",upd:"3/22"},
-      {abbr:"HAS",name:"HaslaMetrics",url:"https://haslametrics.com",upd:"3/24"},
-      {abbr:"INCC",name:"INCC Stats",url:"https://inccstats.com",upd:"3/22"},
+    {tier:"T1 \u2014 Efficiency Models (9 systems)",color:"#00d4ff",systems:[
+      {abbr:"KP",name:"KenPom Efficiency Ratings",url:"https://kenpom.com",upd:"4/4"},
+      {abbr:"BT",name:"BartTorvik T-Rank",url:"https://barttorvik.com",upd:"4/4"},
+      {abbr:"EM",name:"Evan Miya BPR",url:"https://evanmiya.com",upd:"4/4"},
+      {abbr:"COOP",name:"COOPER Bayesian Elo (Nate Silver)",url:"https://natesilver.net",upd:"4/4"},
+      {abbr:"SW",name:"SwishStats Team Ratings",url:"https://swishstats.org",upd:"4/4"},
+      {abbr:"HAS",name:"HaslaMetrics",url:"https://haslametrics.com",upd:"4/4"},
+      {abbr:"INCC",name:"INCC Stats",url:"https://inccstats.com",upd:"4/4"},
       {abbr:"BPI",name:"ESPN BPI",url:"https://espn.com/mens-college-basketball/bpi",upd:"4/4"},
-      {abbr:"CMBKI",name:"CMBKI+ Composite",url:"https://cfbpredictor.com",upd:"3/23"}]},
+      {abbr:"CMBKI",name:"CMBKI+ Composite",url:"https://cfbpredictor.com",upd:"4/4"}]},
     {tier:"T2 \u2014 Recently Updated (21 systems)",color:"#8ab4d0",systems:[
-      {abbr:"FTN",name:"FTN Power Rankings",url:"https://ftnfantasy.com",upd:"3/23"},
+      {abbr:"FTN",name:"FTN Power Rankings",url:"https://ftnfantasy.com",upd:"3/15"},
       {abbr:"MASSEY",name:"Massey Ratings",url:"https://masseyratings.com",upd:"4/5"},
       {abbr:"COLLEY",name:"Colley's Bias Free Matrix",url:"https://colleyrankings.com",upd:"3/23"},
       {abbr:"DRAT",name:"DRatings Inference Index",url:"https://dratings.com",upd:"3/23"},
@@ -980,7 +991,7 @@ function App(){
       {abbr:"ENTROPY",name:"Entropy System",url:"https://dokterentropy.com",upd:"4/5"},
       {abbr:"MOOG",name:"Mark Moog Ratings",url:"https://markmoog.com",upd:"4/5"},
       {abbr:"ODDS",name:"Odds Gods Rankings",url:"https://egomaniacsbracket.onrender.com",upd:"4/5"},
-      {abbr:"BARON",name:"Noah Baron's Rankings",url:"https://noahbaron.substack.com",upd:"3/22"},
+      {abbr:"BARON",name:"Noah Baron's Rankings",url:"https://noahbaron.substack.com",upd:"4/4"},
       {abbr:"JTHOM",name:"JThom Analytics",url:"https://jthomanalytics.com",upd:"4/5"},
       {abbr:"CPURE",name:"COOPER Pure Elo (no polls)",url:"https://natesilver.net",upd:"4/5"}]},
     {tier:"T2 \u2014 Pre-Tournament (15 systems, last updated 3/15)",color:"#8ab4d0",systems:[
